@@ -162,7 +162,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 
             m_feedIsSelected = true;
 
-			checkTrial(true);
+			//checkTrial(true);
 
 		} else { // savedInstanceState != null
 			//m_actionbarUpEnabled = savedInstanceState.getBoolean("actionbarUpEnabled");

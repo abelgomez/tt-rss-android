@@ -109,11 +109,12 @@
 
         </group>
 
+		<!--
         <item
             android:id="@+id/donate"
             app:showAsAction=""
             android:title="@string/trial_purchase"/>
-
+		-->
         <!-- <item
             android:orderInCategory="999"
             android:id="@+id/preferences"

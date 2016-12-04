@@ -173,7 +173,7 @@ public class OnlineActivity extends CommonActivity {
 		if (isOffline) {
 			switchOfflineSuccess();			
 		} else {
-			checkTrial(false);
+			//checkTrial(false);
 			
 			/* if (getIntent().getExtras() != null) {
 				Intent i = getIntent();
@@ -430,6 +430,7 @@ public class OnlineActivity extends CommonActivity {
 		finish();
 	}
 	
+	/*
 	public void checkTrial(boolean notify) {
         if (!BuildConfig.DEBUG) {
 
@@ -489,8 +490,8 @@ public class OnlineActivity extends CommonActivity {
                 //toast(R.string.trial_thanks);
             }
         }
-	}
-	
+	}*/
+		
 	private void openUnlockUrl() {
 		try {
 			Intent intent = new Intent(Intent.ACTION_VIEW, 
@@ -621,6 +622,7 @@ public class OnlineActivity extends CommonActivity {
 				}
 			}
 			return true;
+		/*
 		case R.id.donate:
 			if (true) {
 				openUnlockUrl();
@@ -1194,6 +1196,7 @@ public class OnlineActivity extends CommonActivity {
 		List<PackageInfo> pkgs = getPackageManager()
 				.getInstalledPackages(0);
 
+		/*
 		for (PackageInfo p : pkgs) {
 			if ("org.fox.ttrss.key".equals(p.packageName)) {
 				Log.d(TAG, "license apk found");
@@ -1201,6 +1204,7 @@ public class OnlineActivity extends CommonActivity {
 				break;
 			}
 		}
+		*/
 		
 		return true;
 	}
