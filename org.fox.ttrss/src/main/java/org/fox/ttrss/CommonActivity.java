@@ -2,6 +2,7 @@ package org.fox.ttrss;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -16,27 +17,24 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.customtabs.CustomTabsCallback;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.cache.disc.impl.ext.LruDiscCache;
-import com.nostra13.universalimageloader.core.DefaultConfigurationFactory;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import org.fox.ttrss.util.DatabaseHelper;
+import org.fox.ttrss.widget.SmallWidgetProvider;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -119,13 +117,18 @@ public class CommonActivity extends ActionBarActivity implements SharedPreferenc
 	}
 
 	public void toast(int msgId) {
-		Toast toast = Toast.makeText(CommonActivity.this, msgId, Toast.LENGTH_SHORT);
-		toast.show();
+		toast(getString(msgId));
 	}
 
 	public void toast(String msg) {
-		Toast toast = Toast.makeText(CommonActivity.this, msg, Toast.LENGTH_SHORT);
-		toast.show();
+		Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG)
+				.setAction(R.string.dialog_close, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+					}
+				})
+				.show();
 	}
 
 	@Override
@@ -159,6 +162,8 @@ public class CommonActivity extends ActionBarActivity implements SharedPreferenc
 
 		m_prefs.registerOnSharedPreferenceChangeListener(this);
 
+		setupWidgetUpdates(this);
+
         if (savedInstanceState != null) {
 			m_theme = savedInstanceState.getString("theme");
 		} else {
@@ -167,7 +172,7 @@ public class CommonActivity extends ActionBarActivity implements SharedPreferenc
 
 		CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", m_customTabServiceConnection);
 
-		if (!ImageLoader.getInstance().isInited()) {
+		/*if (!ImageLoader.getInstance().isInited()) {
 			ImageLoaderConfiguration config;
 
 			try {
@@ -182,7 +187,7 @@ public class CommonActivity extends ActionBarActivity implements SharedPreferenc
 						.build();
 			}
 			ImageLoader.getInstance().init(config);
-		}
+		}*/
 
 		super.onCreate(savedInstanceState);
 	}
@@ -211,16 +216,22 @@ public class CommonActivity extends ActionBarActivity implements SharedPreferenc
 	@SuppressLint({ "NewApi", "ServiceCast" })
 	@SuppressWarnings("deprecation")
 	public void copyToClipboard(String str) {
-		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {				
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
 			android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 			clipboard.setText(str);
 		} else {
 			android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 			clipboard.setText(str);
-		}		
+		}
 
-		Toast toast = Toast.makeText(this, R.string.text_copied_to_clipboard, Toast.LENGTH_SHORT);
-		toast.show();
+		Snackbar.make(findViewById(android.R.id.content), R.string.text_copied_to_clipboard, Snackbar.LENGTH_SHORT)
+				.setAction(R.string.dialog_close, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+					}
+				})
+				.show();
 	}
 
 	protected void setAppTheme(SharedPreferences prefs) {
@@ -237,7 +248,8 @@ public class CommonActivity extends ActionBarActivity implements SharedPreferenc
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		Log.d(TAG, "onSharedPreferenceChanged:" + key);
 
-		String[] filter = new String[] { "theme", "enable_cats", "headline_mode" };
+		String[] filter = new String[] { "theme", "enable_cats", "headline_mode", "widget_update_interval",
+				"headlines_swipe_to_dismiss", "headlines_mark_read_scroll" };
 
 		m_needRestart = Arrays.asList(filter).indexOf(key) != -1;
 	}
@@ -412,6 +424,29 @@ public class CommonActivity extends ActionBarActivity implements SharedPreferenc
 				toast(e.getMessage());
 			}
 		}
+	}
+
+	public static void setupWidgetUpdates(Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+		int updateInterval = Integer.parseInt(prefs.getString("widget_update_interval", "15")) * 60 * 1000;
+
+		Log.d("setupWidgetUpdates", "interval= " + updateInterval);
+
+		AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+
+		Intent intentUpdate = new Intent(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
+
+		PendingIntent pendingIntentAlarm = PendingIntent.getBroadcast(context,
+				0, intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		alarmManager.cancel(pendingIntentAlarm);
+
+		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
+				SystemClock.elapsedRealtime() + updateInterval,
+				updateInterval,
+				pendingIntentAlarm);
+
 	}
 
 	public void displayImageCaption(String url, String htmlContent) {

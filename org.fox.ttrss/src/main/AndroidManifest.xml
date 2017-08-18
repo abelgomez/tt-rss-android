@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.fox.ttrss"
-    android:versionCode="416"
-    android:versionName="1.182" >
-
-    <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="23" />
+    android:versionCode="450"
+    android:versionName="1.216">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".Application"
@@ -21,6 +18,12 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
+
+        <!-- <meta-data android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+            tools:node="remove" /> -->
+        <meta-data android:name="org.fox.ttrss.glide.OkHttpProgressGlideModule"
+            android:value="GlideModule" />
+
         <activity
             android:name=".LaunchActivity"
             android:label="@string/app_name"
@@ -119,34 +122,22 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="*"
-                    android:pathPattern=".*xml"
-                    android:scheme="http" />
-                <data
-                    android:host="*"
-                    android:pathPattern=".*rss"
-                    android:scheme="http" />
-                <data
-                    android:host="*"
-                    android:pathPattern=".*feed.*"
-                    android:scheme="http" />
-                <data
-                    android:host="*"
-                    android:pathPattern=".*podcast.*"
-                    android:scheme="http" />
-                <data
-                    android:host="*"
-                    android:pathPattern=".*Podcast.*"
-                    android:scheme="http" />
-                <data
-                    android:host="*"
-                    android:pathPattern=".*rss.*"
-                    android:scheme="http" />
-                <data
-                    android:host="*"
-                    android:pathPattern=".*RSS.*"
-                    android:scheme="http" />
+                <data android:host="*" android:pathPattern=".*xml" android:scheme="http" />
+                <data android:host="*" android:pathPattern=".*rss" android:scheme="http" />
+                <data android:host="*" android:pathPattern=".*feed.*" android:scheme="http" />
+                <data android:host="*" android:pathPattern=".*podcast.*" android:scheme="http" />
+                <data android:host="*" android:pathPattern=".*Podcast.*" android:scheme="http" />
+                <data android:host="*" android:pathPattern=".*rss.*" android:scheme="http" />
+                <data android:host="*" android:pathPattern=".*RSS.*" android:scheme="http" />
+
+                <data android:host="*" android:pathPattern=".*xml" android:scheme="https" />
+                <data android:host="*" android:pathPattern=".*rss" android:scheme="https" />
+                <data android:host="*" android:pathPattern=".*feed.*" android:scheme="https" />
+                <data android:host="*" android:pathPattern=".*podcast.*" android:scheme="https" />
+                <data android:host="*" android:pathPattern=".*Podcast.*" android:scheme="https" />
+                <data android:host="*" android:pathPattern=".*rss.*" android:scheme="https" />
+                <data android:host="*" android:pathPattern=".*RSS.*" android:scheme="https" />
+                
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -154,15 +145,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:mimeType="text/xml"
-                    android:scheme="http" />
-                <data
-                    android:mimeType="application/rss+xml"
-                    android:scheme="http" />
-                <data
-                    android:mimeType="application/atom+xml"
-                    android:scheme="http" />
+                <data android:mimeType="text/xml" android:scheme="http" />
+                <data android:mimeType="application/rss+xml" android:scheme="http" />
+                <data android:mimeType="application/atom+xml" android:scheme="http" />
+
+                <data android:mimeType="text/xml" android:scheme="https" />
+                <data android:mimeType="application/rss+xml" android:scheme="https" />
+                <data android:mimeType="application/atom+xml" android:scheme="https" />
+                
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -171,6 +161,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="*" />
                 <data android:pathPattern=".*\\.xml" />
                 <data android:pathPattern=".*\\.rss" />
@@ -182,6 +173,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="feeds.feedburner.com" />
                 <data android:host="feedproxy.google.com" />
                 <data android:host="feeds2.feedburner.com" />
@@ -194,6 +186,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:mimeType="text/xml" />
                 <data android:mimeType="application/rss+xml" />
                 <data android:mimeType="application/atom+xml" />
@@ -215,12 +208,19 @@
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIwG6zsGB4qo6ZhjfwIJpm9WI7AqmWaoRXm6ZJnA" />
 
+        <receiver android:name=".util.DeviceBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".tasker.TaskerReceiver" >
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".widget.SmallWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -254,7 +254,7 @@
         </service>
 
         <activity
-            android:name=".ArticleImagesPagerActivity"
+            android:name=".GalleryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Article Images" >
         </activity>
@@ -264,11 +264,6 @@
             android:finishOnTaskLaunch="true"
             android:launchMode="singleInstance"
             android:theme="@style/DarkDialogTheme" />
-        <activity
-            android:name=".VideoPlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_video_player" >
-        </activity>
         <activity
             android:name=".YoutubePlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

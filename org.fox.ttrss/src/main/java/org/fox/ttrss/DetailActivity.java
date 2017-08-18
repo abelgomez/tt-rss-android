@@ -19,8 +19,6 @@ import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
 import org.fox.ttrss.types.Feed;
 
-import java.net.URISyntaxException;
-
 public class DetailActivity extends OnlineActivity implements HeadlinesEventListener {
 	private final String TAG = this.getClass().getSimpleName();
 	protected ArticleList m_articles = new ArticleList();
@@ -178,7 +176,8 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
 			
 			m_menu.setGroupVisible(R.id.menu_group_headlines, !isPortrait() && !isSmallScreen());
 			//m_menu.findItem(R.id.headlines_toggle_sidebar).setVisible(!isPortrait() && !isSmallScreen());
-			
+			m_menu.findItem(R.id.headlines_toggle_sort_order).setVisible(false);
+
 			ArticlePager af = (ArticlePager) getSupportFragmentManager().findFragmentByTag(FRAG_ARTICLE);
 			
 			m_menu.setGroupVisible(R.id.menu_group_article, af != null);
@@ -212,7 +211,7 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
 	}
 
 	@Override
-	public void onArticleSelected(Article article, boolean open) {
+	public void onArticleSelected(final Article article, boolean open) {
 		
 		if (article == null) return;
 		
@@ -230,19 +229,17 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
 		if (!getSupportActionBar().isShowing()) getSupportActionBar().show();
 
 		if (open) {
-			
-			final Article fArticle = article;
-			
+
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
                     ArticlePager af = (ArticlePager) getSupportFragmentManager().findFragmentByTag(FRAG_ARTICLE);
 					
 					if (af != null) {
-						af.setActiveArticle(fArticle);
+						af.setActiveArticle(article);
 					}
 				}
-			}, 10);			
+			}, 250);
 
 		} else {
 			HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);

@@ -1,6 +1,5 @@
 package org.fox.ttrss;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -74,7 +73,7 @@ public class YoutubePlayerActivity extends CommonActivity implements YouTubePlay
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_video_player, menu);
+        getMenuInflater().inflate(R.menu.activity_youtube_player, menu);
         return true;
     }
 
@@ -83,7 +82,7 @@ public class YoutubePlayerActivity extends CommonActivity implements YouTubePlay
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
 
-        getMenuInflater().inflate(R.menu.activity_video_player, menu);
+        getMenuInflater().inflate(R.menu.activity_youtube_player, menu);
 
         super.onCreateContextMenu(menu, v, menuInfo);
     }

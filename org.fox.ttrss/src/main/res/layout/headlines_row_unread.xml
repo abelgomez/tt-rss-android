@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/headlines_row"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="?headlineUnreadBackground"
     tools:ignore="HardcodedText">
 
@@ -39,11 +39,13 @@
                         android:layout_alignParentTop="false"
                         android:layout_alignParentRight="false"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentLeft="true"
                         android:max="100"
-                        android:indeterminate="false" />
+                        android:indeterminate="false"
+                        android:layout_toRightOf="@+id/flavor_video"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
 
-                    <org.fox.ttrss.util.EnlargingImageView
+                    <ImageView
                         android:id="@+id/flavor_image"
                         android:foreground="@drawable/ripple"
                         android:layout_width="match_parent"
@@ -54,8 +56,23 @@
                         android:background="@android:color/transparent"
                         android:cropToPadding="true"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/drawer_header"
                         android:visibility="visible" />
+
+                    <TextureView
+                        android:id="@+id/flavor_video"
+                        android:foreground="@drawable/ripple"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:background="@android:color/transparent"
+                        android:cropToPadding="true"
+                        android:src="@drawable/drawer_header"
+                        android:scaleType="fitCenter"
+                        android:visibility="gone"
+                        android:layout_alignBottom="@+id/flavor_image"
+                        android:layout_alignTop="@+id/flavor_image" />
 
                     <RelativeLayout
                         android:id="@+id/headline_header"
@@ -131,11 +148,12 @@
                     android:layout_below="@+id/headline_header"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:tint="?colorAccent"
                     android:layout_marginLeft="8dp"
                     android:layout_marginBottom="8dp" />
 
                 <ImageView
-                    android:id="@+id/flavor_image_overflow"
+                    android:id="@+id/gallery_overflow"
                     android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
@@ -145,6 +163,7 @@
                     android:paddingRight="4dp"
                     android:src="@drawable/ic_dots_vertical"
                     android:layout_gravity="bottom|right"
+                    android:tint="?colorAccent"
                     android:layout_marginBottom="10dp" />
 
             </FrameLayout>

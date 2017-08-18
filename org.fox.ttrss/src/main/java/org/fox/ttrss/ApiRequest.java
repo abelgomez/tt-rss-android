@@ -22,23 +22,12 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import static org.fox.ttrss.ApiCommon.ApiError;
 
 public class ApiRequest extends AsyncTask<HashMap<String,String>, Integer, JsonElement> {
 	private final String TAG = this.getClass().getSimpleName();
-
-	public enum ApiError { NO_ERROR, HTTP_UNAUTHORIZED, HTTP_FORBIDDEN, HTTP_NOT_FOUND, 
-		HTTP_SERVER_ERROR, HTTP_OTHER_ERROR, SSL_REJECTED, SSL_HOSTNAME_REJECTED, PARSE_ERROR, IO_ERROR, OTHER_ERROR, API_DISABLED, 
-		API_UNKNOWN, LOGIN_FAILED, INVALID_URL, API_INCORRECT_USAGE, NETWORK_UNAVAILABLE, API_UNKNOWN_METHOD }
 
     public static final int API_STATUS_OK = 0;
 	public static final int API_STATUS_ERR = 1;
@@ -76,47 +65,7 @@ public class ApiRequest extends AsyncTask<HashMap<String,String>, Integer, JsonE
 	}
 
 	public int getErrorMessage() {
-		switch (m_lastError) {
-		case NO_ERROR:
-			return R.string.error_unknown;
-		case HTTP_UNAUTHORIZED:
-			return R.string.error_http_unauthorized;
-		case HTTP_FORBIDDEN:
-			return R.string.error_http_forbidden;
-		case HTTP_NOT_FOUND:
-			return R.string.error_http_not_found;
-		case HTTP_SERVER_ERROR:
-			return R.string.error_http_server_error;
-		case HTTP_OTHER_ERROR:
-			return R.string.error_http_other_error;
-		case SSL_REJECTED:
-			return R.string.error_ssl_rejected;
-		case SSL_HOSTNAME_REJECTED:
-			return R.string.error_ssl_hostname_rejected;
-		case PARSE_ERROR:
-			return R.string.error_parse_error;
-		case IO_ERROR:
-			return R.string.error_io_error;
-		case OTHER_ERROR:
-			return R.string.error_other_error;
-		case API_DISABLED:
-			return R.string.error_api_disabled;
-		case API_UNKNOWN:
-			return R.string.error_api_unknown;
-		case API_UNKNOWN_METHOD:
-			return R.string.error_api_unknown_method;
-		case LOGIN_FAILED:
-			return R.string.error_login_failed;
-		case INVALID_URL:
-			return R.string.error_invalid_api_url;
-		case API_INCORRECT_USAGE:
-			return R.string.error_api_incorrect_usage;
-		case NETWORK_UNAVAILABLE:
-			return R.string.error_network_unavailable;
-		default:
-			Log.d(TAG, "getErrorMessage: unknown error code=" + m_lastError);
-			return R.string.error_unknown;
-		}
+		return ApiCommon.getErrorMessage(m_lastError);
 	}
 
 	@Override
@@ -140,12 +89,7 @@ public class ApiRequest extends AsyncTask<HashMap<String,String>, Integer, JsonE
 			return null;
 		}
 
-		/* disableConnectionReuseIfNecessary(); */
-
 		if (m_transportDebugging) Log.d(TAG, ">>> (" + requestStr + ") " + m_api);
-
-		/* ApiRequest.trustAllHosts(m_prefs.getBoolean("ssl_trust_any", false),
-				m_prefs.getBoolean("ssl_trust_any_host", false)); */
 
 		URL url;
 
@@ -283,64 +227,7 @@ public class ApiRequest extends AsyncTask<HashMap<String,String>, Integer, JsonE
 		
 		return null;
 	}
-	
-	public static void trustAllHosts(boolean trustAnyCert, boolean trustAnyHost) {
-	    try {
-	    	if (trustAnyCert) {
-	    	    X509TrustManager easyTrustManager = new X509TrustManager() {
 
-	    	        public void checkClientTrusted(
-	    	        		X509Certificate[] chain,
-	    	                String authType) throws CertificateException {
-	    	            // Oh, I am easy!
-	    	        }
-
-	    	        public void checkServerTrusted(
-	    	        		X509Certificate[] chain,
-	    	                String authType) throws CertificateException {
-	    	            // Oh, I am easy!
-	    	        }
-
-	    	        public X509Certificate[] getAcceptedIssuers() {
-	    	            return null;
-	    	        }
-
-	    	    };
-
-	    	    // Create a trust manager that does not validate certificate chains
-	    	    TrustManager[] trustAllCerts = new TrustManager[] {easyTrustManager};
-
-	    	    // Install the all-trusting trust manager
-
-	    		SSLContext sc = SSLContext.getInstance("TLS");
-
-	    		sc.init(null, trustAllCerts, new java.security.SecureRandom());
-
-	    		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-	    	}
-	    	
-	    	if (trustAnyHost) {
-	    		HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {				
-	    			@Override
-	    			public boolean verify(String hostname, SSLSession session) {
-	    				return true;
-	    			}
-	    		});
-	    	}
-
-	    } catch (Exception e) {
-	            e.printStackTrace();
-	    }
-	}
-	
-	@SuppressWarnings("deprecation")
-	protected static void disableConnectionReuseIfNecessary() {
-	    // HTTP connection reuse which was buggy pre-froyo
-	    if (Integer.parseInt(Build.VERSION.SDK) < Build.VERSION_CODES.FROYO) {
-	        System.setProperty("http.keepAlive", "false");
-	    }
-	}
-	
 	protected boolean isNetworkAvailable() {
 	    ConnectivityManager cm = (ConnectivityManager) 
 	      m_context.getSystemService(Context.CONNECTIVITY_SERVICE);

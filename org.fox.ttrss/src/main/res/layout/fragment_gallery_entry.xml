@@ -12,14 +12,8 @@
         android:text="@string/error_loading_image"
         android:id="@+id/flavor_image_error" />
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/flavor_image_progress" />
-
-    <it.sephiroth.android.library.imagezoom.ImageViewTouch
-        android:id="@+id/flavor_image"
+    <TextureView
+        android:id="@+id/flavor_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
@@ -27,15 +21,17 @@
         android:scaleType="fitCenter" />
 
     <ImageView
-        android:id="@+id/flavor_image_overflow"
-        android:clickable="true"
+        android:id="@+id/flavor_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter" />
+
+    <ProgressBar
         android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:layout_weight="0"
-        android:background="@drawable/ripple"
-        android:src="@drawable/ic_dots_vertical"
-        android:layout_gravity="top|right"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/flavor_image_progress" />
 
 </FrameLayout>

@@ -2,7 +2,6 @@ package org.fox.ttrss;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -22,7 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public abstract class BaseFeedlistFragment extends Fragment {
-    abstract public void refresh(boolean background);
+    abstract public void refresh();
 
     public void initDrawerHeader(LayoutInflater inflater, View view, ListView list, final CommonActivity activity, final SharedPreferences prefs, boolean isRoot) {
 
@@ -100,7 +99,7 @@ public abstract class BaseFeedlistFragment extends Fragment {
                     @Override
                     public void onCheckedChanged(CompoundButton button, boolean isChecked) {
                         activity.setUnreadOnly(isChecked);
-                        refresh(true);
+                        refresh();
                     }
                 });
 

@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.fox.ttrss.ApiCommon;
 import org.fox.ttrss.ApiRequest;
 import org.fox.ttrss.HeadlinesFragment;
 import org.fox.ttrss.OnlineActivity;
@@ -20,9 +21,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class HeadlinesRequest extends ApiRequest {
-	public static final int HEADLINES_REQUEST_SIZE = 30;
-	public static final int HEADLINES_BUFFER_MAX = 1500;
-
 	private final String TAG = this.getClass().getSimpleName();
 	
 	private int m_offset = 0;
@@ -83,7 +81,10 @@ public class HeadlinesRequest extends ApiRequest {
 					if (m_offset == 0) {
 						m_articles.clear();
 					} else {
-						while (m_articles.size() > HEADLINES_BUFFER_MAX) {
+
+						m_articles.stripFooters();
+
+						while (m_articles.size() > HeadlinesFragment.HEADLINES_BUFFER_MAX) {
 							m_articles.remove(0);
 						}
 
@@ -121,7 +122,7 @@ public class HeadlinesRequest extends ApiRequest {
 			}
 		}
 
-		if (m_lastError == ApiError.LOGIN_FAILED) {
+		if (m_lastError == ApiCommon.ApiError.LOGIN_FAILED) {
 			m_activity.login();
 		} else {
 

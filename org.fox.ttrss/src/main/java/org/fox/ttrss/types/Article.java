@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
 
 // TODO: serialize Labels
 public class Article implements Parcelable {
+	public static final int TYPE_LOADMORE = -1;
+	public static final int TYPE_AMR_FOOTER = -2;
+
 	public int id;
 	public boolean unread; 
 	public boolean marked; 
@@ -45,6 +48,7 @@ public class Article implements Parcelable {
 	transient public String flavorStreamUri;
 	transient public String youtubeVid;
 	transient public List<Element> mediaList = new ArrayList<>();
+	transient public int flavorViewHeight;
 
 	public Article(Parcel in) {
 		readFromParcel(in);
@@ -72,10 +76,10 @@ public class Article implements Parcelable {
 				if ("iframe".equals(e.tagName().toLowerCase())) {
 					flavorImage = e;
 					break;
-				} else if ("video".equals(e.tagName().toLowerCase())) {
+				} /*else if ("video".equals(e.tagName().toLowerCase())) {
 					flavorImage = e;
 					break;
-				}
+				}*/
 			}
 
 			if (flavorImage == null) {
@@ -105,7 +109,7 @@ public class Article implements Parcelable {
 							if (matcher.find()) {
 								youtubeVid = matcher.group(1);
 
-								flavorImageUri = "https://img.youtube.com/vi/" + youtubeVid + "/mqdefault.jpg";
+								flavorImageUri = "https://img.youtube.com/vi/" + youtubeVid + "/hqdefault.jpg";
 								flavorStreamUri = "https://youtu.be/" + youtubeVid;
 							}
 						}
@@ -133,7 +137,7 @@ public class Article implements Parcelable {
 
 	public Article(int id) {
 		this.id = id;
-		this.title = "";
+		this.title = "ID:" + String.valueOf(id);
 		this.link = "";
 		this.tags = new ArrayList<String>();
 	}

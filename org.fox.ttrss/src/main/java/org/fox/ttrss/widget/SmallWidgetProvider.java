@@ -6,7 +6,10 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import org.fox.ttrss.OnlineActivity;
@@ -28,11 +31,28 @@ public class SmallWidgetProvider extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_small);
         views.setOnClickPendingIntent(R.id.widget_main, pendingIntent);
 
+        SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(context);
+        String widgetBackground = prefs.getString("widget_background", "WB_LIGHT");
+
+        Log.d(TAG, "widget bg: " + widgetBackground);
+
+        if ("WB_LIGHT".equals(widgetBackground)) {
+            views.setViewVisibility(R.id.widget_dark, View.INVISIBLE);
+            views.setViewVisibility(R.id.widget_light, View.VISIBLE);
+        } else if ("WB_DARK".equals(widgetBackground)) {
+            views.setViewVisibility(R.id.widget_dark, View.VISIBLE);
+            views.setViewVisibility(R.id.widget_light, View.INVISIBLE);
+        } else {
+            views.setViewVisibility(R.id.widget_dark, View.INVISIBLE);
+            views.setViewVisibility(R.id.widget_light, View.INVISIBLE);
+        }
+
         appWidgetManager.updateAppWidget(appWidgetIds, views);
 
         Intent serviceIntent = new Intent(context.getApplicationContext(), WidgetUpdateService.class);
         context.startService(serviceIntent);
-	}
+
+    }
 
 
 	@Override

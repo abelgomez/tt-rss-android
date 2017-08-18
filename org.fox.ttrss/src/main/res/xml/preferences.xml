@@ -86,23 +86,14 @@
 
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="true"
+            android:dependency="headlines_mark_read_scroll"
             android:key="headlines_swipe_to_dismiss"
             android:summary="@string/pref_headlines_swipe_to_dismiss_long"
             android:title="@string/pref_headlines_swipe_to_dismiss" />
 
-        <!-- <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="true"
-            android:key="headlines_show_flavor_image"
-            android:title="@string/prefs_headlines_show_flavor_image" /> -->
-        
-        <!--  <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="false"
-            android:key="headlines_full_content"
-            android:summary="@string/pref_headlines_full_content_long"
-            android:title="@string/pref_headlines_full_content" /> -->
-        
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
+            android:disableDependentsState="true"
             android:key="headlines_mark_read_scroll"
             android:summary="@string/pref_headlines_mark_read_scroll_long"
             android:title="@string/pref_headlines_mark_read_scroll" />
@@ -131,6 +122,12 @@
             android:defaultValue="true"
             android:key="open_fresh_on_startup"
             android:title="@string/prefs_open_fresh_on_startup" />
+
+        <org.fox.ttrss.util.LessBrokenSwitchPreference
+            android:defaultValue="false"
+            android:key="inline_video_player"
+            android:summary="Experimental: play videos inside headlines list. Long tap to open separate player"
+            android:title="Inline video player" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/reading" >
@@ -184,11 +181,31 @@
 
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
+            android:key="offline_sort_by_feed"
+            android:title="@string/prefs_offline_sort_by_feed" />
+
+        <org.fox.ttrss.util.LessBrokenSwitchPreference
+            android:defaultValue="false"
             android:key="offline_image_cache_enabled"
             android:summary="@string/offline_image_cache_enabled_summary"
             android:title="@string/offline_image_cache_enabled" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefs_widget" >
+        <ListPreference
+            android:defaultValue="15"
+            android:entries="@array/pref_widget_update_intervals"
+            android:entryValues="@array/pref_widget_update_intervals"
+            android:key="widget_update_interval"
+            android:summary="@string/pref_widget_update_interval_summary"
+            android:title="@string/pref_widget_update_interval" />
+
+        <ListPreference
+            android:defaultValue="WB_LIGHT"
+            android:entries="@array/pref_widget_bgs"
+            android:entryValues="@array/pref_widget_bgs_values"
+            android:key="widget_background"
+            android:title="@string/pref_widget_background" />
+
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="true"
             android:key="widget_show_fresh"
@@ -196,6 +213,7 @@
             android:summary="@string/prefs_widget_show_fresh_summary" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/debugging" >
+
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="true"
             android:key="webview_hardware_accel"

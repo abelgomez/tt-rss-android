@@ -43,8 +43,6 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.shamanland.fab.FloatingActionButton;
 
 import org.fox.ttrss.Application;
@@ -73,8 +71,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 	
 	private Cursor m_cursor;
 	private ArticleListAdapter m_adapter;
-	private AnimationAdapter m_animationAdapter;
-	
+
 	private OfflineHeadlinesEventListener m_listener;
 	private OfflineActivity m_activity;
 	private SwipeRefreshLayout m_swipeLayout;
@@ -115,6 +112,10 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		menu.findItem(R.id.set_labels).setVisible(false);
 		menu.findItem(R.id.article_set_note).setVisible(false);
 		menu.findItem(R.id.headlines_article_unread).setVisible(false); // TODO: implement
+
+		if (m_prefs.getBoolean("offline_sort_by_feed", false)) {
+			menu.findItem(R.id.catchup_above).setVisible(false);
+		}
 
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
@@ -283,7 +284,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		if ("HL_COMPACT".equals(headlineMode) || "HL_COMPACT_NOIMAGES".equals(headlineMode))
 			m_compactLayoutMode = true;
 
-		View view = inflater.inflate(R.layout.fragment_headlines, container, false);
+		View view = inflater.inflate(R.layout.fragment_headlines_offline, container, false);
 
 		m_swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.headlines_swipe_container);
 		
@@ -325,10 +326,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
         m_adapter = new ArticleListAdapter(getActivity(), R.layout.headlines_row, m_cursor,
 				new String[] { "title" }, new int[] { R.id.title }, 0);
-		m_animationAdapter = new SwingBottomInAnimationAdapter(m_adapter);
-
-		m_animationAdapter.setAbsListView(m_list);
-		m_list.setAdapter(m_animationAdapter);
+		m_list.setAdapter(m_adapter);
 
 		m_list.setOnItemClickListener(this);
         m_list.setOnScrollListener(this);
@@ -361,7 +359,11 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		}
 		
 		String orderBy = (m_prefs.getBoolean("offline_oldest_first", false)) ? "updated" : "updated DESC";
-		
+
+		if (m_prefs.getBoolean("offline_sort_by_feed", false)) {
+			orderBy = "feed_title, " + orderBy;
+		}
+
 		if (m_searchQuery == null || m_searchQuery.equals("")) {
 			return m_activity.getDatabase().query("articles LEFT JOIN feeds ON (feed_id = feeds."+BaseColumns._ID+")", 
 					new String[] { "articles.*", "feeds.title AS feed_title" }, feedClause, 
@@ -570,7 +572,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
                 holder.textChecked = (ImageView) v.findViewById(R.id.text_checked);
 				holder.flavorVideoKindView = (ImageView) v.findViewById(R.id.flavor_video_kind);
 				holder.headlineHeader = v.findViewById(R.id.headline_header);
-				holder.flavorImageOverflow = v.findViewById(R.id.flavor_image_overflow);
+				holder.flavorImageOverflow = v.findViewById(R.id.gallery_overflow);
 
                 v.setTag(holder);
 

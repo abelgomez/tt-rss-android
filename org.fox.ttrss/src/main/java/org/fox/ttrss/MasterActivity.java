@@ -7,7 +7,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,8 +21,8 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonElement;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
@@ -38,6 +40,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 	
 	protected SharedPreferences m_prefs;
 	protected long m_lastRefresh = 0;
+	protected long m_lastWidgetRefresh = 0;
 	
 	private boolean m_feedIsSelected = false;
     private boolean m_userFeedSelected = false;
@@ -64,6 +67,8 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 
 		Application.getInstance().load(savedInstanceState);
 
+		m_lastWidgetRefresh = new Date().getTime();
+
         m_drawerLayout = (DrawerLayout) findViewById(R.id.headlines_drawer);
 
         if (m_drawerLayout != null) {
@@ -75,6 +80,8 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 
                     getSupportActionBar().show();
                     invalidateOptionsMenu();
+
+					refresh(false);
                 }
 
                 @Override
@@ -151,7 +158,12 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 
             if (m_prefs.getBoolean("open_fresh_on_startup", true)) {
                 HeadlinesFragment hf = new HeadlinesFragment();
-                hf.initialize(new Feed(-3, getString(R.string.fresh_articles), false));
+
+                if (BuildConfig.DEBUG) {
+                    hf.initialize(new Feed(-1, "Starred articles", false));
+                } else {
+                    hf.initialize(new Feed(-3, getString(R.string.fresh_articles), false));
+                }
 
                 ft.replace(R.id.headlines_fragment, hf, FRAG_HEADLINES);
             } else if (m_drawerLayout != null) {
@@ -229,27 +241,36 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
         onFeedSelected(feed, true);
     }
 
-	public void onFeedSelected(Feed feed, final boolean selectedByUser) {
+	public void onFeedSelected(final Feed feed, final boolean selectedByUser) {
 
-		ImageLoader.getInstance().clearMemoryCache();
+		FeedsFragment ff = (FeedsFragment) getSupportFragmentManager().findFragmentByTag(FRAG_FEEDS);
 
-        FragmentTransaction ft = getSupportFragmentManager()
-                .beginTransaction();
+		if (ff != null && ff.isAdded()) {
+			ff.setSelectedfeed(feed);
+		}
 
-        HeadlinesFragment hf = new HeadlinesFragment();
-        hf.initialize(feed);
+		if (m_drawerLayout != null) {
+			m_drawerLayout.closeDrawers();
+		}
 
-        ft.replace(R.id.headlines_fragment, hf, FRAG_HEADLINES);
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				FragmentTransaction ft = getSupportFragmentManager()
+						.beginTransaction();
 
-        ft.commit();
+				HeadlinesFragment hf = new HeadlinesFragment();
+				hf.initialize(feed);
 
-        m_feedIsSelected = true;
-        m_userFeedSelected = selectedByUser;
-        //m_feedWasSelected = true;
+				ft.replace(R.id.headlines_fragment, hf, FRAG_HEADLINES);
 
-        if (m_drawerLayout != null) {
-            m_drawerLayout.closeDrawers();
-        }
+				ft.commit();
+
+				m_feedIsSelected = true;
+				m_userFeedSelected = selectedByUser;
+
+			}
+		}, 250);
 
         Date date = new Date();
 
@@ -266,7 +287,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 		
 		if (!openAsFeed) {
 			
-			if (fc != null) {
+			if (fc != null && fc.isAdded()) {
 				fc.setSelectedCategory(null);
 			}
 
@@ -471,11 +492,18 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 	}
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
 
-        Intent updateWidgetIntent = new Intent(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
-        sendBroadcast(updateWidgetIntent);
+		Date date = new Date();
+
+		if (isFinishing() || date.getTime() - m_lastWidgetRefresh > 60*1000) {
+			m_lastWidgetRefresh = date.getTime();
+
+			Intent updateWidgetIntent = new Intent(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
+			sendBroadcast(updateWidgetIntent);
+		}
+
     }
 
     @Override
@@ -508,7 +536,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 
                 if (hf != null) {
                     hf.setArticles(articles);
-                    hf.setActiveArticle(article);
+                    //hf.setActiveArticle(article); disable HL scrolling on resume for now
                 }
             }
 
