@@ -25,6 +25,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import org.fox.ttrss.ApiRequest;
+import org.fox.ttrss.BuildConfig;
+import org.fox.ttrss.CommonActivity;
 import org.fox.ttrss.OnlineActivity;
 import org.fox.ttrss.R;
 import org.fox.ttrss.types.Article;
@@ -45,9 +47,19 @@ public class OfflineDownloadService extends Service {
 
 	private final String TAG = this.getClass().getSimpleName();
 
+	// enable downloading read articles in debug configuration for testing
+	private static boolean OFFLINE_DEBUG_READ = false;
+
 	public static final int NOTIFY_DOWNLOADING = 1;
-	public static final String INTENT_ACTION_SUCCESS = "org.fox.ttrss.intent.action.DownloadComplete";
+	public static final int NOTIFY_DOWNLOAD_SUCCESS = 2;
+
+	public static final int PI_GENERIC = 0;
+	public static final int PI_CANCEL = 1;
+	public static final int PI_SUCCESS = 2;
+
+	//public static final String INTENT_ACTION_SUCCESS = "org.fox.ttrss.intent.action.DownloadComplete";
 	public static final String INTENT_ACTION_CANCEL = "org.fox.ttrss.intent.action.Cancel";
+	public static final String INTENT_ACTION_SWITCH_OFFLINE = "org.fox.ttrss.intent.action.SwitchOffline";
 
 	private static final int OFFLINE_SYNC_SEQ = 50;
 	private static final int OFFLINE_SYNC_MAX = OFFLINE_SYNC_SEQ * 10;
@@ -81,6 +93,7 @@ public class OfflineDownloadService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		m_nmgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
 		m_prefs = PreferenceManager
 						.getDefaultSharedPreferences(getApplicationContext());
  
@@ -91,11 +104,10 @@ public class OfflineDownloadService extends Service {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void updateNotification(String msg, int progress, int max, boolean showProgress) {
+	private void updateNotification(String msg, int progress, int max, boolean showProgress, boolean isError) {
 		Intent intent = new Intent(this, OnlineActivity.class);
-		intent.setAction(INTENT_ACTION_CANCEL);
 		
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+		PendingIntent contentIntent = PendingIntent.getActivity(this, PI_GENERIC,
                 intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
@@ -106,28 +118,87 @@ public class OfflineDownloadService extends Service {
 				.setSmallIcon(R.drawable.ic_cloud_download)
                 .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),
                         R.drawable.ic_launcher))
-                .setOngoing(true)
+                .setOngoing(!isError)
                 .setOnlyAlertOnce(true);
 
 		if (showProgress) builder.setProgress(max, progress, max == 0);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+			intent = new Intent(this, OnlineActivity.class);
+			intent.setAction(INTENT_ACTION_CANCEL);
+
+			PendingIntent cancelIntent = PendingIntent.getActivity(this, PI_CANCEL, intent, 0);
+
             builder.setCategory(Notification.CATEGORY_PROGRESS)
                     .setVibrate(new long[0])
                     .setVisibility(Notification.VISIBILITY_PUBLIC)
                     .setColor(0x88b0f0)
-                    .setGroup("org.fox.ttrss");
+                    .setGroup("org.fox.ttrss")
+					.addAction(R.drawable.ic_launcher, getString(R.string.cancel), cancelIntent);
         }
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			builder.setChannelId(CommonActivity.NOTIFICATION_CHANNEL_NORMAL);
+		}
 
         m_nmgr.notify(NOTIFY_DOWNLOADING, builder.build());
 	}
 
-	private void updateNotification(int msgResId, int progress, int max, boolean showProgress) {
-		updateNotification(getString(msgResId), progress, max, showProgress);
+	@SuppressWarnings("deprecation")
+	private void notifyDownloadComplete() {
+		Intent intent = new Intent(this, OnlineActivity.class);
+
+		if (m_articleOffset > 0) {
+			intent.setAction(INTENT_ACTION_SWITCH_OFFLINE);
+		}
+
+		PendingIntent contentIntent = PendingIntent.getActivity(this, PI_SUCCESS,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
+				.setContentIntent(contentIntent)
+				.setWhen(System.currentTimeMillis())
+				.setSmallIcon(R.drawable.ic_notification)
+				.setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),
+						R.drawable.ic_launcher))
+				.setOnlyAlertOnce(true)
+				.setPriority(Notification.PRIORITY_HIGH)
+				.setDefaults(Notification.DEFAULT_ALL)
+				.setAutoCancel(true);
+
+		if (m_articleOffset > 0) {
+			builder
+					.setContentTitle(getString(R.string.dialog_offline_success))
+					.setContentText(getString(R.string.offline_tap_to_switch));
+		} else {
+			builder
+					.setContentTitle(getString(R.string.offline_switch_failed))
+					.setContentText(getString(R.string.offline_no_articles));
+
+		}
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			builder.setCategory(Notification.CATEGORY_MESSAGE)
+					.setVibrate(new long[0])
+					.setVisibility(Notification.VISIBILITY_PUBLIC)
+					.setColor(0x88b0f0)
+					.setGroup("org.fox.ttrss");
+		}
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			builder.setChannelId(CommonActivity.NOTIFICATION_CHANNEL_PRIORITY);
+		}
+
+		m_nmgr.notify(NOTIFY_DOWNLOAD_SUCCESS, builder.build());
+	}
+
+	private void updateNotification(int msgResId, int progress, int max, boolean showProgress, boolean isError) {
+		updateNotification(getString(msgResId), progress, max, showProgress, isError);
 	}
 
 	private void downloadFailed() {
-        m_nmgr.cancel(NOTIFY_DOWNLOADING);
+        //m_nmgr.cancel(NOTIFY_DOWNLOADING);
         
         // TODO send notification to activity?
         
@@ -160,13 +231,14 @@ public class OfflineDownloadService extends Service {
 				editor.apply();
             	
             } else {
-            	Intent intent = new Intent();
+
+            	/*Intent intent = new Intent();
             	intent.setAction(INTENT_ACTION_SUCCESS);
             	intent.addCategory(Intent.CATEGORY_DEFAULT);
-            	sendBroadcast(intent);
+            	sendBroadcast(intent);*/
+
+				notifyDownloadComplete();
             }
-        } else {
-        	updateNotification(getString(R.string.notify_downloading_images, 0), 0, 0, true);
         }
 
         stopSelf();
@@ -188,7 +260,7 @@ public class OfflineDownloadService extends Service {
 	private void downloadArticles() {
 		Log.d(TAG, "offline: downloading articles... offset=" + m_articleOffset);
 		
-		updateNotification(getString(R.string.notify_downloading_articles, m_articleOffset), m_articleOffset, m_syncMax, true);
+		updateNotification(getString(R.string.notify_downloading_articles, m_articleOffset), m_articleOffset, m_syncMax, true, false);
 		
 		OfflineArticlesRequest req = new OfflineArticlesRequest(this);
 		
@@ -198,7 +270,12 @@ public class OfflineDownloadService extends Service {
 				put("op", "getHeadlines");
 				put("sid", m_sessionId);
 				put("feed_id", "-4");
-				put("view_mode", "unread");
+
+				if (BuildConfig.DEBUG && OFFLINE_DEBUG_READ) {
+					put("view_mode", "all_articles");
+				} else {
+					put("view_mode", "unread");
+				}
 				put("show_content", "true");
 				put("skip", String.valueOf(m_articleOffset));
 				put("limit", String.valueOf(OFFLINE_SYNC_SEQ));
@@ -210,7 +287,7 @@ public class OfflineDownloadService extends Service {
 	
 	private void downloadFeeds() {
 
-		updateNotification(R.string.notify_downloading_feeds, 0, 0, true);
+		updateNotification(R.string.notify_downloading_feeds, 0, 0, true, false);
 		
 		getDatabase().execSQL("DELETE FROM feeds;");
 		
@@ -248,7 +325,7 @@ public class OfflineDownloadService extends Service {
 						getDatabase().execSQL("DELETE FROM articles;");
 					} catch (Exception e) {
 						e.printStackTrace();
-						updateNotification(R.string.offline_switch_error, 0, 0, false);
+						updateNotification(getErrorMessage(), 0, 0, false, true);
 						downloadFailed();
 					}
 				}
@@ -265,7 +342,7 @@ public class OfflineDownloadService extends Service {
 						downloadFailed();
 					}
 				} else {
-					updateNotification(getErrorMessage(), 0, 0, false);
+					updateNotification(getErrorMessage(), 0, 0, false, true);
 					downloadFailed();
 				}
 			}
@@ -278,7 +355,10 @@ public class OfflineDownloadService extends Service {
 				put("op", "getFeeds");
 				put("sid", m_sessionId);
 				put("cat_id", "-3");
-				put("unread_only", "true");
+
+				if (!BuildConfig.DEBUG && OFFLINE_DEBUG_READ) {
+					put("unread_only", "true");
+				}
 			}			 
 		};
 		
@@ -287,7 +367,7 @@ public class OfflineDownloadService extends Service {
 
 	private void downloadCategories() {
 
-		updateNotification(R.string.notify_downloading_categories, 0, 0, true);
+		updateNotification(R.string.notify_downloading_categories, 0, 0, true, false);
 		
 		getDatabase().execSQL("DELETE FROM categories;");
 		
@@ -317,7 +397,7 @@ public class OfflineDownloadService extends Service {
 						
 					} catch (Exception e) {
 						e.printStackTrace();
-						updateNotification(R.string.offline_switch_error, 0, 0, false);
+						updateNotification(getErrorMessage(), 0, 0, false, true);
 						downloadFailed();
 					}
 				}
@@ -333,7 +413,7 @@ public class OfflineDownloadService extends Service {
 						downloadFailed();
 					}
 				} else {
-					updateNotification(getErrorMessage(), 0, 0, false);
+					updateNotification(getErrorMessage(), 0, 0, false, true);
 					downloadFailed();
 				}
 			}
@@ -346,7 +426,10 @@ public class OfflineDownloadService extends Service {
 				put("op", "getCategories");
 				put("sid", m_sessionId);
 				//put("cat_id", "-3");
-				put("unread_only", "true");
+
+				if (!BuildConfig.DEBUG && OFFLINE_DEBUG_READ) {
+					put("unread_only", "true");
+				}
 			}			 
 		};
 		
@@ -414,7 +497,7 @@ public class OfflineDownloadService extends Service {
 							Document doc = Jsoup.parse(article.content);
 							
 							if (doc != null) {
-								Elements images = doc.select("img");
+								Elements images = doc.select("img,source");
 								
 								for (Element img : images) {
 									String url = img.attr("src");
@@ -429,6 +512,23 @@ public class OfflineDownloadService extends Service {
 										}
 									}
 								}
+
+								Elements videos = doc.select("video");
+
+								for (Element vid : videos) {
+									String url = vid.attr("poster");
+
+									if (url.indexOf("://") != -1) {
+										if (!ImageCacheService.isUrlCached(OfflineDownloadService.this, url)) {
+											Intent intent = new Intent(OfflineDownloadService.this,
+													ImageCacheService.class);
+
+											intent.putExtra("url", url);
+											startService(intent);
+										}
+									}
+								}
+
 							}
 						}
 						
@@ -447,7 +547,7 @@ public class OfflineDownloadService extends Service {
 					stmtInsert.close();
 
 				} catch (Exception e) {
-					updateNotification(R.string.offline_switch_error, 0, 0, false);
+					updateNotification(R.string.offline_switch_failed, 0, 0, false, true);
 					Log.d(TAG, "offline: failed: exception when loading articles");
 					e.printStackTrace();
 					downloadFailed();
@@ -474,7 +574,7 @@ public class OfflineDownloadService extends Service {
 
 			} else {
 				Log.d(TAG, "offline: failed: " + getErrorMessage());
-				updateNotification(getErrorMessage(), 0, 0, false);
+				updateNotification(getErrorMessage(), 0, 0, false, true);
 				downloadFailed();
 			}
 		}
@@ -493,7 +593,7 @@ public class OfflineDownloadService extends Service {
 			if (!m_downloadInProgress) {
 				if (m_downloadImages) ImageCacheService.cleanupCache(this, false);
 			
-				updateNotification(R.string.notify_downloading_init, 0, 0, true);
+				updateNotification(R.string.notify_downloading_init, 0, 0, true, false);
 				m_downloadInProgress = true;
 		
 				downloadCategories();

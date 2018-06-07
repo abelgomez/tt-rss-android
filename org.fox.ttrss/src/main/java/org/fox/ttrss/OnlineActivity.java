@@ -24,7 +24,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -41,6 +40,7 @@ import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
 import org.fox.ttrss.types.Feed;
 import org.fox.ttrss.types.Label;
+import org.fox.ttrss.util.ImageCacheService;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -54,7 +54,6 @@ public class OnlineActivity extends CommonActivity {
 	protected SharedPreferences m_prefs;
 	protected Menu m_menu;
 
-	protected int m_offlineModeStatus = 0;
     protected boolean m_forceDisableActionMode = false;
 	
 	private ActionMode m_headlinesActionMode;
@@ -72,15 +71,7 @@ public class OnlineActivity extends CommonActivity {
     private BroadcastReceiver m_broadcastReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context content, Intent intent) {
-
-			if (intent.getAction().equals(OfflineDownloadService.INTENT_ACTION_SUCCESS)) {
-			
-				m_offlineModeStatus = 2;
-				
-				switchOffline();
-				
-			} else if (intent.getAction().equals(OfflineUploadService.INTENT_ACTION_SUCCESS)) {
-				Log.d(TAG, "offline upload service reports success");
+			if (intent.getAction().equals(OfflineUploadService.INTENT_ACTION_SUCCESS)) {
 				toast(R.string.offline_sync_success);
 			}
 		}
@@ -146,113 +137,77 @@ public class OnlineActivity extends CommonActivity {
 
 		super.onCreate(savedInstanceState);
 
-//		SharedPreferences localPrefs = getSharedPreferences("localprefs", Context.MODE_PRIVATE);
-
 		SharedPreferences localPrefs = getSharedPreferences("localprefs", Context.MODE_PRIVATE);
-		
 		boolean isOffline = localPrefs.getBoolean("offline_mode_active", false);
 
 		Log.d(TAG, "m_isOffline=" + isOffline);
 
 		setContentView(R.layout.activity_login);
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		//m_pullToRefreshAttacher = PullToRefreshAttacher.get(this);
+		Intent intent = getIntent();
+
+        Log.d(TAG, "intent action=" + intent.getAction());
+
+		if (OfflineDownloadService.INTENT_ACTION_CANCEL.equals(intent.getAction())) {
+
+			Intent serviceIntent = new Intent(
+					OnlineActivity.this,
+					OfflineDownloadService.class);
+
+			stopService(serviceIntent);
+
+			serviceIntent = new Intent();
+			serviceIntent.setAction(ImageCacheService.INTENT_ACTION_ICS_STOP);
+			serviceIntent.addCategory(Intent.CATEGORY_DEFAULT);
+			sendBroadcast(serviceIntent);
+
+		} else if (OfflineDownloadService.INTENT_ACTION_SWITCH_OFFLINE.equals(intent.getAction())) {
+			isOffline = true;
+		}
 
 		if (isOffline) {
 			switchOfflineSuccess();			
 		} else {
 			//checkTrial(false);
 			
-			/* if (getIntent().getExtras() != null) {
-				Intent i = getIntent();
-			} */
-			
-			if (savedInstanceState != null) {
-				m_offlineModeStatus = savedInstanceState.getInt("offlineModeStatus");
-			}
-			
 			m_headlinesActionModeCallback = new HeadlinesActionModeCallback();
 		}
 	}
-	
+
+
 	protected void switchOffline() {
-		if (m_offlineModeStatus == 2) {
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					OnlineActivity.this)
-					.setMessage(R.string.dialog_offline_success)
-					.setPositiveButton(R.string.dialog_offline_go,
-							new Dialog.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									
-									m_offlineModeStatus = 0;
-									
-									SharedPreferences localPrefs = getSharedPreferences("localprefs", Context.MODE_PRIVATE);
-									SharedPreferences.Editor editor = localPrefs.edit();
-									editor.putBoolean("offline_mode_active", true);
-									editor.apply();
-									
-									Intent offline = new Intent(
+		AlertDialog.Builder builder = new AlertDialog.Builder(this)
+				.setMessage(R.string.dialog_offline_switch_prompt)
+				.setPositiveButton(R.string.dialog_offline_go,
+						new Dialog.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+
+								if (getSessionId() != null) {
+									Log.d(TAG, "offline: starting");
+
+									Intent intent = new Intent(
 											OnlineActivity.this,
-											OfflineActivity.class);
-									offline.putExtra("initial", true);
-									startActivity(offline);
-									finish();
-								}
-							})
-					.setNegativeButton(R.string.dialog_cancel,
-							new Dialog.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
+											OfflineDownloadService.class);
+									intent.putExtra("sessionId", getSessionId());
 
-									m_offlineModeStatus = 0;
+									startService(intent);
+								}
+							}
+						})
+				.setNegativeButton(R.string.dialog_cancel,
+						new Dialog.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								//
+							}
+						});
 
-								}
-							});
-
-			AlertDialog dlg = builder.create();
-			dlg.show();
-			
-		} else if (m_offlineModeStatus == 0) {
-		
-			AlertDialog.Builder builder = new AlertDialog.Builder(this)
-					.setMessage(R.string.dialog_offline_switch_prompt)
-					.setPositiveButton(R.string.dialog_offline_go,
-							new Dialog.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-	
-									if (getSessionId() != null) {
-										Log.d(TAG, "offline: starting");
-										
-										m_offlineModeStatus = 1;
-	
-										Intent intent = new Intent(
-												OnlineActivity.this,
-												OfflineDownloadService.class);
-										intent.putExtra("sessionId", getSessionId());
-	
-										startService(intent);
-									}
-								}
-							})
-					.setNegativeButton(R.string.dialog_cancel,
-							new Dialog.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									//
-								}
-							});
-	
-			AlertDialog dlg = builder.create();
-			dlg.show();
-		} else if (m_offlineModeStatus == 1) {
-			cancelOfflineSync();
-		}
+		AlertDialog dlg = builder.create();
+		dlg.show();
 	}
 	
 
@@ -283,69 +238,24 @@ public class OnlineActivity extends CommonActivity {
 
 		startService(intent);
 	}
-	
-	private void cancelOfflineSync() {		
-		AlertDialog.Builder builder = new AlertDialog.Builder(this)
-		.setMessage(R.string.dialog_offline_sync_in_progress)
-		.setNegativeButton(R.string.dialog_offline_sync_stop,
-				new Dialog.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
 
-						if (getSessionId() != null) {
-							Log.d(TAG, "offline: stopping");
-							
-							m_offlineModeStatus = 0;
-
-							Intent intent = new Intent(
-									OnlineActivity.this,
-									OfflineDownloadService.class);
-
-							stopService(intent);
-							
-							dialog.dismiss();
-
-							restart();
-						}
-					}
-				})
-		.setPositiveButton(R.string.dialog_offline_sync_continue,
-				new Dialog.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
-					
-						dialog.dismiss();
-
-						restart();
-					}
-				});
-
-		AlertDialog dlg = builder.create();
-		dlg.show();
-	}
-	
-	public void restart() {
-		Intent refresh = new Intent(OnlineActivity.this, OnlineActivity.class);
-		startActivity(refresh);
-		finish();
-	}
-	
 	private void switchOfflineSuccess() {
 		logout();
 		// setLoadingStatus(R.string.blank, false);
 
-		SharedPreferences.Editor editor = m_prefs.edit();
+		SharedPreferences localPrefs = getSharedPreferences("localprefs", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = localPrefs.edit();
 		editor.putBoolean("offline_mode_active", true);
 		editor.apply();
 
 		Intent offline = new Intent(OnlineActivity.this, OfflineActivity.class);
+		offline.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+				Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 		offline.putExtra("initial", true);
-		offline.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-	 	   
-		startActivityForResult(offline, 0);
+
+		startActivity(offline);
 
 		finish();
-
 	}
 	
 	public void login() {
@@ -544,7 +454,58 @@ public class OnlineActivity extends CommonActivity {
 			return super.onContextItemSelected(item);
 		}
 	}
-	
+
+	public void displayAttachments(Article article) {
+		if (article != null && article.attachments != null && article.attachments.size() > 0) {
+			CharSequence[] items = new CharSequence[article.attachments.size()];
+			final CharSequence[] itemUrls = new CharSequence[article.attachments.size()];
+
+			for (int i = 0; i < article.attachments.size(); i++) {
+				items[i] = article.attachments.get(i).title != null ? article.attachments.get(i).content_url :
+						article.attachments.get(i).content_url;
+
+				itemUrls[i] = article.attachments.get(i).content_url;
+			}
+
+			Dialog dialog = new Dialog(OnlineActivity.this);
+			AlertDialog.Builder builder = new AlertDialog.Builder(OnlineActivity.this)
+					.setTitle(R.string.attachments_prompt)
+					.setCancelable(true)
+					.setSingleChoiceItems(items, 0, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							//
+						}
+					}).setNeutralButton(R.string.attachment_copy, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+
+							copyToClipboard((String)itemUrls[selectedPosition]);
+						}
+					}).setPositiveButton(R.string.attachment_view, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+
+							openUri(Uri.parse((String)itemUrls[selectedPosition]));
+
+							dialog.cancel();
+						}
+					}).setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+
+			dialog = builder.create();
+			dialog.show();
+		}
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		final HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
@@ -555,66 +516,22 @@ public class OnlineActivity extends CommonActivity {
 			Intent subscribe = new Intent(OnlineActivity.this, SubscribeActivity.class);
 			startActivityForResult(subscribe, 0);
 			return true;
-		case R.id.toggle_attachments:
+		/*case R.id.toggle_attachments:
 			if (true) {
 				Article article = ap.getSelectedArticle();
-				
-				if (article != null && article.attachments != null && article.attachments.size() > 0) {
-					CharSequence[] items = new CharSequence[article.attachments.size()];
-					final CharSequence[] itemUrls = new CharSequence[article.attachments.size()];
 
-					for (int i = 0; i < article.attachments.size(); i++) {
-						items[i] = article.attachments.get(i).title != null ? article.attachments.get(i).content_url : 
-							article.attachments.get(i).content_url;
-						
-						itemUrls[i] = article.attachments.get(i).content_url;
-					}
-
-					Dialog dialog = new Dialog(OnlineActivity.this);
-					AlertDialog.Builder builder = new AlertDialog.Builder(OnlineActivity.this)
-							.setTitle(R.string.attachments_prompt)
-							.setCancelable(true)
-							.setSingleChoiceItems(items, 0, new OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									//
-								}
-							}).setNeutralButton(R.string.attachment_copy, new OnClickListener() {								
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
-									
-									copyToClipboard((String)itemUrls[selectedPosition]);
-								}
-							}).setPositiveButton(R.string.attachment_view, new OnClickListener() {
-								
-								@Override
-								public void onClick(DialogInterface dialog, int id) {
-									int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
-									
-									openUri(Uri.parse((String)itemUrls[selectedPosition]));
-
-									dialog.cancel();
-								}
-							}).setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
-								
-								@Override
-								public void onClick(DialogInterface dialog, int id) {
-									dialog.cancel();
-								}
-							});
-
-					dialog = builder.create();
-					dialog.show();
+				if (article != null) {
+					displayAttachments(article);
 				}
 			}
-			return true;
+			return true; */
 		/*
 		case R.id.donate:
 			if (true) {
 				openUnlockUrl();
 			}
 			return true;
+		*/
 		/*case R.id.logout:
 			logout();
 			return true;*/
@@ -1105,7 +1022,7 @@ public class OnlineActivity extends CommonActivity {
     }
 
 	private void setLoadingStatus(String status) {
-		TextView tv = (TextView) findViewById(R.id.loading_message);
+		TextView tv = findViewById(R.id.loading_message);
 
 		if (tv != null) {
 			tv.setText(status);
@@ -1150,21 +1067,14 @@ public class OnlineActivity extends CommonActivity {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle out) {
-		super.onSaveInstanceState(out);
-		
-		out.putInt("offlineModeStatus", m_offlineModeStatus);
-	}
-	
-	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		ApiCommon.trustAllHosts(m_prefs.getBoolean("ssl_trust_any", false),
 				m_prefs.getBoolean("ssl_trust_any_host", false));				
 		
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(OfflineDownloadService.INTENT_ACTION_SUCCESS);
+		//filter.addAction(OfflineDownloadService.INTENT_ACTION_SUCCESS);
 		filter.addAction(OfflineUploadService.INTENT_ACTION_SUCCESS);
 		filter.addCategory(Intent.CATEGORY_DEFAULT);
 
@@ -1427,60 +1337,65 @@ public class OnlineActivity extends CommonActivity {
 		req.execute(map);
 	}
 	
-	
+	// this may be called after activity has been destroyed (i.e. long asynctask)
+	// might as well prevent null pointers if menu items are missing
 	protected void initMenu() {
-		if (m_menu != null) {			
-			if (getSessionId() != null) {
-				m_menu.setGroupVisible(R.id.menu_group_logged_in, true);
-				m_menu.setGroupVisible(R.id.menu_group_logged_out, false);
-			} else {
-				m_menu.setGroupVisible(R.id.menu_group_logged_in, false);
-				m_menu.setGroupVisible(R.id.menu_group_logged_out, true);				
-			}
-			
-			m_menu.setGroupVisible(R.id.menu_group_headlines, false);
-			m_menu.setGroupVisible(R.id.menu_group_article, false);
-			m_menu.setGroupVisible(R.id.menu_group_feeds, false);
-			
-			m_menu.findItem(R.id.set_labels).setEnabled(getApiLevel() >= 1);
-			m_menu.findItem(R.id.article_set_note).setEnabled(getApiLevel() >= 1);
-			m_menu.findItem(R.id.subscribe_to_feed).setEnabled(getApiLevel() >= 5);
-			
-			MenuItem search = m_menu.findItem(R.id.search);
-			search.setEnabled(getApiLevel() >= 2);
-			
-			ArticlePager ap = (ArticlePager) getSupportFragmentManager().findFragmentByTag(FRAG_ARTICLE);
-			
-			if (ap != null) {
-				Article article = ap.getSelectedArticle();
-				
-				if (article != null) {
-					m_menu.findItem(R.id.toggle_marked).setIcon(article.marked ? R.drawable.ic_star :
-						R.drawable.ic_star_outline);
-
-					m_menu.findItem(R.id.toggle_published).setIcon(article.published ? R.drawable.ic_checkbox_marked :
-						R.drawable.ic_rss_box);
-
-					m_menu.findItem(R.id.toggle_unread).setIcon(article.unread ? R.drawable.ic_email :
-							R.drawable.ic_email_open);
+		try {
+			if (m_menu != null) {
+				if (getSessionId() != null) {
+					m_menu.setGroupVisible(R.id.menu_group_logged_in, true);
+					m_menu.setGroupVisible(R.id.menu_group_logged_out, false);
+				} else {
+					m_menu.setGroupVisible(R.id.menu_group_logged_in, false);
+					m_menu.setGroupVisible(R.id.menu_group_logged_out, true);
 				}
-			}
-			
-			HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
-				
-			if (hf != null && !m_forceDisableActionMode) {
-				if (hf.getSelectedArticles().size() > 0) {
-					if (m_headlinesActionMode == null) {
-						m_headlinesActionMode = startSupportActionMode(m_headlinesActionModeCallback);
-					}
 
-					m_headlinesActionMode.setTitle(String.valueOf(hf.getSelectedArticles().size()));
-				} else if (hf.getSelectedArticles().size() == 0 && m_headlinesActionMode != null) { 
+				m_menu.setGroupVisible(R.id.menu_group_headlines, false);
+				m_menu.setGroupVisible(R.id.menu_group_article, false);
+				m_menu.setGroupVisible(R.id.menu_group_feeds, false);
+
+				m_menu.findItem(R.id.set_labels).setEnabled(getApiLevel() >= 1);
+				m_menu.findItem(R.id.article_set_note).setEnabled(getApiLevel() >= 1);
+				m_menu.findItem(R.id.subscribe_to_feed).setEnabled(getApiLevel() >= 5);
+
+				MenuItem search = m_menu.findItem(R.id.search);
+				search.setEnabled(getApiLevel() >= 2);
+
+				ArticlePager ap = (ArticlePager) getSupportFragmentManager().findFragmentByTag(FRAG_ARTICLE);
+
+				if (ap != null) {
+					Article article = ap.getSelectedArticle();
+
+					if (article != null) {
+						m_menu.findItem(R.id.toggle_marked).setIcon(article.marked ? R.drawable.ic_star :
+								R.drawable.ic_star_outline);
+
+						m_menu.findItem(R.id.toggle_published).setIcon(article.published ? R.drawable.ic_checkbox_marked :
+								R.drawable.ic_rss_box);
+
+						m_menu.findItem(R.id.toggle_unread).setIcon(article.unread ? R.drawable.ic_email :
+								R.drawable.ic_email_open);
+					}
+				}
+
+				HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+
+				if (hf != null && !m_forceDisableActionMode) {
+					if (hf.getSelectedArticles().size() > 0) {
+						if (m_headlinesActionMode == null) {
+							m_headlinesActionMode = startSupportActionMode(m_headlinesActionModeCallback);
+						}
+
+						m_headlinesActionMode.setTitle(String.valueOf(hf.getSelectedArticles().size()));
+					} else if (hf.getSelectedArticles().size() == 0 && m_headlinesActionMode != null) {
+						m_headlinesActionMode.finish();
+					}
+				} else if (m_forceDisableActionMode && m_headlinesActionMode != null) {
 					m_headlinesActionMode.finish();
 				}
-			} else if (m_forceDisableActionMode && m_headlinesActionMode != null) {
-                m_headlinesActionMode.finish();
-            }
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
 	}
 	

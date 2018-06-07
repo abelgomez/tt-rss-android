@@ -22,7 +22,6 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -50,8 +49,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -73,12 +70,15 @@ import com.google.gson.JsonElement;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
 
+import org.fox.ttrss.glide.ProgressTarget;
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
+import org.fox.ttrss.types.Attachment;
 import org.fox.ttrss.types.Feed;
 import org.fox.ttrss.util.HeaderViewRecyclerAdapter;
 import org.fox.ttrss.util.HeadlinesRequest;
-import org.fox.ttrss.glide.ProgressTarget;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -88,9 +88,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import icepick.State;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
-public class HeadlinesFragment extends Fragment {
+public class HeadlinesFragment extends StateSavedFragment {
 
 	public enum ArticlesSelection { ALL, NONE, UNREAD }
 
@@ -102,25 +103,25 @@ public class HeadlinesFragment extends Fragment {
 
 	private final String TAG = this.getClass().getSimpleName();
 
-	private Feed m_feed;
-	private Article m_activeArticle;
-	private String m_searchQuery = "";
+	@State Feed m_feed;
+	@State Article m_activeArticle;
+	@State String m_searchQuery = "";
 	private boolean m_refreshInProgress = false;
-	private int m_firstId = 0;
-	private boolean m_lazyLoadDisabled = false;
+	@State int m_firstId = 0;
+	@State boolean m_lazyLoadDisabled = false;
 	private int m_amountScrolled;
 	private int m_scrollToToggleBar;
 
 	private SharedPreferences m_prefs;
 
 	private HeaderViewRecyclerAdapter m_adapter;
-	private ArticleList m_articles = new ArticleList();
+	@State ArticleList m_articles = new ArticleList();
 	private ArticleList m_readArticles = new ArticleList();
 	private HeadlinesEventListener m_listener;
 	private OnlineActivity m_activity;
 	private SwipeRefreshLayout m_swipeLayout;
 	private int m_maxImageSize = 0;
-    private boolean m_compactLayoutMode = false;
+	@State boolean m_compactLayoutMode = false;
     private RecyclerView m_list;
 	private LinearLayoutManager m_layoutManager;
 
@@ -288,26 +289,17 @@ public class HeadlinesFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		setRetainInstance(true);
+
+		Glide.get(getContext()).clearMemory();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (savedInstanceState != null) {
-			m_feed = savedInstanceState.getParcelable("feed");
-
-            if (! (m_activity instanceof DetailActivity)) {
-                m_articles = savedInstanceState.getParcelable("articles");
-            } else {
+            if (m_activity instanceof DetailActivity) {
                 m_articles = ((DetailActivity)m_activity).m_articles;
             }
-
-			m_activeArticle = savedInstanceState.getParcelable("activeArticle");
-			//m_selectedArticles = savedInstanceState.getParcelable("selectedArticles");
-			m_searchQuery = (String) savedInstanceState.getCharSequence("searchQuery");
-            m_compactLayoutMode = savedInstanceState.getBoolean("compactLayoutMode");
-			m_firstId = savedInstanceState.getInt("firstId");
-			m_lazyLoadDisabled = savedInstanceState.getBoolean("lazyLoadDisabled");
 		}
 
 		String headlineMode = m_prefs.getString("headline_mode", "HL_DEFAULT");
@@ -325,7 +317,7 @@ public class HeadlinesFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_headlines, container, false);
 
-		m_swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.headlines_swipe_container);
+		m_swipeLayout = view.findViewById(R.id.headlines_swipe_container);
 
 	    m_swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
@@ -334,7 +326,7 @@ public class HeadlinesFragment extends Fragment {
 			}
 		});
 
-		m_list = (RecyclerView) view.findViewById(R.id.headlines_list);
+		m_list = view.findViewById(R.id.headlines_list);
 		registerForContextMenu(m_list);
 
 		m_layoutManager = new LinearLayoutManager(m_activity.getApplicationContext());
@@ -348,7 +340,7 @@ public class HeadlinesFragment extends Fragment {
 
 		m_list.setAdapter(m_adapter);
 
-		FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.headlines_fab);
+		FloatingActionButton fab = view.findViewById(R.id.headlines_fab);
 
 		if (m_prefs.getBoolean("headlines_swipe_to_dismiss", true) && !m_prefs.getBoolean("headlines_mark_read_scroll", false) ) {
 
@@ -421,7 +413,7 @@ public class HeadlinesFragment extends Fragment {
 
 			swipeHelper.attachToRecyclerView(m_list);
 
-		};
+		}
 
 		if (! (getActivity() instanceof DetailActivity)) {
 
@@ -498,7 +490,7 @@ public class HeadlinesFragment extends Fragment {
 
 							a.unread = false;
 							m_readArticles.add(a);
-							m_feed.unread--;
+							if (m_feed != null) m_feed.unread--;
 						}
 					}
 				}
@@ -532,7 +524,7 @@ public class HeadlinesFragment extends Fragment {
 			}
 		});
 
-        if (m_activity.isSmallScreen()) {
+        if (m_activity.isSmallScreen() && m_feed != null) {
             m_activity.setTitle(m_feed.title);
         }
 
@@ -748,21 +740,6 @@ public class HeadlinesFragment extends Fragment {
 		}
 	}
 
-	@Override
-	public void onSaveInstanceState (Bundle out) {
-		super.onSaveInstanceState(out);
-
-		out.setClassLoader(getClass().getClassLoader());
-		out.putParcelable("feed", m_feed);
-		out.putParcelable("articles", m_articles);
-		out.putParcelable("activeArticle", m_activeArticle);
-		//out.putParcelable("selectedArticles", m_selectedArticles);
-		out.putCharSequence("searchQuery", m_searchQuery);
-        out.putBoolean("compactLayoutMode", m_compactLayoutMode);
-		out.putInt("firstId", m_firstId);
-		out.putBoolean("lazyLoadDisabled", m_lazyLoadDisabled);
-	}
-
 	static class ArticleViewHolder extends RecyclerView.ViewHolder {
 		public View view;
 		public Article article;
@@ -786,6 +763,7 @@ public class HeadlinesFragment extends Fragment {
 		public View headlineHeader;
 		public View flavorImageOverflow;
 		public TextureView flavorVideoView;
+		public ImageView attachmentsView;
 		//public int position;
 		public boolean flavorImageEmbedded;
 		public ProgressTarget<String, GlideDrawable> flavorProgressTarget;
@@ -808,26 +786,27 @@ public class HeadlinesFragment extends Fragment {
 				}
 			});
 
-			titleView = (TextView)v.findViewById(R.id.title);
+			titleView = v.findViewById(R.id.title);
 
-			feedTitleView = (TextView)v.findViewById(R.id.feed_title);
-			markedView = (ImageView)v.findViewById(R.id.marked);
-			publishedView = (ImageView)v.findViewById(R.id.published);
-			excerptView = (TextView)v.findViewById(R.id.excerpt);
-			flavorImageView = (ImageView) v.findViewById(R.id.flavor_image);
-			flavorVideoKindView = (ImageView) v.findViewById(R.id.flavor_video_kind);
-			authorView = (TextView)v.findViewById(R.id.author);
-			dateView = (TextView) v.findViewById(R.id.date);
-			selectionBoxView = (CheckBox) v.findViewById(R.id.selected);
-			menuButtonView = (ImageView) v.findViewById(R.id.article_menu_button);
-			flavorImageHolder = (ViewGroup) v.findViewById(R.id.flavorImageHolder);
-			flavorImageLoadingBar = (ProgressBar) v.findViewById(R.id.flavorImageLoadingBar);
+			feedTitleView = v.findViewById(R.id.feed_title);
+			markedView = v.findViewById(R.id.marked);
+			publishedView = v.findViewById(R.id.published);
+			excerptView = v.findViewById(R.id.excerpt);
+			flavorImageView = v.findViewById(R.id.flavor_image);
+			flavorVideoKindView = v.findViewById(R.id.flavor_video_kind);
+			authorView = v.findViewById(R.id.author);
+			dateView = v.findViewById(R.id.date);
+			selectionBoxView = v.findViewById(R.id.selected);
+			menuButtonView = v.findViewById(R.id.article_menu_button);
+			flavorImageHolder = v.findViewById(R.id.flavorImageHolder);
+			flavorImageLoadingBar = v.findViewById(R.id.flavorImageLoadingBar);
 			headlineFooter = v.findViewById(R.id.headline_footer);
-			textImage = (ImageView) v.findViewById(R.id.text_image);
-			textChecked = (ImageView) v.findViewById(R.id.text_checked);
+			textImage = v.findViewById(R.id.text_image);
+			textChecked = v.findViewById(R.id.text_checked);
 			headlineHeader = v.findViewById(R.id.headline_header);
 			flavorImageOverflow = v.findViewById(R.id.gallery_overflow);
-			flavorVideoView = (TextureView) v.findViewById(R.id.flavor_video);
+			flavorVideoView = v.findViewById(R.id.flavor_video);
+			attachmentsView = v.findViewById(R.id.attachments);
 
 			if (flavorImageView != null && flavorImageLoadingBar != null) {
 				flavorProgressTarget = new FlavorProgressTarget<>(new GlideDrawableImageViewTarget(flavorImageView), flavorImageLoadingBar);
@@ -1040,7 +1019,7 @@ public class HeadlinesFragment extends Fragment {
 			}
 
 			if (holder.feedTitleView != null) {
-				if (article.feed_title != null && (m_feed.is_cat || m_feed.id < 0)) {
+				if (article.feed_title != null && m_feed != null && (m_feed.is_cat || m_feed.id < 0)) {
 					holder.feedTitleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, headlineSmallFontSize);
 					holder.feedTitleView.setText(article.feed_title);
 
@@ -1102,6 +1081,22 @@ public class HeadlinesFragment extends Fragment {
 				});
 			}
 
+			if (holder.attachmentsView != null) {
+				if (article.attachments != null && article.attachments.size() > 0) {
+					holder.attachmentsView.setVisibility(View.VISIBLE);
+
+					holder.attachmentsView.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							m_activity.displayAttachments(article);
+						}
+					});
+
+				} else {
+					holder.attachmentsView.setVisibility(View.GONE);
+				}
+			}
+
 			if (holder.excerptView != null) {
 				if (!m_prefs.getBoolean("headlines_show_content", true)) {
 					holder.excerptView.setVisibility(View.GONE);
@@ -1144,6 +1139,8 @@ public class HeadlinesFragment extends Fragment {
 				holder.flavorImageOverflow.setVisibility(View.GONE);
 				holder.flavorVideoView.setVisibility(View.GONE);
 				holder.headlineHeader.setBackgroundDrawable(null);
+
+				Glide.clear(holder.flavorImageView);
 
 				// this is needed if our flavor image goes behind base listview element
 				holder.headlineHeader.setOnClickListener(new OnClickListener() {
@@ -1220,8 +1217,8 @@ public class HeadlinesFragment extends Fragment {
 
 					holder.flavorImageView.setVisibility(View.VISIBLE);
 
-						holder.flavorImageView.setMaxHeight((int)(m_screenHeight * 0.8f));
-						holder.flavorProgressTarget.setModel(article.flavorImageUri);
+					holder.flavorImageView.setMaxHeight((int)(m_screenHeight * 0.8f));
+					holder.flavorProgressTarget.setModel(article.flavorImageUri);
 
 					if (article.flavorViewHeight > 0) {
 						RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.flavorImageView.getLayoutParams();
@@ -1238,51 +1235,56 @@ public class HeadlinesFragment extends Fragment {
 						holder.flavorImageView.setLayoutParams(lp);
 					*/
 
-					Glide.with(HeadlinesFragment.this)
-							.load(article.flavorImageUri)
-							.dontTransform()
-							.diskCacheStrategy(DiskCacheStrategy.ALL)
-							.skipMemoryCache(false)
-							.listener(new RequestListener<String, GlideDrawable>() {
-								@Override
-								public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+					try {
 
-									holder.flavorImageLoadingBar.setVisibility(View.GONE);
-									holder.flavorImageView.setVisibility(View.GONE);
+						Glide.with(HeadlinesFragment.this)
+								.load(article.flavorImageUri)
+								.dontTransform()
+								.diskCacheStrategy(DiskCacheStrategy.ALL)
+								.skipMemoryCache(false)
+								.listener(new RequestListener<String, GlideDrawable>() {
+									@Override
+									public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
 
-									return false;
-								}
-
-								@Override
-								public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-
-									holder.flavorImageLoadingBar.setVisibility(View.GONE);
-
-									if (resource.getIntrinsicWidth() > FLAVOR_IMG_MIN_SIZE && resource.getIntrinsicHeight() > FLAVOR_IMG_MIN_SIZE) {
-
-										//holder.flavorImageView.setVisibility(View.VISIBLE);
-										holder.flavorImageOverflow.setVisibility(View.VISIBLE);
-
-										boolean forceDown = article.flavorImage != null && "video".equals(article.flavorImage.tagName().toLowerCase());
-
-										RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.flavorImageView.getLayoutParams();
-										lp.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-										holder.flavorImageView.setLayoutParams(lp);
-
-										maybeRepositionFlavorImage(holder.flavorImageView, resource, holder, forceDown);
-										adjustVideoKindView(holder, article);
-
-										return false;
-									} else {
-
-										holder.flavorImageOverflow.setVisibility(View.GONE);
+										holder.flavorImageLoadingBar.setVisibility(View.GONE);
 										holder.flavorImageView.setVisibility(View.GONE);
 
-										return true;
+										return false;
 									}
-								}
-							})
-							.into(holder.flavorProgressTarget);
+
+									@Override
+									public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+										holder.flavorImageLoadingBar.setVisibility(View.GONE);
+
+										if (resource.getIntrinsicWidth() > FLAVOR_IMG_MIN_SIZE && resource.getIntrinsicHeight() > FLAVOR_IMG_MIN_SIZE) {
+
+											//holder.flavorImageView.setVisibility(View.VISIBLE);
+											holder.flavorImageOverflow.setVisibility(View.VISIBLE);
+
+											boolean forceDown = !m_activity.isSmallScreen() || article.flavorImage != null && "video".equals(article.flavorImage.tagName().toLowerCase());
+
+											RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.flavorImageView.getLayoutParams();
+											lp.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+											holder.flavorImageView.setLayoutParams(lp);
+
+											maybeRepositionFlavorImage(holder.flavorImageView, resource, holder, forceDown);
+											adjustVideoKindView(holder, article);
+
+											return false;
+										} else {
+
+											holder.flavorImageOverflow.setVisibility(View.GONE);
+											holder.flavorImageView.setVisibility(View.GONE);
+
+											return true;
+										}
+									}
+								})
+								.into(holder.flavorProgressTarget);
+					} catch (OutOfMemoryError e) {
+						e.printStackTrace();
+					}
 				}
 
 				if (m_prefs.getBoolean("inline_video_player", false) && article.flavorImage != null &&
@@ -1528,6 +1530,7 @@ public class HeadlinesFragment extends Fragment {
 					Glide.with(HeadlinesFragment.this)
 							.load(article.flavorImageUri)
 							.placeholder(textDrawable)
+							.thumbnail(0.5f)
 							.bitmapTransform(new CropCircleTransformation(getActivity()))
 							.diskCacheStrategy(DiskCacheStrategy.ALL)
 							.skipMemoryCache(false)
@@ -1540,11 +1543,7 @@ public class HeadlinesFragment extends Fragment {
 								@Override
 								public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
 
-									if (resource.getIntrinsicWidth() < THUMB_IMG_MIN_SIZE || resource.getIntrinsicHeight() < THUMB_IMG_MIN_SIZE) {
-										return true;
-									} else {
-										return false;
-									}
+									return resource.getIntrinsicWidth() < THUMB_IMG_MIN_SIZE || resource.getIntrinsicHeight() < THUMB_IMG_MIN_SIZE;
 								}
 							})
 							.into(holder.textImage);
@@ -1578,7 +1577,29 @@ public class HeadlinesFragment extends Fragment {
 
 				intent.putExtra("firstSrc", article.flavorStreamUri != null ? article.flavorStreamUri : article.flavorImageUri);
 				intent.putExtra("title", article.title);
-				intent.putExtra("content", article.content);
+
+				// FIXME maybe: gallery view works with document as html, it's easier to add this hack rather than
+				// rework it to additionally operate on separate attachment array (?)
+				// also, maybe consider video attachments? kinda hard to do without a poster tho (for flavor view)
+
+				String tempContent = article.content;
+
+				if (article.attachments != null) {
+					Document doc = new Document("");
+
+					for (Attachment a : article.attachments) {
+						if (a.content_type != null) {
+							if (a.content_type.contains("image/")) {
+								Element img = new Element("img").attr("src", a.content_url);
+								doc.appendChild(img);
+							}
+						}
+					}
+
+					tempContent = doc.outerHtml() + tempContent;
+				}
+
+				intent.putExtra("content", tempContent);
 
 				ActivityOptionsCompat options =
 						ActivityOptionsCompat.makeSceneTransitionAnimation(m_activity,

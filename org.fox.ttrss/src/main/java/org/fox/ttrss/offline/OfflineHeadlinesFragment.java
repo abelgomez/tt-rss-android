@@ -5,16 +5,22 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources.Theme;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
@@ -29,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -39,22 +46,37 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.shamanland.fab.FloatingActionButton;
 
 import org.fox.ttrss.Application;
 import org.fox.ttrss.CommonActivity;
+import org.fox.ttrss.GalleryActivity;
+import org.fox.ttrss.HeadlinesFragment;
 import org.fox.ttrss.R;
+import org.fox.ttrss.util.ImageCacheService;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class OfflineHeadlinesFragment extends Fragment implements OnItemClickListener, AbsListView.OnScrollListener {
 	public enum ArticlesSelection { ALL, NONE, UNREAD }
@@ -63,11 +85,16 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 	
 	private int m_feedId;
 	private boolean m_feedIsCat = false;
+	private String m_feedTitle;
+
 	private int m_activeArticleId;
 	private String m_searchQuery = "";
 	
 	private SharedPreferences m_prefs;
     private ArrayList<Integer> m_readArticleIds = new ArrayList<Integer>();
+	private ArrayList<Integer> m_autoMarkedArticleIds = new ArrayList<Integer>();
+
+	private HashMap<Integer, Integer> m_flavorHeightStorage = new HashMap<>();
 	
 	private Cursor m_cursor;
 	private ArticleListAdapter m_adapter;
@@ -79,7 +106,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
     private boolean m_compactLayoutMode = false;
     private ListView m_list;
     private int m_listPreviousVisibleItem;
-	
+
 	public void initialize(int feedId, boolean isCat, boolean compactMode) {
 		m_feedId = feedId;
 		m_feedIsCat = isCat;
@@ -111,7 +138,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 		menu.findItem(R.id.set_labels).setVisible(false);
 		menu.findItem(R.id.article_set_note).setVisible(false);
-		menu.findItem(R.id.headlines_article_unread).setVisible(false); // TODO: implement
 
 		if (m_prefs.getBoolean("offline_sort_by_feed", false)) {
 			menu.findItem(R.id.catchup_above).setVisible(false);
@@ -135,6 +161,20 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 	private boolean onArticleMenuItemSelected(MenuItem item, final int articleId) {
 		switch (item.getItemId()) {
+			case R.id.headlines_article_unread:
+				if (true) {
+
+					SQLiteStatement stmt = m_activity.getDatabase().compileStatement(
+							"UPDATE articles SET modified = 1, unread = not unread " + "WHERE " + BaseColumns._ID
+									+ " = ?");
+
+					stmt.bindLong(1, articleId);
+					stmt.execute();
+					stmt.close();
+
+					refresh();
+				}
+				return true;
 			case R.id.headlines_article_link_copy:
 				if (true) {
 					Cursor article = m_activity.getArticleById(articleId);
@@ -238,19 +278,25 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			setActiveArticleId(m_activeArticleId);
 		}
 
-		refresh();
-		
+		//refresh();
+
 		m_activity.invalidateOptionsMenu();
 	}
-	
+
 	public void refresh() {
+		refresh(true);
+	}
+
+	public void refresh(boolean keepRemnantIds) {
 		try {
 			if (!isAdded()) return;
 
             if (m_swipeLayout != null) m_swipeLayout.setRefreshing(true);
 			
 			if (m_cursor != null && !m_cursor.isClosed()) m_cursor.close();
-			
+
+			if (!keepRemnantIds) m_autoMarkedArticleIds.clear();
+
 			m_cursor = createCursor();
 			
 			if (m_cursor != null && m_adapter != null) {
@@ -264,7 +310,16 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setRetainInstance(true);
+
+		Glide.get(getContext()).clearMemory();
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {    	
 		
@@ -275,6 +330,8 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			m_searchQuery = (String) savedInstanceState.getCharSequence("searchQuery");
 			m_feedIsCat = savedInstanceState.getBoolean("feedIsCat");
             m_compactLayoutMode = savedInstanceState.getBoolean("compactLayoutMode");
+			m_readArticleIds = savedInstanceState.getIntegerArrayList("autoMarkedIds");
+
 		} else {
 			m_activity.getDatabase().execSQL("UPDATE articles SET selected = 0 ");
 		}
@@ -286,20 +343,20 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 		View view = inflater.inflate(R.layout.fragment_headlines_offline, container, false);
 
-		m_swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.headlines_swipe_container);
+		m_swipeLayout = view.findViewById(R.id.headlines_swipe_container);
 		
 	    m_swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				refresh();
+				refresh(false);
 			}
 		});
 
 		m_cursor = createCursor();
 		
-		m_list = (ListView)view.findViewById(R.id.headlines_list);
+		m_list = view.findViewById(R.id.headlines_list);
 
-		FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.headlines_fab);
+		FloatingActionButton fab = view.findViewById(R.id.headlines_fab);
 		fab.setVisibility(View.GONE);
 
         if (m_activity.isSmallScreen()) {
@@ -332,6 +389,12 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
         m_list.setOnScrollListener(this);
 		registerForContextMenu(m_list);
 
+		m_feedTitle = m_activity.getFeedTitle(m_feedId, m_feedIsCat);
+
+		if (m_feedTitle != null && m_activity.isSmallScreen()) {
+			m_activity.setTitle(m_feedTitle);
+		}
+
 		return view;    	
 	}
 
@@ -353,7 +416,9 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		} else if ("published".equals(viewMode)) {
 			feedClause += "AND (published = 1)";
 		} else if ("unread".equals(viewMode)) {
-			feedClause += "AND (unread = 1)";
+			String idsMarkedRead = "articles." + BaseColumns._ID + " in (" + android.text.TextUtils.join(",", m_autoMarkedArticleIds) + ")";
+
+			feedClause += "AND (unread = 1 OR "+idsMarkedRead+")";
 		} else { // all_articles
 			//
 		}
@@ -417,6 +482,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		//out.putParcelableArrayList("selectedArticles", m_selectedArticles);
 		out.putCharSequence("searchQuery", m_searchQuery);
 		out.putBoolean("feedIsCat", m_feedIsCat);
+		out.putIntegerArrayList("autoMarkedIds", m_autoMarkedArticleIds);
 
         out.putBoolean("compactLayoutMode", m_compactLayoutMode);
 	}
@@ -433,7 +499,13 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		getActivity().setProgressBarIndeterminateVisibility(showProgress);
 	} */
 
-    static class HeadlineViewHolder {
+    static class ArticleViewHolder {
+
+		public int articleId;
+		HashMap<Integer, Integer> flavorHeightStorage;
+
+		public View view;
+
         public TextView titleView;
         public TextView feedTitleView;
         public ImageView markedView;
@@ -452,6 +524,52 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		public ImageView flavorVideoKindView;
 		public View flavorImageOverflow;
 		public View headlineHeader;
+		public ImageView attachmentsView;
+
+		public ArticleViewHolder(View v) {
+
+			view = v;
+
+			view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+				@Override
+				public boolean onPreDraw() {
+					View flavorImage = view.findViewById(R.id.flavor_image);
+
+					if (flavorImage != null) {
+						int height = flavorImage.getMeasuredHeight();
+
+						if (height > 0) {
+							//Log.d("ArticleViewHolder", "view measured height: " + flavorImage.getMeasuredHeight() + " for " + articleId);
+
+							flavorHeightStorage.put(articleId, flavorImage.getMeasuredHeight());
+						}
+					}
+
+					return true;
+				}
+			});
+
+			titleView = v.findViewById(R.id.title);
+
+			feedTitleView = v.findViewById(R.id.feed_title);
+			markedView = v.findViewById(R.id.marked);
+			publishedView = v.findViewById(R.id.published);
+			excerptView = v.findViewById(R.id.excerpt);
+			flavorImageView = v.findViewById(R.id.flavor_image);
+			authorView = v.findViewById(R.id.author);
+			dateView = v.findViewById(R.id.date);
+			selectionBoxView = v.findViewById(R.id.selected);
+			menuButtonView = v.findViewById(R.id.article_menu_button);
+			flavorImageHolder = v.findViewById(R.id.flavorImageHolder);
+			flavorImageLoadingBar = v.findViewById(R.id.flavorImageLoadingBar);
+			headlineFooter = v.findViewById(R.id.headline_footer);
+			textImage = v.findViewById(R.id.text_image);
+			textChecked = v.findViewById(R.id.text_checked);
+			flavorVideoKindView = v.findViewById(R.id.flavor_video_kind);
+			headlineHeader = v.findViewById(R.id.headline_header);
+			flavorImageOverflow = v.findViewById(R.id.gallery_overflow);
+			attachmentsView = v.findViewById(R.id.attachments);
+		}
 	}
 
     private class ArticleListAdapter extends SimpleCursorAdapter {
@@ -468,6 +586,9 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
         private ColorGenerator m_colorGenerator = ColorGenerator.DEFAULT;
         private TextDrawable.IBuilder m_drawableBuilder = TextDrawable.builder().round();
+
+		private boolean showFlavorImage;
+		private int m_screenHeight;
 		
 		public ArticleListAdapter(Context context, int layout, Cursor c,
 				String[] from, int[] to, int flags) {
@@ -477,6 +598,15 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			TypedValue tv = new TypedValue();
 			theme.resolveAttribute(R.attr.headlineTitleHighScoreUnreadTextColor, tv, true);
 			titleHighScoreUnreadColor = tv.data;
+
+			String headlineMode = m_prefs.getString("headline_mode", "HL_DEFAULT");
+			showFlavorImage = "HL_DEFAULT".equals(headlineMode) || "HL_COMPACT".equals(headlineMode);
+
+			Display display = m_activity.getWindowManager().getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			//m_minimumHeightToEmbed = size.y/3;
+			m_screenHeight = size.y;
 		}
 
 		public int getViewTypeCount() {
@@ -500,7 +630,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			}			
 		}
 
-        private void updateTextCheckedState(HeadlineViewHolder holder, Cursor item) {
+        private void updateTextCheckedState(ArticleViewHolder holder, Cursor item, ArticleFlavorInfo afi) {
             String title = item.getString(item.getColumnIndex("title"));
 
             String tmp = title.length() > 0 ? title.substring(0, 1) : "?";
@@ -512,20 +642,49 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
                 holder.textChecked.setVisibility(View.VISIBLE);
             } else {
-                holder.textImage.setImageDrawable(m_drawableBuilder.build(tmp, m_colorGenerator.getColor(title)));
+				Drawable textDrawable = m_drawableBuilder.build(tmp, m_colorGenerator.getColor(title));
+
+				if (showFlavorImage && afi.flavorImageUri != null) {
+
+					holder.textImage.setImageDrawable(textDrawable);
+
+					Glide.with(OfflineHeadlinesFragment.this)
+							.load(afi.flavorImageUri)
+							.placeholder(textDrawable)
+							.bitmapTransform(new CropCircleTransformation(getActivity()))
+							.diskCacheStrategy(DiskCacheStrategy.NONE)
+							.skipMemoryCache(false)
+							.listener(new RequestListener<String, GlideDrawable>() {
+								@Override
+								public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+									return false;
+								}
+
+								@Override
+								public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+									return resource.getIntrinsicWidth() < HeadlinesFragment.THUMB_IMG_MIN_SIZE ||
+											resource.getIntrinsicHeight() < HeadlinesFragment.THUMB_IMG_MIN_SIZE;
+								}
+							})
+							.into(holder.textImage);
+
+				} else {
+					holder.textImage.setImageDrawable(textDrawable);
+				}
 
                 holder.textChecked.setVisibility(View.GONE);
             }
         }
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(int position, final View convertView, ViewGroup parent) {
 
 			View v = convertView;
 
 			final Cursor article = (Cursor)getItem(position);
 
-            final HeadlineViewHolder holder;
+            final ArticleViewHolder holder;
 
 			final int articleId = article.getInt(0);
 			
@@ -553,34 +712,17 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
                 LayoutInflater vi = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = vi.inflate(layoutId, null);
 
-                holder = new HeadlineViewHolder();
-                holder.titleView = (TextView)v.findViewById(R.id.title);
-
-                holder.feedTitleView = (TextView)v.findViewById(R.id.feed_title);
-                holder.markedView = (ImageView)v.findViewById(R.id.marked);
-                holder.publishedView = (ImageView)v.findViewById(R.id.published);
-                holder.excerptView = (TextView)v.findViewById(R.id.excerpt);
-                holder.flavorImageView = (ImageView) v.findViewById(R.id.flavor_image);
-                holder.authorView = (TextView)v.findViewById(R.id.author);
-                holder.dateView = (TextView) v.findViewById(R.id.date);
-                holder.selectionBoxView = (CheckBox) v.findViewById(R.id.selected);
-                holder.menuButtonView = (ImageView) v.findViewById(R.id.article_menu_button);
-                holder.flavorImageHolder = (ViewGroup) v.findViewById(R.id.flavorImageHolder);
-                holder.flavorImageLoadingBar = (ProgressBar) v.findViewById(R.id.flavorImageLoadingBar);
-                holder.headlineFooter = v.findViewById(R.id.headline_footer);
-                holder.textImage = (ImageView) v.findViewById(R.id.text_image);
-                holder.textChecked = (ImageView) v.findViewById(R.id.text_checked);
-				holder.flavorVideoKindView = (ImageView) v.findViewById(R.id.flavor_video_kind);
-				holder.headlineHeader = v.findViewById(R.id.headline_header);
-				holder.flavorImageOverflow = v.findViewById(R.id.gallery_overflow);
-
+				holder = new ArticleViewHolder(v);
                 v.setTag(holder);
 
                 // http://code.google.com/p/android/issues/detail?id=3414
                 ((ViewGroup)v).setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             } else {
-                holder = (HeadlineViewHolder) v.getTag();
+                holder = (ArticleViewHolder) v.getTag();
             }
+
+            holder.articleId = articleId;
+			holder.flavorHeightStorage = m_flavorHeightStorage;
 
             // block footer clicks to make button/selection clicking easier
             if (holder.headlineFooter != null) {
@@ -593,7 +735,9 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
             }
 
             if (holder.textImage != null) {
-                updateTextCheckedState(holder, article);
+				final ArticleFlavorInfo afi = findFlavorImage(article);
+
+				updateTextCheckedState(holder, article, afi);
 
                 holder.textImage.setOnClickListener(new OnClickListener() {
                     @Override
@@ -607,13 +751,31 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
                         stmtUpdate.execute();
                         stmtUpdate.close();
 
-                        updateTextCheckedState(holder, article);
+                        updateTextCheckedState(holder, article, afi);
 
                         refresh();
 
                         m_activity.invalidateOptionsMenu();
                     }
                 });
+
+				ViewCompat.setTransitionName(holder.textImage, "gallery:" + afi.flavorImageUri);
+
+				if (afi.flavorImageUri != null) {
+
+					final String articleContent = article.getString(article.getColumnIndex("content"));
+					final String articleTitle = article.getString(article.getColumnIndex("title"));
+
+					holder.textImage.setOnLongClickListener(new View.OnLongClickListener() {
+						@Override
+						public boolean onLongClick(View v) {
+							openGalleryForType(afi, articleTitle, articleContent, holder, holder.textImage);
+							return true;
+						}
+					});
+
+				}
+
 
             }
 
@@ -644,19 +806,35 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			} else if (holder.feedTitleView != null) {
 				holder.feedTitleView.setVisibility(View.GONE);
 			}
-			
+
+			TypedValue tvAccent = new TypedValue();
+			m_activity.getTheme().resolveAttribute(R.attr.colorAccent, tvAccent, true);
+
+			if (holder.attachmentsView != null) {
+				holder.attachmentsView.setVisibility(View.GONE);
+			}
+
 			if (holder.markedView != null) {
 				TypedValue tv = new TypedValue();
-				m_activity.getTheme().resolveAttribute(article.getInt(article.getColumnIndex("marked")) == 1 ? R.attr.ic_star : R.attr.ic_star_outline, tv, true);
+
+				boolean marked = article.getInt(article.getColumnIndex("marked")) == 1;
+
+				m_activity.getTheme().resolveAttribute(marked ? R.attr.ic_star : R.attr.ic_star_outline, tv, true);
 
 				holder.markedView.setImageResource(tv.resourceId);
+
+				if (marked)
+					holder.markedView.setColorFilter(tvAccent.data);
+				else
+					holder.markedView.setColorFilter(null);
 				
 				holder.markedView.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						SQLiteStatement stmtUpdate = m_activity.getDatabase().compileStatement("UPDATE articles SET modified = 1, marked = NOT marked " +
-								"WHERE " + BaseColumns._ID + " = ?");
+						SQLiteStatement stmtUpdate = m_activity.getDatabase()
+								.compileStatement("UPDATE articles SET modified = 1, modified_marked = 1, marked = NOT marked " +
+									"WHERE " + BaseColumns._ID + " = ?");
 
 						stmtUpdate.bindLong(1, articleId);
 						stmtUpdate.execute();
@@ -669,16 +847,25 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			
 			if (holder.publishedView != null) {
 				TypedValue tv = new TypedValue();
-				m_activity.getTheme().resolveAttribute(article.getInt(article.getColumnIndex("published")) == 1 ? R.attr.ic_checkbox_marked : R.attr.ic_rss_box, tv, true);
+
+				boolean published = article.getInt(article.getColumnIndex("published")) == 1;
+
+				m_activity.getTheme().resolveAttribute(published ? R.attr.ic_checkbox_marked : R.attr.ic_rss_box, tv, true);
 
 				holder.publishedView.setImageResource(tv.resourceId);
-				
+
+				if (published)
+					holder.publishedView.setColorFilter(tvAccent.data);
+				else
+					holder.publishedView.setColorFilter(null);
+
 				holder.publishedView.setOnClickListener(new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        SQLiteStatement stmtUpdate = m_activity.getDatabase().compileStatement("UPDATE articles SET modified = 1, published = NOT published " +
-                                "WHERE " + BaseColumns._ID + " = ?");
+                        SQLiteStatement stmtUpdate = m_activity.getDatabase()
+								.compileStatement("UPDATE articles SET modified = 1, modified_published = 1, published = NOT published " +
+                                	"WHERE " + BaseColumns._ID + " = ?");
 
                         stmtUpdate.bindLong(1, articleId);
                         stmtUpdate.execute();
@@ -780,6 +967,99 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 						return true;
 					}
 				});
+
+				if (showFlavorImage) {
+					final ArticleFlavorInfo afi = findFlavorImage(article);
+
+					if (afi.flavorImageUri != null) {
+						holder.flavorImageView.setVisibility(View.VISIBLE);
+
+						holder.flavorImageView.setMaxHeight((int)(m_screenHeight * 0.8f));
+
+						int flavorViewHeight = m_flavorHeightStorage.containsKey(articleId) ? m_flavorHeightStorage.get(articleId) : 0;
+
+						//Log.d(TAG, articleId + " IMG: " + afi.flavorImageUri + " STREAM: " + afi.flavorStreamUri + " H:" + flavorViewHeight);
+
+						if (flavorViewHeight > 0) {
+							RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.flavorImageView.getLayoutParams();
+							lp.height = flavorViewHeight;
+							holder.flavorImageView.setLayoutParams(lp);
+						}
+
+						final String articleContent = article.getString(article.getColumnIndex("content"));
+						final String articleTitle = article.getString(article.getColumnIndex("title"));
+
+
+                        holder.flavorImageView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+								openGalleryForType(afi, articleTitle, articleContent, holder, holder.flavorImageView);
+                            }
+                        });
+
+						try {
+
+							Glide.with(OfflineHeadlinesFragment.this)
+									.load(afi.flavorImageUri)
+									.dontTransform()
+									.diskCacheStrategy(DiskCacheStrategy.NONE)
+									.skipMemoryCache(false)
+									.listener(new RequestListener<String, GlideDrawable>() {
+										@Override
+										public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+
+											holder.flavorImageLoadingBar.setVisibility(View.GONE);
+											holder.flavorImageView.setVisibility(View.GONE);
+
+											return false;
+										}
+
+										@Override
+										public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+											holder.flavorImageLoadingBar.setVisibility(View.GONE);
+
+											if (resource.getIntrinsicWidth() > HeadlinesFragment.FLAVOR_IMG_MIN_SIZE &&
+													resource.getIntrinsicHeight() > HeadlinesFragment.FLAVOR_IMG_MIN_SIZE) {
+
+												holder.flavorImageView.setVisibility(View.VISIBLE);
+
+
+												//TODO: not implemented
+												//holder.flavorImageOverflow.setVisibility(View.VISIBLE);
+
+												/*boolean forceDown = article.flavorImage != null && "video".equals(article.flavorImage.tagName().toLowerCase());
+
+												maybeRepositionFlavorImage(holder.flavorImageView, resource, holder, forceDown);*/
+												adjustVideoKindView(holder, afi);
+
+												/* we don't support image embedding in offline */
+
+												RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) holder.flavorImageView.getLayoutParams();
+												lp.addRule(RelativeLayout.BELOW, R.id.headline_header);
+												lp.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+												holder.flavorImageView.setLayoutParams(lp);
+
+												holder.headlineHeader.setBackgroundDrawable(null);
+
+												return false;
+											} else {
+
+												holder.flavorImageOverflow.setVisibility(View.GONE);
+												holder.flavorImageView.setVisibility(View.GONE);
+
+												return true;
+											}
+										}
+									})
+									.into(holder.flavorImageView);
+						} catch (OutOfMemoryError e) {
+							e.printStackTrace();
+						}
+
+                    }
+				}
             }
 			
 			if (holder.menuButtonView != null) {
@@ -796,7 +1076,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 						popup.getMenu().findItem(R.id.set_labels).setVisible(false);
 						popup.getMenu().findItem(R.id.article_set_note).setVisible(false);
-						popup.getMenu().findItem(R.id.headlines_article_unread).setVisible(false); // TODO: implement
 
 						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 							@Override
@@ -811,6 +1090,126 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			}
 
             return v;
+		}
+
+		private void adjustVideoKindView(ArticleViewHolder holder, ArticleFlavorInfo afi) {
+			if (afi.flavorImageUri != null) {
+				if (afi.flavorStreamUri != null) {
+					holder.flavorVideoKindView.setImageResource(R.drawable.ic_play_circle);
+					holder.flavorVideoKindView.setVisibility(View.VISIBLE);
+				} else if (afi.mediaList.size() > 1) {
+					holder.flavorVideoKindView.setImageResource(R.drawable.ic_image_album);
+					holder.flavorVideoKindView.setVisibility(View.VISIBLE);
+				} else {
+					holder.flavorVideoKindView.setVisibility(View.INVISIBLE);
+				}
+			} else {
+				holder.flavorVideoKindView.setVisibility(View.INVISIBLE);
+			}
+		}
+
+		private void openGalleryForType(ArticleFlavorInfo afi, String title, String content, ArticleViewHolder viewHolder, View transitionView) {
+
+			Intent intent = new Intent(m_activity, GalleryActivity.class);
+
+			intent.putExtra("firstSrc", afi.flavorStreamUri != null ? afi.flavorStreamUri : afi.flavorImageUri);
+			intent.putExtra("title", title);
+			intent.putExtra("content", rewriteUrlsToLocal(content));
+
+			ActivityOptionsCompat options =
+					ActivityOptionsCompat.makeSceneTransitionAnimation(m_activity,
+							transitionView != null ? transitionView : viewHolder.flavorImageView,
+							"gallery:" + (afi.flavorStreamUri != null ? afi.flavorStreamUri : afi.flavorImageUri));
+
+			ActivityCompat.startActivity(m_activity, intent, options.toBundle());
+
+		}
+
+		private String rewriteUrlsToLocal(String content) {
+			Document doc = Jsoup.parse(content);
+
+			if (doc != null) {
+				List<Element> mediaList = doc.select("img,source");
+
+				for (Element e : mediaList) {
+					String url = e.attr("src");
+
+					if (url != null && ImageCacheService.isUrlCached(m_activity, url)) {
+						e.attr("src", "file://" + ImageCacheService.getCacheFileName(m_activity, url));
+					}
+				}
+
+				content = doc.html();
+			}
+
+			return content;
+		}
+
+		private class ArticleFlavorInfo {
+            String flavorImageUri;
+            String flavorStreamUri;
+			public List<Element> mediaList = new ArrayList<>();
+		}
+
+		private ArticleFlavorInfo findFlavorImage(Cursor article) {
+            ArticleFlavorInfo afi = new ArticleFlavorInfo();
+
+			String content = article.getString(article.getColumnIndex("content"));
+
+			if (content != null) {
+				Document articleDoc = Jsoup.parse(content);
+
+				if (articleDoc != null) {
+
+					Element flavorImage = null;
+					afi.mediaList = articleDoc.select("img,video");
+
+					for (Element e : afi.mediaList) {
+						flavorImage = e;
+						break;
+					}
+
+					if (flavorImage != null) {
+
+						try {
+
+							if ("video".equals(flavorImage.tagName().toLowerCase())) {
+								Element source = flavorImage.select("source").first();
+                                afi.flavorStreamUri = source.attr("src");
+
+                                afi.flavorImageUri = flavorImage.attr("poster");
+							} else {
+                                afi.flavorImageUri = flavorImage.attr("src");
+
+								if (afi.flavorImageUri != null && afi.flavorImageUri.startsWith("//")) {
+                                    afi.flavorImageUri = "https:" + afi.flavorImageUri;
+								}
+
+                                afi.flavorStreamUri = null;
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+
+							afi.flavorImageUri = null;
+                            afi.flavorStreamUri = null;
+						}
+					}
+				}
+			}
+
+            if (afi.flavorImageUri != null && ImageCacheService.isUrlCached(m_activity, afi.flavorImageUri)) {
+                afi.flavorImageUri = "file://" + ImageCacheService.getCacheFileName(m_activity, afi.flavorImageUri);
+            } else {
+                afi.flavorImageUri = null;
+            }
+
+            if (afi.flavorStreamUri != null && ImageCacheService.isUrlCached(m_activity, afi.flavorStreamUri)) {
+                afi.flavorStreamUri = "file://" + ImageCacheService.getCacheFileName(m_activity, afi.flavorStreamUri);
+            } else {
+                afi.flavorStreamUri = null;
+            }
+
+            return afi;
 		}
 
 		private void adjustTitleTextView(int score, TextView tv, int position) {
@@ -840,7 +1239,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		try {
 			m_adapter.notifyDataSetChanged();
 
-			ListView list = (ListView)getView().findViewById(R.id.headlines_list);
+			ListView list = getView().findViewById(R.id.headlines_list);
 		
 			Log.d(TAG, articleId + " position " + getArticleIdPosition(articleId));
 			
@@ -951,9 +1350,12 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
                 }
 
                 stmt.close();
+
+				m_autoMarkedArticleIds.addAll(m_readArticleIds);
+				m_readArticleIds.clear();
+
                 refresh();
 
-                m_readArticleIds.clear();
             }
         }
     }

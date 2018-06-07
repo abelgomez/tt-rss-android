@@ -39,8 +39,8 @@
         <item name="headlineFooterColor">?colorPrimary</item>
         <item name="articleHeaderSeparator">#cccccc</item>
 
-        <item name="colorPrimary">#6482af</item>
-        <item name="colorPrimaryDark">#526A8E</item>
+        <item name="colorPrimary">#257eae</item>
+        <item name="colorPrimaryDark">#216d96</item>
         <item name="colorAccent">#F4511E</item>
 
         <item name="ic_rss_box">@drawable/ic_rss_box_dark</item>
@@ -58,6 +58,7 @@
         <item name="ic_coffee">@drawable/ic_coffee_dark</item>
         <item name="ic_folder_outline">@drawable/ic_folder_outline_dark</item>
         <item name="ic_dots_vertical">@drawable/ic_dots_vertical_dark</item>
+        <item name="ic_attachment">@drawable/ic_attachment_dark</item>
 
         <item name="drawer_header">@drawable/drawer_header</item>
     </style>
@@ -100,8 +101,8 @@
         <item name="headlineFooterColor">?colorPrimary</item>
         <item name="articleHeaderSeparator">#303030</item>
 
-        <item name="colorPrimary">#607D8B</item>
-        <item name="colorPrimaryDark">#455A64</item>
+        <item name="colorPrimary">#1e6286</item>
+        <item name="colorPrimaryDark">#18506e</item>
         <item name="colorAccent">#D84315</item>
 
         <item name="ic_rss_box">@drawable/ic_rss_box</item>
@@ -119,6 +120,7 @@
         <item name="ic_coffee">@drawable/ic_coffee</item>
         <item name="ic_folder_outline">@drawable/ic_folder_outline</item>
         <item name="ic_dots_vertical">@drawable/ic_dots_vertical</item>
+        <item name="ic_attachment">@drawable/ic_attachment</item>
 
         <item name="drawer_header">@drawable/drawer_header_dark</item>
     </style>

@@ -7,9 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.util.Log;
@@ -43,11 +41,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ArticleFragment extends Fragment  {
+import icepick.State;
+
+public class ArticleFragment extends StateSavedFragment  {
 	private final String TAG = this.getClass().getSimpleName();
 
 	private SharedPreferences m_prefs;
-	private Article m_article;
+	@State protected Article m_article;
 	private DetailActivity m_activity;
     private WebView m_web;
     protected View m_customView;
@@ -158,12 +158,12 @@ public class ArticleFragment extends Fragment  {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
-		if (savedInstanceState != null) {
-			m_article = savedInstanceState.getParcelable("article");
-            //m_fsviewShown = savedInstanceState.getBoolean("fsviewShown");
-		}
-
 		final View view = inflater.inflate(R.layout.fragment_article, container, false);
+
+		// couldn't reinitialize state properly, might as well bail out
+		if (m_article == null) {
+		    m_activity.finish();
+        }
 
         /* if (m_fsviewShown) {
             view.findViewById(R.id.article_fullscreen_video).setVisibility(View.VISIBLE);
@@ -171,7 +171,7 @@ public class ArticleFragment extends Fragment  {
         } */
 
         m_contentView = view.findViewById(R.id.article_scrollview);
-        m_customViewContainer = (FrameLayout) view.findViewById(R.id.article_fullscreen_video);
+        m_customViewContainer = view.findViewById(R.id.article_fullscreen_video);
 
         /* if (m_article.id == HeadlinesFragment.ARTICLE_SPECIAL_TOP_CHANGED) {
             TextView statusMessage = (TextView) view.findViewById(R.id.article_status_message);
@@ -184,7 +184,7 @@ public class ArticleFragment extends Fragment  {
             return view;
         } */
 
-        NotifyingScrollView scrollView = (NotifyingScrollView) view.findViewById(R.id.article_scrollview);
+        NotifyingScrollView scrollView = view.findViewById(R.id.article_scrollview);
         m_fab = view.findViewById(R.id.article_fab);
 
         if (scrollView != null && m_activity.isSmallScreen()) {
@@ -228,7 +228,7 @@ public class ArticleFragment extends Fragment  {
         m_articleFontSize = Integer.parseInt(m_prefs.getString("article_font_size_sp", "16"));
         m_articleSmallFontSize = Math.max(10, Math.min(18, m_articleFontSize - 2));
 
-        TextView title = (TextView)view.findViewById(R.id.title);
+        TextView title = view.findViewById(R.id.title);
 
         if (title != null) {
 
@@ -257,7 +257,23 @@ public class ArticleFragment extends Fragment  {
 
         }
 
-        ImageView share = (ImageView)view.findViewById(R.id.share);
+        ImageView attachments = view.findViewById(R.id.attachments);
+
+        if (attachments != null) {
+            if (m_article.attachments != null && m_article.attachments.size() > 0) {
+                attachments.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        m_activity.displayAttachments(m_article);
+                    }
+                });
+
+            } else {
+                attachments.setVisibility(View.GONE);
+            }
+        }
+
+        ImageView share = view.findViewById(R.id.share);
 
         if (share != null) {
             share.setOnClickListener(new OnClickListener() {
@@ -268,7 +284,7 @@ public class ArticleFragment extends Fragment  {
             });
         }
 
-        TextView comments = (TextView)view.findViewById(R.id.comments);
+        TextView comments = view.findViewById(R.id.comments);
 
         if (comments != null) {
             if (m_activity.getApiLevel() >= 4 && m_article.comments_count > 0) {
@@ -297,7 +313,7 @@ public class ArticleFragment extends Fragment  {
             }
         }
 
-        TextView note = (TextView)view.findViewById(R.id.note);
+        TextView note = view.findViewById(R.id.note);
 
         if (note != null) {
             if (m_article.note != null && !"".equals(m_article.note)) {
@@ -309,17 +325,22 @@ public class ArticleFragment extends Fragment  {
 
         }
 
-        TextView dv = (TextView)view.findViewById(R.id.date);
+        TextView dv = view.findViewById(R.id.date);
 
         if (dv != null) {
             dv.setTextSize(TypedValue.COMPLEX_UNIT_SP, m_articleSmallFontSize);
 
             Date d = new Date(m_article.updated * 1000L);
-            DateFormat df = new SimpleDateFormat("MMM dd, HH:mm");
+            long half_a_year_ago = System.currentTimeMillis()/1000L - 182*24*60*60;
+            DateFormat df;
+            if (m_article.updated < half_a_year_ago)
+                df = new SimpleDateFormat("MMM dd, yyyy");
+            else
+                df = new SimpleDateFormat("MMM dd, HH:mm");
             dv.setText(df.format(d));
         }
 
-        TextView tagv = (TextView)view.findViewById(R.id.tags);
+        TextView tagv = view.findViewById(R.id.tags);
 
         if (tagv != null) {
             tagv.setTextSize(TypedValue.COMPLEX_UNIT_SP, m_articleSmallFontSize);
@@ -346,7 +367,7 @@ public class ArticleFragment extends Fragment  {
             }
         }
 
-        m_web = (WebView)view.findViewById(R.id.article_content);
+        m_web = view.findViewById(R.id.article_content);
 
         m_web.setWebViewClient(new WebViewClient() {
         @Override
@@ -389,14 +410,16 @@ public class ArticleFragment extends Fragment  {
 
         m_web.setVisibility(View.VISIBLE);
 
-        //renderContent(savedInstanceState);
+        // we no longer use async rendering because chrome 66 webview breaks on it sometimes
 
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 renderContent(savedInstanceState);
             }
-        }, 250);
+        }, 250);*/
+
+        renderContent(savedInstanceState);
 
         return view;
 	}
@@ -461,7 +484,7 @@ public class ArticleFragment extends Fragment  {
                 "<meta content=\"text/html; charset=utf-8\" http-equiv=\"content-type\">" +
                 "<meta name=\"viewport\" content=\"width=device-width, user-scalable=no\" />" +
                 "<style type=\"text/css\">" +
-                "body { padding : 0px; margin : 0px; line-height : 130%; }" +
+                "body { padding : 0px; margin : 0px; line-height : 130%; word-wrap: break-word; }" +
                 "img, video, iframe { max-width : 100%; width : auto; height : auto; }" +
                 " table { width : 100%; }" +
                 cssOverride +
@@ -563,14 +586,6 @@ public class ArticleFragment extends Fragment  {
 		super.onDestroy();		
 	}
 	
-	@Override
-	public void onSaveInstanceState (Bundle out) {		
-		super.onSaveInstanceState(out);
-
-		out.setClassLoader(getClass().getClassLoader());
-		out.putParcelable("article", m_article);
-	}
-
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);		

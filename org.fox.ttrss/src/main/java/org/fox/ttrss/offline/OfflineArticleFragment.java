@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
@@ -20,10 +21,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -52,11 +55,78 @@ public class OfflineArticleFragment extends Fragment {
 	private SharedPreferences m_prefs;
 	private int m_articleId;
 	private boolean m_isCat = false; // FIXME use
+	private WebView m_web;
 	private Cursor m_cursor;
-	private OfflineActivity m_activity;
+	private OfflineDetailActivity m_activity;
+
+	protected View m_customView;
+	protected FrameLayout m_customViewContainer;
+	protected View m_contentView;
+	protected FSVideoChromeClient m_chromeClient;
+	protected View m_fab;
 	
 	public void initialize(int articleId) {
 		m_articleId = articleId;
+	}
+
+	private class FSVideoChromeClient extends WebChromeClient {
+		//protected View m_videoChildView;
+
+		private CustomViewCallback m_callback;
+
+		public FSVideoChromeClient(View container) {
+			super();
+
+		}
+
+		@Override
+		public void onShowCustomView(View view, CustomViewCallback callback) {
+			m_activity.getSupportActionBar().hide();
+
+			// if a view already exists then immediately terminate the new one
+			if (m_customView != null) {
+				callback.onCustomViewHidden();
+				return;
+			}
+			m_customView = view;
+			m_contentView.setVisibility(View.GONE);
+
+			m_customViewContainer.setVisibility(View.VISIBLE);
+			m_customViewContainer.addView(view);
+
+			if (m_fab != null) m_fab.setVisibility(View.GONE);
+
+			m_activity.showSidebar(false);
+
+			m_callback = callback;
+		}
+
+		@Override
+		public void onHideCustomView() {
+			super.onHideCustomView();
+
+			m_activity.getSupportActionBar().show();
+
+			if (m_customView == null)
+				return;
+
+			m_contentView.setVisibility(View.VISIBLE);
+			m_customViewContainer.setVisibility(View.GONE);
+
+			// Hide the custom view.
+			m_customView.setVisibility(View.GONE);
+
+			// Remove the custom view from its container.
+			m_customViewContainer.removeView(m_customView);
+			m_callback.onCustomViewHidden();
+
+			if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
+				m_fab.setVisibility(View.VISIBLE);
+
+			m_customView = null;
+
+			m_activity.showSidebar(true);
+		}
 	}
 
 	@Override
@@ -134,10 +204,13 @@ public class OfflineArticleFragment extends Fragment {
 		m_cursor.moveToFirst();
 		
 		if (m_cursor.isFirst()) {
+			m_contentView = view.findViewById(R.id.article_scrollview);
+			m_customViewContainer = view.findViewById(R.id.article_fullscreen_video);
+
             final String link = m_cursor.getString(m_cursor.getColumnIndex("link"));
 
-            NotifyingScrollView scrollView = (NotifyingScrollView) view.findViewById(R.id.article_scrollview);
-            View fab = view.findViewById(R.id.article_fab);
+            NotifyingScrollView scrollView = view.findViewById(R.id.article_scrollview);
+            m_fab = view.findViewById(R.id.article_fab);
 
             if (scrollView != null && m_activity.isSmallScreen()) {
                 view.findViewById(R.id.article_heading_spacer).setVisibility(View.VISIBLE);
@@ -157,11 +230,11 @@ public class OfflineArticleFragment extends Fragment {
                 });
             }
 
-            if (scrollView != null && fab != null) {
+            if (scrollView != null && m_fab != null) {
                 if (m_prefs.getBoolean("enable_article_fab", true)) {
-                    scrollView.setOnTouchListener(new ShowHideOnScroll(fab));
+                    scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
 
-                    fab.setOnClickListener(new OnClickListener() {
+                    m_fab.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             try {
@@ -177,14 +250,14 @@ public class OfflineArticleFragment extends Fragment {
                         }
                     });
                 } else {
-                    fab.setVisibility(View.GONE);
+                    m_fab.setVisibility(View.GONE);
                 }
             }
 
 			int articleFontSize = Integer.parseInt(m_prefs.getString("article_font_size_sp", "16"));
 			int articleSmallFontSize = Math.max(10, Math.min(18, articleFontSize - 2));
 			
-			TextView title = (TextView)view.findViewById(R.id.title);
+			TextView title = view.findViewById(R.id.title);
 
 			if (title != null) {
 
@@ -213,7 +286,14 @@ public class OfflineArticleFragment extends Fragment {
 
 			}
 
-			ImageView share = (ImageView)view.findViewById(R.id.share);
+
+			ImageView attachments = view.findViewById(R.id.attachments);
+
+			if (attachments != null) {
+				attachments.setVisibility(View.GONE);
+			}
+
+			ImageView share = view.findViewById(R.id.share);
 
 			if (share != null) {
 				share.setOnClickListener(new OnClickListener() {
@@ -225,26 +305,26 @@ public class OfflineArticleFragment extends Fragment {
 			}
 
 
-			TextView comments = (TextView)view.findViewById(R.id.comments);
+			TextView comments = view.findViewById(R.id.comments);
 			
 			if (comments != null) {
 				comments.setVisibility(View.GONE);
 			}
 			
-			TextView note = (TextView)view.findViewById(R.id.note);
+			TextView note = view.findViewById(R.id.note);
 			
 			if (note != null) {
 				note.setVisibility(View.GONE);
 			}
 			
-			final WebView web = (WebView)view.findViewById(R.id.article_content);
+			m_web = view.findViewById(R.id.article_content);
 			
-			if (web != null) {
+			if (m_web != null) {
 				if (CommonActivity.THEME_DARK.equals(m_prefs.getString("theme", CommonActivity.THEME_DEFAULT))) {
-					web.setBackgroundColor(Color.BLACK);
+					m_web.setBackgroundColor(Color.BLACK);
 				}
 
-				web.setWebViewClient(new WebViewClient() {
+				m_web.setWebViewClient(new WebViewClient() {
 					@Override
 					public boolean shouldOverrideUrlLoading(WebView view, String url) {
 						try {
@@ -259,15 +339,15 @@ public class OfflineArticleFragment extends Fragment {
 						return false;
 					} });
 
-				web.setOnLongClickListener(new View.OnLongClickListener() {
+				m_web.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         HitTestResult result = ((WebView) v).getHitTestResult();
 
                         if (result != null && (result.getType() == HitTestResult.IMAGE_TYPE || result.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE)) {
-                            registerForContextMenu(web);
-                            m_activity.openContextMenu(web);
-                            unregisterForContextMenu(web);
+                            registerForContextMenu(m_web);
+                            m_activity.openContextMenu(m_web);
+                            unregisterForContextMenu(m_web);
                             return true;
                         } else {
                             return false;
@@ -278,15 +358,24 @@ public class OfflineArticleFragment extends Fragment {
                 // prevent flicker in ics
                 if (!m_prefs.getBoolean("webview_hardware_accel", true)) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-                        web.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+						m_web.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                     }
                 }
 
                 String content;
                 String cssOverride = "";
 
-                WebSettings ws = web.getSettings();
+                WebSettings ws = m_web.getSettings();
                 ws.setSupportZoom(false);
+
+				if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+					ws.setJavaScriptEnabled(true);
+
+					m_chromeClient = new FSVideoChromeClient(getView());
+					m_web.setWebChromeClient(m_chromeClient);
+
+					ws.setMediaPlaybackRequiresUserGesture(false);
+				}
 
 				// we need to show "insecure" file:// urls
 				if (m_prefs.getBoolean("offline_image_cache_enabled", false)) {
@@ -319,10 +408,12 @@ public class OfflineArticleFragment extends Fragment {
 				if (doc != null) {
 					if (m_prefs.getBoolean("offline_image_cache_enabled", false)) {
 						
-						Elements images = doc.select("img");
+						Elements images = doc.select("img,source");
 						
 						for (Element img : images) {
 							String url = img.attr("src");
+
+							Log.d(TAG, "src=" + url);
 							
 							if (ImageCacheService.isUrlCached(m_activity, url)) {						
 								img.attr("src", "file://" + ImageCacheService.getCacheFileName(m_activity, url));
@@ -331,10 +422,10 @@ public class OfflineArticleFragment extends Fragment {
 					}
 					
 					// thanks webview for crashing on <video> tag
-					Elements videos = doc.select("video");
+					/*Elements videos = doc.select("video");
 					
 					for (Element video : videos)
-						video.remove();
+						video.remove();*/
 					
 					articleContent = doc.toString();
 				}
@@ -352,7 +443,7 @@ public class OfflineArticleFragment extends Fragment {
                     "<meta name=\"viewport\" content=\"width=device-width, user-scalable=no\" />" +
                     "<style type=\"text/css\">" +
                     "body { padding : 0px; margin : 0px; line-height : 130%; }" +
-                    "img { max-width : 100%; width : auto; height : auto; }" +
+                    "img,video { max-width : 100%; width : auto; height : auto; }" +
                     " table { width : 100%; }" +
                     cssOverride +
                     "</style>" +
@@ -370,8 +461,8 @@ public class OfflineArticleFragment extends Fragment {
 					} catch (MalformedURLException e) {
 						//
 					}
-					
-					web.loadDataWithBaseURL(baseUrl, content, "text/html", "utf-8", null);
+
+					m_web.loadDataWithBaseURL(baseUrl, content, "text/html", "utf-8", null);
 				} catch (RuntimeException e) {					
 					e.printStackTrace();
 				}
@@ -379,7 +470,7 @@ public class OfflineArticleFragment extends Fragment {
 			
 			}
 			
-			TextView dv = (TextView)view.findViewById(R.id.date);
+			TextView dv = view.findViewById(R.id.date);
 			
 			if (dv != null) {
 				dv.setTextSize(TypedValue.COMPLEX_UNIT_SP, articleSmallFontSize);
@@ -389,7 +480,7 @@ public class OfflineArticleFragment extends Fragment {
 				dv.setText(df.format(d));
 			}
 
-			TextView tagv = (TextView)view.findViewById(R.id.tags);
+			TextView tagv = view.findViewById(R.id.tags);
 						
 			if (tagv != null) {
 				tagv.setTextSize(TypedValue.COMPLEX_UNIT_SP, articleSmallFontSize);
@@ -422,12 +513,44 @@ public class OfflineArticleFragment extends Fragment {
 	}
 
 	@Override
+	public void onPause() {
+		super.onPause();
+
+		if (m_web != null) m_web.onPause();
+	}
+
+	public boolean inCustomView() {
+		return (m_customView != null);
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();	
 		
 		m_cursor.close();
 	}
-	
+
+	public void hideCustomView() {
+		if (m_chromeClient != null) {
+			m_chromeClient.onHideCustomView();
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (m_web != null) m_web.onResume();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+
+		if (inCustomView()) {
+			hideCustomView();
+		}
+	}
 	@Override
 	public void onSaveInstanceState (Bundle out) {		
 		super.onSaveInstanceState(out);
@@ -441,7 +564,7 @@ public class OfflineArticleFragment extends Fragment {
 		
 		m_prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
-		m_activity = (OfflineActivity) activity;
+		m_activity = (OfflineDetailActivity) activity;
 		
 	}
 }

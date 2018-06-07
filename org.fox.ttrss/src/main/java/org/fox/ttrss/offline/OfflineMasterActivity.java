@@ -26,7 +26,9 @@ import org.fox.ttrss.R;
 
 public class OfflineMasterActivity extends OfflineActivity implements OfflineHeadlinesEventListener {
 	private final String TAG = this.getClass().getSimpleName();
-	
+
+	private static final int OFFLINE_HEADLINES_REQUEST = 1;
+
 	//private boolean m_actionbarUpEnabled = false;
 	//private int m_actionbarRevertDepth = 0;
 	private boolean m_feedIsSelected = false;
@@ -250,7 +252,7 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 			if (fc != null) {
 				fc.setSelectedFeedId(-1);
 			}
-			
+
 			FragmentTransaction ft = getSupportFragmentManager()
 					.beginTransaction();
 
@@ -263,7 +265,7 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 			//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			//m_actionbarUpEnabled = true;
 			//m_actionbarRevertDepth = m_actionbarRevertDepth + 1;
-			
+
 			ft.commit();
 		}
 	}
@@ -292,6 +294,10 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 		
 		if (open) {
 
+			if (m_drawerLayout != null) {
+				m_drawerLayout.closeDrawers();
+			}
+
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
@@ -307,18 +313,8 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 					m_feedIsSelected = true;
 					//m_feedWasSelected = true;
 
-					if (m_drawerLayout != null) {
-						/* if (findViewById(R.id.sw600dp_port_anchor) != null) {
-							m_slidingMenu.setBehindWidth(getScreenWidthInPixel() * 2/3);
-						} */
-
-                        m_drawerLayout.closeDrawers();
-
-						//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-						//m_actionbarUpEnabled = true;
-					}
 				}
-			}, 10);
+			}, 250);
 		}		
 	}
 
@@ -345,7 +341,7 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 			intent.putExtra("isCat", hf.getFeedIsCat());
 			intent.putExtra("article", articleId);
 	 	   
-			startActivityForResult(intent, 0);
+			startActivityForResult(intent, OFFLINE_HEADLINES_REQUEST);
 			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
 		} else {
@@ -358,4 +354,18 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 	public void onArticleSelected(int articleId) {
 		onArticleSelected(articleId, true);
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == OFFLINE_HEADLINES_REQUEST) {
+
+			OfflineHeadlinesFragment ohf = (OfflineHeadlinesFragment)getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+
+			if (ohf != null) {
+				ohf.refresh();
+			}
+		}
+
+	}
+
 }

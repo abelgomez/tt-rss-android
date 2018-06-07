@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.BadParcelableException;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ClassloaderWorkaroundFragmentStatePagerAdapter;
@@ -27,18 +28,20 @@ import org.fox.ttrss.util.HeadlinesRequest;
 
 import java.util.HashMap;
 
-public class ArticlePager extends Fragment {
+import icepick.State;
+
+public class ArticlePager extends StateSavedFragment {
 
 	private final String TAG = "ArticlePager";
 	private PagerAdapter m_adapter;
 	private HeadlinesEventListener m_listener;
-	private Article m_article;
-	private ArticleList m_articles = new ArticleList(); //m_articles = Application.getInstance().m_loadedArticles;
+	@State protected Article m_article;
+	@State protected ArticleList m_articles = new ArticleList(); //m_articles = Application.getInstance().m_loadedArticles;
 	private OnlineActivity m_activity;
 	private String m_searchQuery = "";
-	private Feed m_feed;
+	@State protected Feed m_feed;
 	private SharedPreferences m_prefs;
-	private int m_firstId = 0;
+	@State protected int m_firstId = 0;
 	private boolean m_refreshInProgress;
 	private boolean m_lazyLoadDisabled;
 
@@ -49,6 +52,18 @@ public class ArticlePager extends Fragment {
 		}
 
 		private ArticleFragment m_currentFragment;
+
+		// workaround for possible TransactionTooLarge exception on 8.0+
+		// we don't need to save member state anyway, bridge takes care of it
+		@Override
+		public Parcelable saveState() {
+			Bundle bundle = (Bundle) super.saveState();
+
+			if (bundle != null)
+				bundle.putParcelableArray("states", null); // Never maintain any states from the base class, just null it out
+
+			return bundle;
+		}
 
 		@Override
 		public Fragment getItem(int position) {
@@ -108,21 +123,14 @@ public class ArticlePager extends Fragment {
 		View view = inflater.inflate(R.layout.article_pager, container, false);
 	
 		if (savedInstanceState != null) {
-			m_article = savedInstanceState.getParcelable("article");
-
-			if (! (m_activity instanceof DetailActivity)) {
-				m_articles = savedInstanceState.getParcelable("articles");
-			} else {
+			if (m_activity instanceof DetailActivity) {
 				m_articles = ((DetailActivity)m_activity).m_articles;
 			}
-
-			m_feed = savedInstanceState.getParcelable("feed");
-			m_firstId = savedInstanceState.getInt("firstId");
 		}
 		
 		m_adapter = new PagerAdapter(getActivity().getSupportFragmentManager());
 		
-		ViewPager pager = (ViewPager) view.findViewById(R.id.article_pager);
+		ViewPager pager = view.findViewById(R.id.article_pager);
 				
 		int position = m_articles.indexOf(m_article);
 		
@@ -130,7 +138,7 @@ public class ArticlePager extends Fragment {
 
 		pager.setAdapter(m_adapter);
 
-        UnderlinePageIndicator indicator = (UnderlinePageIndicator)view.findViewById(R.id.article_pager_indicator);
+        UnderlinePageIndicator indicator = view.findViewById(R.id.article_pager_indicator);
         indicator.setViewPager(pager);
 
 		pager.setCurrentItem(position);
@@ -200,7 +208,7 @@ public class ArticlePager extends Fragment {
 				if (isDetached() || !isAdded()) return;
 
 				if (!append) {
-					ViewPager pager = (ViewPager) getView().findViewById(R.id.article_pager);
+					ViewPager pager = getView().findViewById(R.id.article_pager);
 					pager.setCurrentItem(0);
 
 					m_articles.clear();
@@ -339,17 +347,6 @@ public class ArticlePager extends Fragment {
 	}
 	
 	@Override
-	public void onSaveInstanceState(Bundle out) {
-		super.onSaveInstanceState(out);
-
-		out.setClassLoader(getClass().getClassLoader());
-		out.putParcelable("article", m_article);
-		out.putParcelable("articles", m_articles);
-		out.putParcelable("feed", m_feed);
-		out.putInt("firstId", m_firstId);
-	}
-	
-	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);		
 		
@@ -379,7 +376,7 @@ public class ArticlePager extends Fragment {
 
 			int position = m_articles.indexOf(m_article);
 
-			ViewPager pager = (ViewPager) getView().findViewById(R.id.article_pager);
+			ViewPager pager = getView().findViewById(R.id.article_pager);
 		
 			pager.setCurrentItem(position);
 		}
