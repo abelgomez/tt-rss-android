@@ -512,6 +512,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 				//Log.d(TAG, "onScrolled: " + m_refreshInProgress + " " + m_lazyLoadDisabled + " " + lastVisibleItem + " " + m_articles.size());
 
 				if (!m_refreshInProgress && !m_lazyLoadDisabled && lastVisibleItem >= m_articles.size() - 5) {
+					m_refreshInProgress = true;
 					new Handler().postDelayed(new Runnable() {
 						@Override
 						public void run() {
