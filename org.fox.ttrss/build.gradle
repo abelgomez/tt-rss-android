@@ -7,14 +7,14 @@ android {
     defaultConfig {
         applicationId "org.fox.ttrss"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
-        buildConfigField "boolean", "ENABLE_TRIAL", "false"
+        buildConfigField "boolean", "ENABLE_TRIAL", "true"
         minSdkVersion 16
         targetSdkVersion 27 // we're not targeting SDK 25 because of this: https://issuetracker.google.com/issues/37103380#makechanges
     }
 
     signingConfigs {
 			fdroid {
-				storeFile file(FDROID_STORE_FILE)
+              storeFile file(FDROID_STORE_FILE)
 		      storePassword FDROID_STORE_PASSWORD
 		      keyAlias FDROID_KEY_ALIAS
 		      keyPassword FDROID_KEY_PASSWORD
