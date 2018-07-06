@@ -13,11 +13,13 @@ android {
     }
 
     signingConfigs {
-			fdroid {
-              storeFile file(FDROID_STORE_FILE)
-		      storePassword FDROID_STORE_PASSWORD
-		      keyAlias FDROID_KEY_ALIAS
-		      keyPassword FDROID_KEY_PASSWORD
+        fdroid {
+            if (project.hasProperty("FDROID_STORE_FILE")) {
+                storeFile file(FDROID_STORE_FILE)
+                storePassword FDROID_STORE_PASSWORD
+                keyAlias FDROID_KEY_ALIAS
+                keyPassword FDROID_KEY_PASSWORD
+            }
         }
     }
 
