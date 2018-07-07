@@ -37,6 +37,7 @@ android {
 
         fdroid {
             minifyEnabled  false
+				versionNameSuffix "-fdroid"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
 				buildConfigField "boolean", "ENABLE_TRIAL", "false"
 				signingConfig signingConfigs.fdroid
