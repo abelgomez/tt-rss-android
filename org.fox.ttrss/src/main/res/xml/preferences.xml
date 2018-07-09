@@ -22,8 +22,13 @@
             android:summary="@string/ttrss_url_summary"
             android:title="@string/ttrss_url" >
         </EditTextPreference>
+
+        <Preference
+            android:key="network_settings"
+            android:title="@string/prefs_network_settings" />
+
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/ssl" >
+    <!-- <PreferenceCategory android:title="@string/ssl" >
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
             android:key="ssl_trust_any"
@@ -48,7 +53,7 @@
             android:singleLine="true"
             android:title="@string/password" >
         </EditTextPreference>
-    </PreferenceCategory>
+    </PreferenceCategory> -->
     <PreferenceCategory
         android:key="category_look_and_feel"
         android:title="@string/look_and_feel" >

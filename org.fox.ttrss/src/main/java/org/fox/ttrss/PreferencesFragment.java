@@ -1,18 +1,14 @@
 package org.fox.ttrss;
 
 import android.app.Activity;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class PreferencesFragment extends PreferenceFragment {
 
@@ -46,6 +42,19 @@ public class PreferencesFragment extends PreferenceFragment {
             buildTimestamp = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date(BuildConfig.TIMESTAMP));
 
             findPreference("build_timestamp").setSummary(getString(R.string.prefs_build_timestamp, buildTimestamp));
+
+            findPreference("network_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.preferences_container, new NetworkPreferencesFragment() )
+                            .addToBackStack( NetworkPreferencesFragment.class.getSimpleName() )
+                            .commit();
+
+                    return false;
+                }
+            });
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

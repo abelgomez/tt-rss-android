@@ -18,17 +18,19 @@ public class PreferencesActivity extends CommonActivity {
 
         setContentView(R.layout.activity_preferences);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().hide();
 
-        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (savedInstanceState == null) {
+            android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        ft.replace(R.id.preferences_container, new PreferencesFragment());
-        ft.commit();
+            ft.replace(R.id.preferences_container, new PreferencesFragment());
+            ft.commit();
+        }
     }
 
     @Override

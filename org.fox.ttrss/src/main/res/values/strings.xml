@@ -259,4 +259,5 @@
     <string name="offline_sync_try_again">Try again</string>
     <string name="offline_tap_to_switch">Tap to switch offline</string>
     <string name="offline_no_articles">No articles downloaded</string>
+    <string name="prefs_network_settings">More settings...</string>
 </resources>
