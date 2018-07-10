@@ -1,6 +1,5 @@
 package org.fox.ttrss.widget;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +10,14 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.fox.ttrss.ApiRequest;
+import org.fox.ttrss.CommonActivity;
 import org.fox.ttrss.util.SimpleLoginManager;
 
 import java.util.HashMap;
@@ -36,7 +37,10 @@ public class WidgetUpdateService extends Service {
         super.onCreate();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForeground(1, new Notification());
+            NotificationCompat.Builder nb = new NotificationCompat.Builder(getApplicationContext()).
+                setChannelId(CommonActivity.NOTIFICATION_CHANNEL_PRIORITY);
+
+            startForeground(1, nb.getNotification());
         }
     }
 
