@@ -54,10 +54,7 @@ public abstract class BaseFeedlistFragment extends StateSavedFragment {
                                 Intent intent = new Intent(getActivity(),
                                         PreferencesActivity.class);
 
-                                ActivityOptionsCompat options = ActivityOptionsCompat
-                                        .makeSceneTransitionAnimation(getActivity(), v, "SETTINGS_REVEAL");
-
-                                ActivityCompat.startActivityForResult(getActivity(), intent, 0, options.toBundle());
+                                startActivityForResult(intent, 0);
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -121,10 +118,7 @@ public abstract class BaseFeedlistFragment extends StateSavedFragment {
                                     Intent intent = new Intent(getActivity(),
                                             PreferencesActivity.class);
 
-                                    ActivityOptionsCompat options = ActivityOptionsCompat
-                                            .makeSceneTransitionAnimation(getActivity(), v, "SETTINGS_REVEAL");
-
-                                    ActivityCompat.startActivityForResult(getActivity(), intent, 0, options.toBundle());
+                                    startActivityForResult(intent, 0);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
