@@ -57,7 +57,7 @@ public class SmallWidgetProvider extends AppWidgetProvider {
 
 	@Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive");
+        Log.d(TAG, "onReceive: " + intent);
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName thisAppWidget = new ComponentName(context.getPackageName(), SmallWidgetProvider.class.getName());

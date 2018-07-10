@@ -1,5 +1,6 @@
 package org.fox.ttrss.widget;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import com.google.gson.JsonObject;
 
 import org.fox.ttrss.ApiRequest;
 import org.fox.ttrss.CommonActivity;
+import org.fox.ttrss.R;
 import org.fox.ttrss.util.SimpleLoginManager;
 
 import java.util.HashMap;
@@ -37,10 +39,14 @@ public class WidgetUpdateService extends Service {
         super.onCreate();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationCompat.Builder nb = new NotificationCompat.Builder(getApplicationContext()).
-                setChannelId(CommonActivity.NOTIFICATION_CHANNEL_PRIORITY);
+            NotificationCompat.Builder nb = new NotificationCompat.Builder(getApplicationContext())
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setPriority(Notification.PRIORITY_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .setChannelId(CommonActivity.NOTIFICATION_CHANNEL_NORMAL);
 
-            startForeground(1, nb.getNotification());
+            startForeground(1, nb.build());
         }
     }
 
@@ -105,6 +111,8 @@ public class WidgetUpdateService extends Service {
 
             } else {
 
+                Log.d(TAG, "starting update...");
+
                 final int feedId = m_prefs.getBoolean("widget_show_fresh", true) ? -3 : 0;
 
                 final SimpleLoginManager loginManager = new SimpleLoginManager() {
@@ -112,9 +120,14 @@ public class WidgetUpdateService extends Service {
                     @Override
                     protected void onLoginSuccess(int requestId, String sessionId, int apiLevel) {
 
+                        Log.d(TAG, "onLoginSuccess");
+
                         ApiRequest aru = new ApiRequest(getApplicationContext()) {
                             @Override
                             protected void onPostExecute(JsonElement result) {
+
+                                Log.d(TAG, "got result" + result);
+
                                 if (result != null) {
                                     try {
                                         JsonObject content = result.getAsJsonObject();
