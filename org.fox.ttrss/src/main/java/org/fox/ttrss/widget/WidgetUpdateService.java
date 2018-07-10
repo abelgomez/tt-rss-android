@@ -1,7 +1,8 @@
 package org.fox.ttrss.widget;
 
-import android.app.Notification;
-import android.app.Service;
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,22 +10,23 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.fox.ttrss.ApiRequest;
-import org.fox.ttrss.CommonActivity;
+import org.fox.ttrss.OnlineActivity;
 import org.fox.ttrss.R;
 import org.fox.ttrss.util.SimpleLoginManager;
 
 import java.util.HashMap;
 
-public class WidgetUpdateService extends Service {
+public class WidgetUpdateService extends JobIntentService {
     private final String TAG = this.getClass().getSimpleName();
     private SharedPreferences m_prefs;
 
@@ -35,44 +37,12 @@ public class WidgetUpdateService extends Service {
     public static final int UPDATE_IN_PROGRESS = 4;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
+    protected void onHandleWork(@NonNull Intent intent) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationCompat.Builder nb = new NotificationCompat.Builder(getApplicationContext())
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setPriority(Notification.PRIORITY_MIN)
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .setChannelId(CommonActivity.NOTIFICATION_CHANNEL_NORMAL);
-
-            startForeground(1, nb.build());
-        }
-    }
-
-    @Override
-	public IBinder onBind(Intent intent) {
-		Log.d(TAG, "onBind");
-
-		return null;
-	}
-
-    protected boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-
-        // if no network is available networkInfo will be null
-        // otherwise check if we are connected
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-        Log.d(TAG, "onStart");
+        Log.d(TAG, "onHandleWork: " + intent);
 
         try {
-            sendResultIntent(-1, UPDATE_IN_PROGRESS);
+            updateWidgets(-1, UPDATE_IN_PROGRESS);
 
             if (!isNetworkAvailable()) {
                 final int retryCount = intent.getIntExtra("retryCount", 0);
@@ -95,7 +65,7 @@ public class WidgetUpdateService extends Service {
                         }
                     }, 3 * 1000);
                 } else {
-                    sendResultIntent(-1, UPDATE_RESULT_ERROR_OTHER);
+                    updateWidgets(-1, UPDATE_RESULT_ERROR_OTHER);
                 }
 
                 stopSelf();
@@ -107,11 +77,9 @@ public class WidgetUpdateService extends Service {
 
             if (m_prefs.getString("ttrss_url", "").trim().length() == 0) {
 
-                sendResultIntent(-1, UPDATE_RESULT_ERROR_NEED_CONF);
+                updateWidgets(-1, UPDATE_RESULT_ERROR_NEED_CONF);
 
             } else {
-
-                Log.d(TAG, "starting update...");
 
                 final int feedId = m_prefs.getBoolean("widget_show_fresh", true) ? -3 : 0;
 
@@ -120,13 +88,9 @@ public class WidgetUpdateService extends Service {
                     @Override
                     protected void onLoginSuccess(int requestId, String sessionId, int apiLevel) {
 
-                        Log.d(TAG, "onLoginSuccess");
-
                         ApiRequest aru = new ApiRequest(getApplicationContext()) {
                             @Override
                             protected void onPostExecute(JsonElement result) {
-
-                                Log.d(TAG, "got result" + result);
 
                                 if (result != null) {
                                     try {
@@ -135,7 +99,7 @@ public class WidgetUpdateService extends Service {
                                         if (content != null) {
 
                                             int unread = content.get("unread").getAsInt();
-                                            sendResultIntent(unread, UPDATE_RESULT_OK);
+                                            updateWidgets(unread, UPDATE_RESULT_OK);
 
                                             return;
                                         }
@@ -146,7 +110,7 @@ public class WidgetUpdateService extends Service {
                                     Log.d(TAG, "request failed: " + getErrorMessage());
                                 }
 
-                                sendResultIntent(-1, UPDATE_RESULT_ERROR_OTHER);
+                                updateWidgets(-1, UPDATE_RESULT_ERROR_OTHER);
                             }
                         };
 
@@ -167,7 +131,7 @@ public class WidgetUpdateService extends Service {
                     protected void onLoginFailed(int requestId, ApiRequest ar) {
                         Log.d(TAG, "login failed: " + getString(ar.getErrorMessage()));
 
-                        sendResultIntent(-1, UPDATE_RESULT_ERROR_LOGIN);
+                        updateWidgets(-1, UPDATE_RESULT_ERROR_LOGIN);
                     }
 
                     @Override
@@ -186,22 +150,61 @@ public class WidgetUpdateService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
 
-            sendResultIntent(-1, UPDATE_RESULT_ERROR_OTHER);
+            updateWidgets(-1, UPDATE_RESULT_ERROR_OTHER);
         }
 
         stopSelf();
 
-        super.onStart(intent, startId);
     }
 
-	public void sendResultIntent(int unread, int resultCode) {
-		Intent intent = new Intent();
-        intent.setAction(SmallWidgetProvider.ACTION_UPDATE_RESULT);
-        intent.putExtra("resultCode", resultCode);
-        intent.putExtra("unread", unread);
+    protected boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
-        sendBroadcast(intent);
+        // if no network is available networkInfo will be null
+        // otherwise check if we are connected
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
+	public void updateWidgets(int unread, int resultCode) {
+        Log.d(TAG, "updateWidgets:" + unread + " " + resultCode);
+
+        Context context = getApplicationContext();
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), SmallWidgetProvider.class.getName());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+
+        updateWidgetsText(context, appWidgetManager, appWidgetIds, unread, resultCode);
 
         if (resultCode != UPDATE_IN_PROGRESS) stopSelf();
 	}
+
+    private void updateWidgetsText(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, int unread, int resultCode) {
+
+        Intent intent = new Intent(context, OnlineActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_small);
+        views.setOnClickPendingIntent(R.id.widget_main, pendingIntent);
+
+        String viewText;
+
+        switch (resultCode) {
+            case WidgetUpdateService.UPDATE_RESULT_OK:
+                viewText = String.valueOf(unread);
+                break;
+            case WidgetUpdateService.UPDATE_IN_PROGRESS:
+                viewText = "...";
+                break;
+            default:
+                viewText = "?";
+        }
+
+        views.setTextViewText(R.id.widget_unread_counter, viewText);
+
+        appWidgetManager.updateAppWidget(appWidgetIds, views);
+    }
+
 }

@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +27,7 @@ import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
 import org.fox.ttrss.types.Feed;
 import org.fox.ttrss.types.FeedCategory;
-import org.fox.ttrss.widget.SmallWidgetProvider;
+import org.fox.ttrss.widget.WidgetUpdateService;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -490,8 +491,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 		if (isFinishing() || date.getTime() - m_lastWidgetRefresh > 60*1000) {
 			m_lastWidgetRefresh = date.getTime();
 
-			Intent updateWidgetIntent = new Intent(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
-			sendBroadcast(updateWidgetIntent);
+			JobIntentService.enqueueWork(getApplicationContext(), WidgetUpdateService.class, 0, new Intent());
 		}
 
     }

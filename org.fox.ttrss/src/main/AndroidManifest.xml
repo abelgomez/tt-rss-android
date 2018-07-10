@@ -227,7 +227,6 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="org.fox.ttrss.WIDGET_FORCE_UPDATE" />
-                <action android:name="org.fox.ttrss.WIDGET_UPDATE_RESULT" />
             </intent-filter>
 
             <meta-data
@@ -237,7 +236,7 @@
 
         <service
             android:name=".widget.WidgetUpdateService"
-            android:enabled="true" />
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name=".DashClock"
             android:icon="@drawable/dashclock"
