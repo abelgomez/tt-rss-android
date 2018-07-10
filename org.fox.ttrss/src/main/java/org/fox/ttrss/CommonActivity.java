@@ -510,7 +510,8 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 
 		AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
 
-		Intent intentUpdate = new Intent(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
+		Intent intentUpdate = new Intent(context, SmallWidgetProvider.class);
+		intentUpdate.setAction(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
 
 		PendingIntent pendingIntentAlarm = PendingIntent.getBroadcast(context,
 				0, intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT);

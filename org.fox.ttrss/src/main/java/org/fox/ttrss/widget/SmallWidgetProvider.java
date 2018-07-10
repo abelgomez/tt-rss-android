@@ -48,8 +48,6 @@ public class SmallWidgetProvider extends AppWidgetProvider {
         }
 
         appWidgetManager.updateAppWidget(appWidgetIds, views);
-
-        JobIntentService.enqueueWork(context.getApplicationContext(), WidgetUpdateService.class, 0, new Intent());
     }
 
 	@Override
@@ -61,6 +59,14 @@ public class SmallWidgetProvider extends AppWidgetProvider {
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
 	    onUpdate(context, appWidgetManager, appWidgetIds);
+
+	    if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(intent.getAction()) ||
+                ACTION_REQUEST_UPDATE.equals(intent.getAction())) {
+
+	        Log.d(TAG, "sheduling widget update...");
+
+            JobIntentService.enqueueWork(context.getApplicationContext(), WidgetUpdateService.class, 0, new Intent());
+        }
 	}
 
 }
