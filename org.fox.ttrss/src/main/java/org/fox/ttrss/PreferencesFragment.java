@@ -19,10 +19,18 @@ public class PreferencesFragment extends PreferenceFragment {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-    }
+        findPreference("network_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.preferences_container, new NetworkPreferencesFragment() )
+                        .addToBackStack( NetworkPreferencesFragment.class.getSimpleName() )
+                        .commit();
 
-    public void onResume() {
-        super.onResume();
+                return false;
+            }
+        });
 
         try {
             String version;
@@ -42,19 +50,6 @@ public class PreferencesFragment extends PreferenceFragment {
             buildTimestamp = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date(BuildConfig.TIMESTAMP));
 
             findPreference("build_timestamp").setSummary(getString(R.string.prefs_build_timestamp, buildTimestamp));
-
-            findPreference("network_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    getFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.preferences_container, new NetworkPreferencesFragment() )
-                            .addToBackStack( NetworkPreferencesFragment.class.getSimpleName() )
-                            .commit();
-
-                    return false;
-                }
-            });
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
