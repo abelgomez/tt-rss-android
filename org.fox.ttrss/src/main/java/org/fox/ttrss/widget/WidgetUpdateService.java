@@ -41,6 +41,13 @@ public class WidgetUpdateService extends JobIntentService {
 
         Log.d(TAG, "onHandleWork: " + intent);
 
+        if (getWidgetCount(getApplicationContext()) == 0) {
+            Log.d(TAG, "no widgets to work on, bailing out");
+
+            stopSelf();
+            return;
+        }
+
         try {
             updateWidgets(-1, UPDATE_IN_PROGRESS);
 
@@ -155,6 +162,13 @@ public class WidgetUpdateService extends JobIntentService {
 
         stopSelf();
 
+    }
+
+    private int getWidgetCount(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), SmallWidgetProvider.class.getName());
+
+        return appWidgetManager.getAppWidgetIds(thisAppWidget).length;
     }
 
     protected boolean isNetworkAvailable() {
