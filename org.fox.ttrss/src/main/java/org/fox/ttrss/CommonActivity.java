@@ -30,6 +30,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.JobIntentService;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,6 +44,7 @@ import com.livefront.bridge.Bridge;
 
 import org.fox.ttrss.util.DatabaseHelper;
 import org.fox.ttrss.widget.SmallWidgetProvider;
+import org.fox.ttrss.widget.WidgetUpdateService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -571,5 +573,8 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 		Glide.get(this).clearMemory();
 	}
 
+	public static void requestWidgetUpdate(Context context) {
+		JobIntentService.enqueueWork(context.getApplicationContext(), WidgetUpdateService.class, 0, new Intent());
+	}
 }
 

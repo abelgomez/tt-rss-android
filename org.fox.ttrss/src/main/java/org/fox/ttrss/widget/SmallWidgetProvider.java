@@ -8,11 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v4.app.JobIntentService;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import org.fox.ttrss.CommonActivity;
 import org.fox.ttrss.OnlineActivity;
 import org.fox.ttrss.R;
 
@@ -65,7 +65,7 @@ public class SmallWidgetProvider extends AppWidgetProvider {
 
 	        Log.d(TAG, "sheduling widget update...");
 
-            JobIntentService.enqueueWork(context.getApplicationContext(), WidgetUpdateService.class, 0, new Intent());
+            CommonActivity.requestWidgetUpdate(context);
         }
 	}
 
