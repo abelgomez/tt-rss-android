@@ -378,7 +378,9 @@ public class OfflineArticleFragment extends Fragment {
 				}
 
 				// we need to show "insecure" file:// urls
-				if (m_prefs.getBoolean("offline_image_cache_enabled", false)) {
+				if (m_prefs.getBoolean("offline_image_cache_enabled", false) &&
+						android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
 					ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 				}
 
