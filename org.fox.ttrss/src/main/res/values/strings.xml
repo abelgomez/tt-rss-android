@@ -260,4 +260,7 @@
     <string name="offline_tap_to_switch">Tap to switch offline</string>
     <string name="offline_no_articles">No articles downloaded</string>
     <string name="prefs_network_settings">More settings...</string>
+    <string name="logcat_refresh">Refresh</string>
+    <string name="logcat_copy">Copy to clipboard</string>
+    <string name="logcat_title">Log viewer</string>
 </resources>

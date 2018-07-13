@@ -64,6 +64,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name=".LogcatActivity"
+            android:label="@string/logcat_title" >
+        </activity>
+        <activity
             android:name=".tasker.TaskerSettingsActivity"
             android:label="@string/app_name" >
             <intent-filter>

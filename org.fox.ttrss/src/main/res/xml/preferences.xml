@@ -193,6 +193,10 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/debugging" >
 
+        <Preference
+            android:key="show_logcat"
+            android:title="@string/logcat_title" />
+
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="true"
             android:key="webview_hardware_accel"
