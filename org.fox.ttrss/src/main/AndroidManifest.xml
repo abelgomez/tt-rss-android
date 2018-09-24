@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.fox.ttrss"
-    android:versionCode="483"
-    android:versionName="1.249">
+    android:versionCode="484"
+    android:versionName="1.250">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -25,6 +25,8 @@
             tools:node="remove" /> -->
         <meta-data android:name="org.fox.ttrss.glide.OkHttpProgressGlideModule"
             android:value="GlideModule" />
+
+        <meta-data android:name="android.max_aspect" android:value="2.1" />
 
         <activity
             android:name=".LaunchActivity"
