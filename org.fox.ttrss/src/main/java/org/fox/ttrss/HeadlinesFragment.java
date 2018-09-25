@@ -939,7 +939,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 			if (article.id == Article.TYPE_AMR_FOOTER && m_prefs.getBoolean("headlines_mark_read_scroll", false)) {
 				WindowManager wm = (WindowManager) m_activity.getSystemService(Context.WINDOW_SERVICE);
 				Display display = wm.getDefaultDisplay();
-				int screenHeight = display.getHeight();
+				int screenHeight = (int)(display.getHeight() * 1.5);
 
 				holder.view.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT, screenHeight));
 			}

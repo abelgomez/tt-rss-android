@@ -371,7 +371,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
         if (m_prefs.getBoolean("headlines_mark_read_scroll", false)) {
             WindowManager wm = (WindowManager) m_activity.getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
-            int screenHeight = display.getHeight();
+            int screenHeight = (int)(display.getHeight() * 1.5);
 
             View layout = inflater.inflate(R.layout.headlines_footer, container, false);
 
