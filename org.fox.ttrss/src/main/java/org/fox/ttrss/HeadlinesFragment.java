@@ -1652,7 +1652,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 			//Log.d(TAG, "XYR: " + pxToDp(w) + " " + pxToDp(h) + " " + r);
 
-			if (forceDown || h < m_minimumHeightToEmbed || r >= 1.2) {
+			if (forceDown || h < m_minimumHeightToEmbed || r >= 1) {
 
 				lp.addRule(RelativeLayout.BELOW, R.id.headline_header);
 
