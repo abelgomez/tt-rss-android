@@ -11,11 +11,11 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         maven { url "http://dl.bintray.com/populov/maven" }
         maven { url "http://jzaccone.github.io/SlidingMenu-aar" }
         maven { url "https://jitpack.io" }
         maven {url "https://clojars.org/repo/"}
         jcenter()
-        google()
     }
 }
