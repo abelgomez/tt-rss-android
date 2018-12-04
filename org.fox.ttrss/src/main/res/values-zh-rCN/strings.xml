@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Tiny Tiny RSS</string>
     <string name="accel_webview_title">Web Views加速(3.0+)</string>
@@ -80,7 +80,7 @@
     <string name="headlines_all_articles">所有文章</string>
     <string name="headlines_mark_as_read">标记为已读</string>
     <string name="headlines_published">已发布</string>
-    <string name="headlines_row_top_changed">发现新的文章，重新载入信息源以继续</string>
+    <string name="headlines_row_top_changed">发现新的文章，重新载入信息源以继续.</string>
     <string name="headlines_select">选择文章</string>
     <string name="headlines_select_all">全选</string>
     <string name="headlines_select_dialog">选择文章</string>
@@ -119,7 +119,7 @@
     <string name="offline_articles_to_download_long">离线模式要下载多少文章（新文章优先）</string>
     <string name="offline_mode">离线模式</string>
     <string name="offline_sync_success">离线数据同步已完成</string>
-    <string name="open_with">用其他方式打开</string>
+    <string name="open_with">用其他方式打开…</string>
     <string name="password">密码</string>
     <string name="place_shortcut">放置快捷方式</string>
     <string name="pref_font_size">文章文本大小</string>
@@ -180,7 +180,7 @@
     <string name="trial_expired">试用已到期</string>
     <string name="trial_expired_message">若要继续使用 Tiny Tiny RSS 请购买并解锁完整版本。</string>
     <string name="trial_purchase">解锁完整版本</string>
-    <string name="ttrss_url">Tiny Tiny RSS URL</string>
+    <string name="ttrss_url">Tiny Tiny RSS 网址</string>
     <string name="ttrss_url_summary">http://example.org/tt-rss</string>
     <string name="unread_only">仅未读</string>
     <string name="unsubscribe">取消订阅</string>
@@ -213,4 +213,23 @@
     <string name="browse_cats_like_feeds_summary">分类直接显示其所有信息源的文章</string>
     <string name="go_online">在线模式</string>
     <string name="dialog_ok">OK</string>
+<plurals name="article_comments">
+	<item quantity="other">%1$d 评论</item>
+</plurals>
+
+    <plurals name="trial_mode_prompt">
+	<item quantity="other">试用模式,剩余 %1$d 天.</item>
+</plurals>
+
+    <plurals name="mark_num_headlines_as_read">
+	<item quantity="other">标记 %1$d 文章为已读\?</item>
+</plurals>
+
+    <plurals name="n_unread_articles">
+	<item quantity="other">%1$d 未读文章</item>
+</plurals>
+
+    <string name="logcat_refresh">刷新</string>
+    <string name="logcat_copy">复制到剪贴板</string>
+    <string name="logcat_title">查看日志</string>
 </resources>
