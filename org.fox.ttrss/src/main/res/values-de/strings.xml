@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
 
     <string name="login_in_progress">Anmelden…</string>
     <string name="app_name">Tiny Tiny RSS</string>
     <string name="login_need_configure">Bitte erst Einstellungen überprüfen.</string>
-    <string name="login_ready">Bereit zur Anmeldung</string>
+    <string name="login_ready">Bereit zur Anmeldung.</string>
     <string name="login_login">Anmelden</string>
     <string name="logout">Abmelden</string>
     <string name="login">Benutzername</string>
@@ -30,7 +30,7 @@
     <string name="sort_feeds_by_unread">Sortiere Feeds nach ungelesenen Artikeln</string>
     <string name="ssl_trust_any">Jedes SSL Zertifikat akzeptieren</string>
     <string name="category_browse_feeds">Feeds anzeigen</string>
-    <string name="blank"></string>
+    <string name="blank"/>
     <string name="transport_debugging">Gesendete und empfangene Daten aufzeichnen</string>
     <string name="article_toggle_marked">Markierung ein-/ausschalten</string>
     <string name="article_toggle_unread">Als (un)gelesen markieren</string>
@@ -53,7 +53,7 @@
     <string name="enable_cats">Feedkategorien aktivieren</string>
     <string name="no_caption_to_display">Keine Bildunterschrift vorhanden</string>
     <string name="browse_cats_like_feeds">Kategorien als Feeds anzeigen</string>
-    <string name="browse_cats_like_feeds_summary">Kann im Kontextmenü jeder Kategorie angepasst werden.</string>
+    <string name="browse_cats_like_feeds_summary">Kann im Kontextmenü jeder Kategorie angepasst werden</string>
     <string name="headlines_mark_as_read">Als gelesen markieren</string>
     <string name="error_unknown">Fehler: Unbekannter Fehler (siehe Log)</string>
     <string name="error_http_unauthorized">Fehler: 401 Nicht autorisiert</string>
@@ -115,7 +115,7 @@
     <string name="use_volume_keys_long">Mit den Hardware-Lautstärketasten zwischen einzelnen Artikeln wechseln</string>
     <string name="ssl_trust_any_host">Keine Überprüfung des Hostnamens</string>
     <string name="error_api_unknown_method">Fehler: Unbekannte API-Methode</string>
-    <string name="ssl_trust_any_long">Akzeptiert jedes SSL Zertifikat ohne Überprüfung!</string>
+    <string name="ssl_trust_any_long">Jedes SSL Zertifikat ohne Überprüfung aktivieren</string>
     <string name="ssl_trust_any_host_long">Server-Hostname nicht überprüfen</string>
     <string name="ssl">SSL</string>
     <string name="error_ssl_hostname_rejected">Fehler: SSL-Hostname nicht korrekt</string>
@@ -171,8 +171,9 @@
     <string name="pref_headlines_mark_read_scroll_long">Überschriften werden beim Vorbeiscrollen als gelesen markiert</string>
 
     <plurals name="mark_num_headlines_as_read">
-        <item quantity="other">%1$d Artikel als gelesen markieren?</item>
-    </plurals>
+	<item quantity="one">%1$d Artikel als gelesen markieren\?</item>
+	<item quantity="other">%1$d Artikel als gelesen markieren\?</item>
+</plurals>
 
     <string name="prefs_confirm_headlines_catchup">Nachfrage bei "als gelesen markieren"</string>
     <string name="author_formatted">von %1$s</string>
@@ -232,4 +233,37 @@
 
     <string name="flavor_image_prompt">(mehr Bilder...)</string>
     <string name="headlines_row_top_changed">Neue Artikel gefunden, aktualisieren um fortzufahren.</string>
+<string name="offline_switch_failed">Offlinemodus vorbereiten ist fehlgeschlagen</string>
+    <string name="offline_media_cache_enabled">Mediencache</string>
+    <string name="offline_media_cache_enabled_summary">Medien Dateien auf die SD-Karte herunterladen. Dies erhöht drastisch die Zeit, die es dauert, bis man Offline gehen kann</string>
+    <string name="notify_downloading_media">Lade Mediendateien herunter…</string>
+    <string name="article_media_share">Teilen</string>
+    <string name="prefs_custom_tabs_summary">Öffne externe Links in einem extra Browser Tab (schneller, benutzen wenn verfügbar)</string>
+    <string name="prefs_use_custom_tabs">Schnellvorschau verwenden</string>
+    <string name="ask_me_every_time">Frag mich jedes mal</string>
+    <string name="quick_preview">Schnellvorschau</string>
+    <string name="prefs_opening_links">Öffne Links</string>
+    <string name="open_with">Öffne mit…</string>
+    <string name="confirm_catchup_above">Alle Artikel als gelesen markieren\?</string>
+    <string name="dialog_ok">OK</string>
+    <string name="headline_undo_row_button">Rückgängig</string>
+    <string name="headline_undo_row_prompt">als gelesen markiert</string>
+    <string name="pref_headlines_swipe_to_dismiss">Swipen zum verwerfen</string>
+    <string name="pref_headlines_swipe_to_dismiss_long">Deaktiviere das Kontextmenü für Überschriften</string>
+    <string name="pref_widget_update_interval">Aktualisierungsintervall (in Minuten)</string>
+
+    <string name="widget_background_light">Hell</string>
+    <string name="widget_background_dark">Dunkel</string>
+    <string name="widget_background_transparent">Transparent</string>
+    <string name="pref_widget_background">Widget Theme</string>
+    <string name="pref_widget_update_interval_summary">Der Intervall ist nicht präzise, dank Limitierungen von Android.</string>
+    <string name="prefs_offline_sort_by_feed">Gruppiere Überschriften nach Feeds</string>
+    <string name="reload">Aktualisieren</string>
+    <string name="offline_sync_try_again">Nochmal versuchen</string>
+    <string name="offline_tap_to_switch">Drücken, um Offlinemodus zu wechseln</string>
+    <string name="offline_no_articles">Keine Artikel heruntergeladen</string>
+    <string name="prefs_network_settings">Mehr Einstellungen...</string>
+    <string name="logcat_refresh">Aktualisieren</string>
+    <string name="logcat_copy">In die Zwischenablage kopieren</string>
+    <string name="logcat_title">Log Ansicht</string>
 </resources>
