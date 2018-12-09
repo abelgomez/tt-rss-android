@@ -47,32 +47,32 @@ android {
 }
 
 dependencies {
-    compile files('libs/dashclock-api-r1.1.jar')
-    compile 'com.squareup.okhttp3:okhttp:3.10.0'
-    compile('com.github.bumptech.glide:okhttp3-integration:1.5.0') {
+    implementation files('libs/dashclock-api-r1.1.jar')
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation('com.github.bumptech.glide:okhttp3-integration:1.5.0') {
         exclude group: 'glide-parent'
     }
-    compile 'org.jsoup:jsoup:1.10.2'
-    compile 'com.bogdwellers:pinchtozoom:0.1'
-    compile 'com.github.bumptech.glide:glide:3.8.0'
-    compile 'jp.wasabeef:glide-transformations:2.0.2'
-    compile 'com.android.support:recyclerview-v7:27.1.1'
-    compile 'com.android.support:cardview-v7:27.1.1'
-    compile 'com.android.support:support-v4:27.1.1'
-    compile 'com.android.support:appcompat-v7:27.1.1'
-    compile 'com.android.support:customtabs:27.1.1'
-    compile 'com.android.support:design:27.1.1'
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.shamanland:fab:0.0.8'
-    compile 'ch.acra:acra:4.9.1'
-    compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
-    compile 'me.relex:circleindicator:1.2.2@aar'
-    compile 'com.viewpagerindicator:library:2.4.1'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
-    compile 'frankiesardo:icepick:3.2.0'
-    provided 'frankiesardo:icepick-processor:3.2.0'
+    implementation 'org.jsoup:jsoup:1.10.2'
+    implementation 'com.bogdwellers:pinchtozoom:0.1'
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:customtabs:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.shamanland:fab:0.0.8'
+    implementation 'ch.acra:acra:4.9.1'
+    implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+    implementation 'me.relex:circleindicator:1.2.2@aar'
+    implementation 'com.viewpagerindicator:library:2.4.1'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'frankiesardo:icepick:3.2.0'
+    compileOnly 'frankiesardo:icepick-processor:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
-    compile 'com.github.livefront:bridge:v1.1.1'
-    compile files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.github.livefront:bridge:v1.1.1'
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
