@@ -70,6 +70,8 @@
     <style name="AmberTheme" parent="DarkTheme">
         <item name="colorPrimary">#b87d2c</item>
         <item name="colorPrimaryDark">#6e4b1a</item>
+        <item name="android:windowBackground">@color/window_background_amber</item>
+        <item name="drawer_header">@drawable/drawer_header_amber</item>
     </style>
 
     <style name="DarkTheme" parent="DarkTheme.Base">

@@ -2,5 +2,5 @@
 <resources>
     <item name="window_background" type="color">#216d96</item>
     <item name="window_background_dark" type="color">#18506e</item>
-
+    <item name="window_background_amber" type="color">#6e4b1a</item>
 </resources>
