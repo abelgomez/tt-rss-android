@@ -320,7 +320,9 @@ public class OfflineArticleFragment extends Fragment {
 			m_web = view.findViewById(R.id.article_content);
 			
 			if (m_web != null) {
-				if (CommonActivity.THEME_DARK.equals(m_prefs.getString("theme", CommonActivity.THEME_DEFAULT))) {
+
+				String theme = m_prefs.getString("theme", CommonActivity.THEME_DEFAULT);
+				if (CommonActivity.THEME_DARK.equals(theme) || CommonActivity.THEME_AMBER.equals(theme)) {
 					m_web.setBackgroundColor(Color.BLACK);
 				}
 

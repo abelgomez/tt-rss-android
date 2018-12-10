@@ -67,7 +67,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 	public final static String THEME_DARK = "THEME_DARK";
 	public final static String THEME_LIGHT = "THEME_LIGHT";
 	//public final static String THEME_SEPIA = "THEME_SEPIA";
-    //public final static String THEME_AMBER = "THEME_AMBER";
+    public final static String THEME_AMBER = "THEME_AMBER";
 	public final static String THEME_DEFAULT = CommonActivity.THEME_LIGHT;
 
 	public final static String NOTIFICATION_CHANNEL_NORMAL = "channel_normal";
@@ -315,7 +315,9 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 		String theme = prefs.getString("theme", CommonActivity.THEME_DEFAULT);
 		
 		if (theme.equals(THEME_DARK)) {
-            setTheme(R.style.DarkTheme);
+			setTheme(R.style.DarkTheme);
+		} else if (theme.equals(THEME_AMBER)) {
+			setTheme(R.style.AmberTheme);
 		} else {
 			setTheme(R.style.LightTheme);
 		}

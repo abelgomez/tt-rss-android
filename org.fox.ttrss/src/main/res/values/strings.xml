@@ -134,8 +134,7 @@
     <string name="trial_purchase">Unlock full version</string>
     <string name="trial_expired">Trial expired</string>
     <string name="trial_expired_message">To continue using Tiny Tiny RSS please unlock the full version by purchasing the key.</string>
-    <!-- <string name="theme_sepia">Sepia</string>
-    <string name="theme_amber">Amber</string> -->
+    <string name="theme_amber">Amber</string>
     <string name="reading">Reading</string>
     <string name="offline_articles_to_download">Amount of articles to download</string>
     <string name="offline_articles_to_download_long">How many articles to download for offline mode (newest first)</string>
