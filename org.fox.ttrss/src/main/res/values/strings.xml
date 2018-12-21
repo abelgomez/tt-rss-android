@@ -175,7 +175,7 @@
     </plurals>
 
     <string name="prefs_confirm_headlines_catchup">Confirm mark as read</string>
-    <string name="author_formatted">by %1$s</string>
+    <string name="author_formatted">%1$s</string>
 
     <plurals name="n_unread_articles">
         <item quantity="zero">No unread articles</item>
@@ -267,4 +267,6 @@
     <string name="logcat_refresh">Refresh</string>
     <string name="logcat_copy">Copy to clipboard</string>
     <string name="logcat_title">Log viewer</string>
+    <string name="cat_labels">Labels</string>
+    <string name="cat_uncategorized">Uncategorized</string>
 </resources>

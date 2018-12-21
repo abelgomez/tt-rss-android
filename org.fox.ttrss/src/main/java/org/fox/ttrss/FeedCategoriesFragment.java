@@ -100,9 +100,9 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 
 					// virtual cats implemented in getCategories since api level 1
 					if (apiLevel == 0) {
-						m_cats.add(new FeedCategory(-1, "Special", 0));
-						m_cats.add(new FeedCategory(-2, "Labels", 0));
-						m_cats.add(new FeedCategory(0, "Uncategorized", 0));
+						m_cats.add(new FeedCategory(-1, getString(R.string.cat_special), 0));
+						m_cats.add(new FeedCategory(-2, getString(R.string.cat_labels), 0));
+						m_cats.add(new FeedCategory(0, getString(R.string.cat_uncategorized), 0));
 
 						specialCatFound = true;
 					}
