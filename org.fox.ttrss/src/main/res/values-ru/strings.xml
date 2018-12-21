@@ -174,10 +174,10 @@
     <string name="headlines_sort_oldest_first">Сначала старые</string>
     <string name="headlines_sort_title">По заголовку</string>
     <string name="headlines_sort_articles_title">Сортировать статьи</string>
-    <string name="fresh_articles">Свежие статьи</string>
+    <string name="fresh_articles">Свежие</string>
     <string name="cat_special">Особые</string>
-    <string name="feed_starred_articles">Отмеченные статьи</string>
-    <string name="feed_published_articles">Опубликованные статьи</string>
+    <string name="feed_starred_articles">Отмеченные</string>
+    <string name="feed_published_articles">Опубликованные</string>
     <string name="feed_archived_articles">Архив статей</string>
     <string name="feed_recently_read">Недавно прочитанные</string>
     <string name="feed_all_articles">Все статьи</string>
