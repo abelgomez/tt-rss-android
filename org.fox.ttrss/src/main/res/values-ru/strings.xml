@@ -15,9 +15,9 @@
     <string name="connection">Соединение</string>
     <string name="http_authentication">HTTP Авторизация</string>
     <string name="loading_message">Подождите, идет загрузка…</string>
-    <string name="unread_only">Непрочитанные</string>
+    <string name="unread_only">Только непрочитанные</string>
     <string name="share_article">Поделиться статьей</string>
-    <string name="catchup">Пометить как прочитанное</string>
+    <string name="catchup">Отметить как прочитанное</string>
     <string name="sort_feeds_by_unread">Сортировать каналы по непрочитанным статьям</string>
     <string name="ssl_trust_any">Принимать любой сертификат</string>
     <string name="category_browse_feeds">Просмотреть каналы</string>
@@ -31,9 +31,9 @@
     <string name="headlines_select_none">Снять выделение</string>
     <string name="selection_toggle_marked">Отметить</string>
     <string name="selection_toggle_published">Опубликовать</string>
-    <string name="selection_toggle_unread">Как прочитанное</string>
-    <string name="context_selection_toggle_unread">Как прочитанное</string>
-    <string name="article_mark_read_above">Выше как прочитанное</string>
+    <string name="selection_toggle_unread">Отметить как (не)прочитанное</string>
+    <string name="context_selection_toggle_unread">Отметить как (не)прочитанное</string>
+    <string name="article_mark_read_above">Отметить выше как прочитанное</string>
     <string name="http_login_summary">Опционально. Заполните если ваша инсталляция tt-rss защищена авторизацией HTTP Basic</string>
     <string name="login_summary">Не требуется для однопользовательского режима</string>
     <string name="ttrss_url_summary">http://example.org/tt-rss</string>
@@ -41,7 +41,7 @@
     <string name="no_caption_to_display">У изображения нет подписи</string>
     <string name="browse_cats_like_feeds">Просматривать категории как каналы</string>
     <string name="browse_cats_like_feeds_summary">Используйте контекстное меню чтобы отменить эту настройку</string>
-    <string name="headlines_mark_as_read">Как прочитанное</string>
+    <string name="headlines_mark_as_read">Отметить как прочитанное</string>
     <string name="error_unknown">Ошибка: неизвестная ошибка (см. журнал)</string>
     <string name="error_http_unauthorized">Ошибка: 401 в доступе отказано</string>
     <string name="error_http_forbidden">Ошибка: 403 запрещено</string>
@@ -146,7 +146,7 @@
     <string name="headlines_all_articles">Все статьи</string>
     <string name="headlines_starred">Отмеченные</string>
     <string name="headlines_published">Опубликованные</string>
-    <string name="headlines_unread">Непрочитанные</string>
+    <string name="headlines_unread">Выбрать непрочитанные</string>
     <string name="article_media_share">Поделиться</string>
     <string name="article_img_view_caption">Посмотреть подпись</string>
     <string name="pref_headlines_mark_read_scroll">Помечать как прочитанные при прокрутке</string>
@@ -204,7 +204,7 @@
     <string name="ask_me_every_time">Спрашивать каждый раз</string>
     <string name="quick_preview">Быстрый просмотр</string>
     <string name="prefs_opening_links">Как открывать ссылки</string>
-    <string name="open_with">Открыть с помощью…</string>
+    <string name="open_with">Открыть…..</string>
     <string name="confirm_catchup_above">Пометить статьи как прочитанные\?</string>
     <string name="dialog_ok">ОК</string>
     <string name="headline_undo_row_button">ОТМЕНА</string>

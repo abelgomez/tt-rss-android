@@ -178,7 +178,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
                 HeadlinesFragment hf = new HeadlinesFragment();
 
                 if (BuildConfig.DEBUG) {
-                    hf.initialize(new Feed(-1, "Starred articles", false));
+                    hf.initialize(new Feed(-1, getString(R.string.feed_starred_articles), false));
                 } else {
                     hf.initialize(new Feed(-3, getString(R.string.fresh_articles), false));
                 }
