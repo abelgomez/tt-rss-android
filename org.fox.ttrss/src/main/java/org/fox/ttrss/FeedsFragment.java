@@ -206,8 +206,8 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 
 		@Override
 		public int compare(Feed a, Feed b) {
-			Log.d(TAG, "A:" + a.title + " " + a.is_cat + " " + a.order_id);
-			Log.d(TAG, "B:" + b.title + " " + b.is_cat + " " + b.order_id);
+			//Log.d(TAG, "A:" + a.title + " " + a.is_cat + " " + a.order_id);
+			//Log.d(TAG, "B:" + b.title + " " + b.is_cat + " " + b.order_id);
 
 			if (a.id >= 0 && b.id >= 0)
 				if (a.is_cat && b.is_cat)
