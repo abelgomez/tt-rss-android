@@ -547,6 +547,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 		}		
 	}
 
+	// TODO: remove; not supported on oreo
 	public void createFeedShortcut(Feed feed) {
 		final Intent shortcutIntent = new Intent(this, MasterActivity.class);
 		shortcutIntent.putExtra("feed_id", feed.id);
@@ -565,7 +566,8 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 		
 		toast(R.string.shortcut_has_been_placed_on_the_home_screen);
 	}
-	
+
+	// TODO: remove; not supported on oreo
 	public void createCategoryShortcut(FeedCategory cat) {
 		createFeedShortcut(new Feed(cat.id, cat.title, true));
 	}

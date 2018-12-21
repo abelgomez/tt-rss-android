@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -303,6 +304,10 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 		
 		if (cat != null) 
 			menu.setHeaderTitle(cat.title);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			menu.findItem(R.id.create_shortcut).setVisible(false);
+		}
 
 		super.onCreateContextMenu(menu, v, menuInfo);		
 		

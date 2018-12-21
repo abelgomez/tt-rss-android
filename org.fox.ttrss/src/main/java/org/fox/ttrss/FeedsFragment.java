@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -372,6 +373,10 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 		if (feed.id <= 0) {
 			menu.findItem(R.id.unsubscribe_feed).setVisible(false);
 		}
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            menu.findItem(R.id.create_shortcut).setVisible(false);
+        }
 
 		super.onCreateContextMenu(menu, v, menuInfo);		
 		
