@@ -16,7 +16,7 @@
     <shortcut
         android:shortcutId="SHORTCUT:OPEN_FRESH"
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_coffee"
+        android:icon="@drawable/ic_shortcut_fresh"
         android:shortcutShortLabel="@string/fresh_articles">
         <intent
             android:action="android.intent.action.VIEW"

@@ -548,7 +548,7 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 					m_activity.getTheme().resolveAttribute(R.attr.ic_checkbox_marked, tv, true);
 					icon.setImageResource(tv.resourceId);
 				} else if (feed.id == -3 && !feed.is_cat) {
-					m_activity.getTheme().resolveAttribute(R.attr.ic_coffee, tv, true);
+					m_activity.getTheme().resolveAttribute(R.attr.ic_fresh, tv, true);
 					icon.setImageResource(tv.resourceId);
 				} else if (feed.id == -4 && !feed.is_cat) {
 					m_activity.getTheme().resolveAttribute(R.attr.ic_folder_outline, tv, true);

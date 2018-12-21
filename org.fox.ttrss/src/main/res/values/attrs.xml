@@ -31,21 +31,22 @@
     <attr name="headlineFooterColor" format="reference|color" />
     <attr name="articleHeaderSeparator" format="reference|color" />
     <attr name="ic_rss_box" format="reference"/>
-    <attr name="ic_rss" format="reference"/>
     <attr name="ic_checkbox_marked" format="reference" />
     <attr name="ic_star" format="reference" />
     <attr name="ic_star_outline" format="reference" />
     <attr name="ic_share" format="reference" />
-    <attr name="ic_keyboard_backspace" format="reference" />
+    <attr name="ic_go_back" format="reference" />
     <attr name="ic_settings" format="reference" />
     <attr name="ic_filter_variant" format="reference" />
     <attr name="ic_cloud_download" format="reference" />
     <attr name="ic_cloud_upload" format="reference" />
     <attr name="ic_archive" format="reference" />
-    <attr name="ic_coffee" format="reference" />
+    <attr name="ic_fresh" format="reference" />
     <attr name="ic_folder_outline" format="reference" />
     <attr name="ic_dots_vertical" format="reference" />
+    <attr name="ic_dots_vertical_circle" format="reference" />
     <attr name="ic_attachment" format="reference" />
+    <attr name="ic_attachment_vert" format="reference" />
     <declare-styleable name="ScrimInsetsView">
         <attr format="reference|color" name="insetForeground">
         </attr></declare-styleable>
