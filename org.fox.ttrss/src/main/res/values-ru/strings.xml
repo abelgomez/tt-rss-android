@@ -15,7 +15,7 @@
     <string name="connection">Соединение</string>
     <string name="http_authentication">HTTP Авторизация</string>
     <string name="loading_message">Подождите, идет загрузка…</string>
-    <string name="unread_only">Только непрочитанные</string>
+    <string name="unread_only">Непрочитанные</string>
     <string name="share_article">Поделиться статьей</string>
     <string name="catchup">Отметить как прочитанное</string>
     <string name="sort_feeds_by_unread">Сортировать каналы по непрочитанным статьям</string>
