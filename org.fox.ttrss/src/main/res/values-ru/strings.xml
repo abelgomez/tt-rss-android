@@ -2,7 +2,7 @@
 <resources><string name="login_need_configure">Пожалуйста настройте приложение.</string>
     <string name="login_ready">Готов ко входу.</string>
     <string name="login_login">Войти</string>
-    <string name="login">Войти</string>
+    <string name="login">Логин</string>
     <string name="debugging">Отладка</string>
     <string name="password">Пароль</string>
     <string name="default_url">http://example.domain/tt-rss/</string>
@@ -18,7 +18,7 @@
     <string name="unread_only">Непрочитанные</string>
     <string name="share_article">Поделиться статьей</string>
     <string name="catchup">Отметить как прочитанное</string>
-    <string name="sort_feeds_by_unread">Сортировать каналы по непрочитанным статьям</string>
+    <string name="sort_feeds_by_unread">Сортировать по непрочитанным</string>
     <string name="ssl_trust_any">Принимать любой сертификат</string>
     <string name="category_browse_feeds">Просмотреть каналы</string>
     <string name="article_toggle_marked">Отметить</string>
@@ -34,7 +34,7 @@
     <string name="selection_toggle_unread">Отметить как (не)прочитанное</string>
     <string name="context_selection_toggle_unread">Отметить как (не)прочитанное</string>
     <string name="article_mark_read_above">Отметить выше как прочитанное</string>
-    <string name="http_login_summary">Опционально. Заполните если ваша инсталляция tt-rss защищена авторизацией HTTP Basic</string>
+    <string name="http_login_summary">Введите если ваша инсталляция tt-rss защищена авторизацией HTTP Basic</string>
     <string name="login_summary">Не требуется для однопользовательского режима</string>
     <string name="ttrss_url_summary">http://example.org/tt-rss</string>
     <string name="enable_cats">Включить категории</string>
@@ -77,7 +77,7 @@
     <string name="notify_downloading_images">Скачиваю картинки (%1$d)…</string>
     <string name="notify_downloading_media">Скачиваю медиа файлы…</string>
     <string name="article_set_labels">Поставить метки</string>
-    <string name="search">Поиск</string>
+    <string name="search">Искать</string>
     <string name="cancel">Отмена</string>
     <string name="pref_font_size">Размер шрифта статьи</string>
     <string name="dialog_close">Закрыть</string>
@@ -85,7 +85,7 @@
     <string name="text_copied_to_clipboard">Текст скопирован в буфер обмена</string>
     <string name="attachments_prompt">Выбрать вложение</string>
     <string name="attachment_view">Просмотреть</string>
-    <string name="attachment_copy">Скопировать URL</string>
+    <string name="attachment_copy">Скопировать ссылку</string>
     <string name="justify_article_text">Разрядить текст статьи</string>
     <string name="dialog_offline_sync_in_progress">Идет синхронизация автономного режима</string>
     <string name="dialog_offline_sync_stop">Остановить синхронизацию</string>
@@ -116,7 +116,7 @@
 	<item quantity="many">Пробный режим, осталось %1$d дней.</item>
 </plurals>
 
-    <string name="trial_purchase">Открыть полную версию</string>
+    <string name="trial_purchase">Купить полную версию</string>
     <string name="trial_expired">Пробный режим завершен</string>
     <string name="trial_expired_message">Чтобы продолжить пользоваться Tiny Tiny RSS пожалуйста купите полную версию.</string>
     <string name="theme_amber">Янтарь</string>
@@ -149,8 +149,8 @@
     <string name="headlines_unread">Выбрать непрочитанные</string>
     <string name="article_media_share">Поделиться</string>
     <string name="article_img_view_caption">Посмотреть подпись</string>
-    <string name="pref_headlines_mark_read_scroll">Помечать как прочитанные при прокрутке</string>
-    <string name="pref_headlines_mark_read_scroll_long">Помечать заголовки как прочитанные после прокручивания за край экрана</string>
+    <string name="pref_headlines_mark_read_scroll">Отмечать при прокрутке</string>
+    <string name="pref_headlines_mark_read_scroll_long">Отмечать заголовки как прочитанные после прокручивания за край экрана</string>
 
     <plurals name="mark_num_headlines_as_read">
 	<item quantity="one">Пометить одну статью как прочитанную\?</item>
@@ -158,7 +158,7 @@
 	<item quantity="many">Пометить %1$d статей как прочитанные\?</item>
 </plurals>
 
-    <string name="prefs_confirm_headlines_catchup">Подтверждать отметку канала как прочитанный</string>
+    <string name="prefs_confirm_headlines_catchup">Подтверждать отметку прочтения</string>
     <string name="pref_headline_font_size">Размер шрифта заголовка</string>
     <string name="download_articles_and_go_offline">Скачать статьи и перейти в автономный режим</string>
     <string name="tasker_save_and_close">Сохранить и закрыть</string>
@@ -224,4 +224,8 @@
     <string name="logcat_refresh">Обновить</string>
     <string name="logcat_copy">Скопировать в буфер обмена</string>
     <string name="logcat_title">Просмотрщик журнала</string>
+    <string name="pref_headlines_swipe_to_dismiss">Смахнуть заголовки</string>
+    <string name="pref_headlines_swipe_to_dismiss_long">Отключает контекстное меню заголовков</string>
+    <string name="cat_labels">Метки</string>
+    <string name="cat_uncategorized">Без категории</string>
 </resources>
