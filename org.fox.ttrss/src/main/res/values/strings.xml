@@ -205,7 +205,11 @@
     <string name="headlines_sort_title">Title</string>
     <string name="headlines_sort_articles_title">Sort articles</string>
     <string name="fresh_articles">Fresh articles</string>
+    <string name="cat_special">Special</string>
     <string name="feed_starred_articles">Starred articles</string>
+    <string name="feed_published_articles">Published articles</string>
+    <string name="feed_archived_articles">Archived articles</string>
+    <string name="feed_recently_read">Recently read</string>
     <string name="feed_all_articles">All articles</string>
     <string name="prefs_enable_fab">Enable FAB</string>
     <string name="prefs_enable_fab_long">Show floating action button when reading</string>

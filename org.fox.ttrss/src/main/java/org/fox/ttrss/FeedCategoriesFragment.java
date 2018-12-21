@@ -117,7 +117,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 					sortCats();
 
 					if (!specialCatFound) {
-						m_cats.add(0, new FeedCategory(-1, "Special", 0));
+						m_cats.add(0, new FeedCategory(-1, getString(R.string.cat_special), 0));
 					}
 
 					m_adapter.notifyDataSetChanged();

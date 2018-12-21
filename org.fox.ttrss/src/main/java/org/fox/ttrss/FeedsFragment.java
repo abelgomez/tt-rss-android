@@ -115,6 +115,31 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 								m_feeds.add(f);
 								catUnread += f.unread;
 							}
+
+							// localize special feed names
+							// TODO: join with shortcut title lookup by id?
+							if (m_activeCategory != null && m_activeCategory.id == -1) {
+								switch (f.id) {
+									case -1:
+										f.title = getString(R.string.feed_starred_articles);
+										break;
+									case -2:
+										f.title = getString(R.string.feed_published_articles);
+										break;
+									case -3:
+										f.title = getString(R.string.fresh_articles);
+										break;
+									case -4:
+										f.title = getString(R.string.feed_all_articles);
+										break;
+									case -6:
+										f.title = getString(R.string.feed_recently_read);
+										break;
+									case 0:
+										f.title = getString(R.string.feed_archived_articles);
+										break;
+								}
+							}
 						}
 
 					sortFeeds();
