@@ -52,4 +52,5 @@
         </attr></declare-styleable>
     <attr name="drawer_header" format="reference" />
     <attr name="ic_restore" format="reference" />
+    <attr name="ic_inbox" format="reference" />
 </resources>

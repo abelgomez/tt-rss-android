@@ -48,6 +48,7 @@
         <item name="ic_star">@drawable/ic_star_dark</item>
         <item name="ic_star_outline">@drawable/ic_star_outline_dark</item>
         <item name="ic_share">@drawable/ic_share_dark</item>
+        <item name="ic_inbox">@drawable/ic_inbox_dark</item>
         <item name="ic_go_back">@drawable/ic_go_back_dark</item>
         <item name="ic_settings">@drawable/ic_settings_dark</item>
         <item name="ic_filter_variant">@drawable/ic_filter_variant_dark</item>
@@ -119,6 +120,7 @@
         <item name="ic_star">@drawable/ic_star</item>
         <item name="ic_star_outline">@drawable/ic_star_outline</item>
         <item name="ic_share">@drawable/ic_share</item>
+        <item name="ic_inbox">@drawable/ic_inbox</item>
         <item name="ic_go_back">@drawable/ic_go_back</item>
         <item name="ic_settings">@drawable/ic_settings</item>
         <item name="ic_filter_variant">@drawable/ic_filter_variant</item>
