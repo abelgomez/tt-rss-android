@@ -55,6 +55,7 @@
         <item name="ic_cloud_upload">@drawable/ic_cloud_upload_dark</item>
         <item name="ic_archive">@drawable/ic_archive_dark</item>
         <item name="ic_fresh">@drawable/ic_fresh_dark</item>
+        <item name="ic_restore">@drawable/ic_restore_dark</item>
         <item name="ic_folder_outline">@drawable/ic_folder_outline_dark</item>
         <item name="ic_dots_vertical">@drawable/ic_dots_vertical_dark</item>
         <item name="ic_dots_vertical_circle">@drawable/ic_dots_vertical_circle_dark</item>
@@ -125,6 +126,7 @@
         <item name="ic_cloud_upload">@drawable/ic_cloud_upload</item>
         <item name="ic_archive">@drawable/ic_archive</item>
         <item name="ic_fresh">@drawable/ic_fresh</item>
+        <item name="ic_restore">@drawable/ic_restore</item>
         <item name="ic_folder_outline">@drawable/ic_folder_outline</item>
         <item name="ic_dots_vertical">@drawable/ic_dots_vertical</item>
         <item name="ic_dots_vertical_circle">@drawable/ic_dots_vertical_circle</item>

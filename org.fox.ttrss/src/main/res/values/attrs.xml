@@ -51,4 +51,5 @@
         <attr format="reference|color" name="insetForeground">
         </attr></declare-styleable>
     <attr name="drawer_header" format="reference" />
+    <attr name="ic_restore" format="reference" />
 </resources>

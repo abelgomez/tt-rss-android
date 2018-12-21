@@ -558,6 +558,9 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 				} else if (feed.id == -4 && !feed.is_cat) {
 					m_activity.getTheme().resolveAttribute(R.attr.ic_folder_outline, tv, true);
 					icon.setImageResource(tv.resourceId);
+				} else if (feed.id == -6 && !feed.is_cat) {
+					m_activity.getTheme().resolveAttribute(R.attr.ic_restore, tv, true);
+					icon.setImageResource(tv.resourceId);
 				} else if (feed.is_cat) {
 					m_activity.getTheme().resolveAttribute(R.attr.ic_folder_outline, tv, true);
 					icon.setImageResource(tv.resourceId);
