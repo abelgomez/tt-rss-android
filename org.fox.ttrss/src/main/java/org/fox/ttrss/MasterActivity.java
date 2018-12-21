@@ -126,6 +126,21 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 						int feedId = i.getIntExtra("feed_id", 0);
 						boolean isCat = i.getBooleanExtra("feed_is_cat", false);
 						String feedTitle = i.getStringExtra("feed_title");
+
+						// app shortcuts are not allowed to pass string extras
+						if (feedTitle == null) {
+							switch (feedId) {
+								case -1:
+									feedTitle = getString(R.string.feed_starred_articles);
+									break;
+								case -3:
+									feedTitle = getString(R.string.fresh_articles);
+									break;
+								case -4:
+									feedTitle = getString(R.string.feed_all_articles);
+									break;
+							}
+						}
 						
 						Feed tmpFeed = new Feed(feedId, feedTitle, isCat);
 						
@@ -159,7 +174,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 				ft.replace(R.id.feeds_fragment, new FeedsFragment(), FRAG_FEEDS);
 			}
 
-            if (m_prefs.getBoolean("open_fresh_on_startup", true)) {
+            if (!shortcutMode && m_prefs.getBoolean("open_fresh_on_startup", true)) {
                 HeadlinesFragment hf = new HeadlinesFragment();
 
                 if (BuildConfig.DEBUG) {
