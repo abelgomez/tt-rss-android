@@ -266,4 +266,9 @@
     <string name="logcat_refresh">Aktualisieren</string>
     <string name="logcat_copy">In die Zwischenablage kopieren</string>
     <string name="logcat_title">Log Ansicht</string>
-</resources>
+<string name="cat_special">Sonderfeeds</string>
+    <string name="feed_starred_articles">Markierte Artikel</string>
+    <string name="feed_published_articles">Veröffentlichte Artikel</string>
+    <string name="feed_archived_articles">Archivierte Artikel</string>
+    <string name="feed_recently_read">Kürzlich gelesen</string>
+    </resources>
