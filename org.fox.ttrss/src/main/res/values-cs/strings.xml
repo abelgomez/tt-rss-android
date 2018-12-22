@@ -39,7 +39,7 @@
   <string name="headlines_select_all">Vybrat vše</string>
   <string name="headlines_select_unread">Nepřečtené</string>
   <string name="headlines_select_none">Zrušit výběr všeho</string>
-  <string name="selection_toggle_marked">(Ne)Ohvězdičkované</string>
+  <string name="selection_toggle_marked">(Ne)Označené hvězdičkou</string>
   <string name="selection_toggle_published">(Ne)Publikované</string>
   <string name="selection_toggle_unread">(Ne)Nepřečtené</string>
   <string name="context_selection_toggle_marked">Hvězdička</string>
@@ -94,7 +94,7 @@
   <string name="attachments_prompt">Vyberte přílohu</string>
   <string name="attachment_view">Zobrazit</string>
   <string name="attachment_copy">Kopírovat URL</string>
-  <string name="justify_article_text">Zarovnat textu článku do bloku</string>
+  <string name="justify_article_text">Zarovnat text článku do bloku</string>
   <string name="dialog_offline_sync_in_progress">Probíhá synchronizace offline</string>
   <string name="dialog_offline_sync_stop">Zastavit synchronizaci</string>
   <string name="dialog_offline_sync_continue">Pokračovat</string>
@@ -129,12 +129,12 @@
   <string name="reading">Čtení</string>
   <string name="offline_articles_to_download">Množství článků ke stažení</string>
   <string name="offline_articles_to_download_long">Kolik článků stáhnout pro režim offline (nejnovější nejdříve)</string>
-  <string name="pref_headlines_show_content_long">Zobrazit náhledy obsahu v seznamu titulků</string>
+  <string name="pref_headlines_show_content_long">Zobrazit náhledy obsahu v seznamu nadpisů</string>
   <string name="pref_headlines_show_content">Náhled obsahu článku</string>
   <string name="api_too_low">Tato akce vyžaduje novější verzi Tiny Tiny RSS</string>
   <string name="share_url_hint">URL článku</string>
   <string name="share_content_hint">Obsah článku</string>
-  <string name="share_title_hint">Nadpis článku</string>
+  <string name="share_title_hint">Název článku</string>
   <string name="share_share_button">Sdílet</string>
   <string name="share_article_posted">Článek odeslán.</string>
   <string name="subscribe_name">Přihlásit se k Tiny Tiny RSS</string>
@@ -179,11 +179,11 @@
     <string name="offline_switch_failed">Nepodařilo se připravit režim offline</string>
     <string name="notify_downloading_categories">Stahování kategorií…</string>
     <string name="offline_media_cache_enabled">Ukládat média do mezipaměti</string>
-    <string name="offline_media_cache_enabled_summary">Stáhnout soubory médií na kart SD. Toto může výrazně zvýšit čas pro přejití do režimu offline</string>
+    <string name="offline_media_cache_enabled_summary">Stáhnout soubory médií na kartu SD. Toto může výrazně zvýšit čas pro přejití do režimu offline</string>
     <string name="notify_downloading_media">Stahování souborů médií…</string>
     <string name="pref_font_size">Velikost textu článku</string>
     <string name="article_media_share">Sdílet</string>
-    <string name="author_formatted">podle %1$s</string>
+    <string name="author_formatted">%1$s</string>
 
     <string name="context_confirm_catchup">Označit všechny články v %1$s jako přečtené\?</string>
     <string name="accel_webview_summary">Zakažte, pokud zpozorujete blikání nebo vizuální poruchy</string>
@@ -202,7 +202,7 @@
     <string name="headlines_sort_default">Výchozí</string>
     <string name="headlines_sort_newest_first">Nejdřív nejnovější</string>
     <string name="headlines_sort_oldest_first">Nejdřív nejstarší</string>
-    <string name="headlines_sort_title">Nadpis</string>
+    <string name="headlines_sort_title">Název</string>
     <string name="headlines_sort_articles_title">Seřadit články</string>
     <string name="fresh_articles">Nové články</string>
     <string name="feed_all_articles">Všechny články</string>
@@ -256,4 +256,12 @@
     <string name="logcat_refresh">Aktualizovat</string>
     <string name="logcat_copy">Kopírovat do schránky</string>
     <string name="logcat_title">Prohlížeč protokolu</string>
+<string name="theme_amber">Amber</string>
+    <string name="cat_special">Speciální</string>
+    <string name="feed_starred_articles">Články označené hvězdičkou</string>
+    <string name="feed_published_articles">Publikované články</string>
+    <string name="feed_archived_articles">Archivované články</string>
+    <string name="feed_recently_read">Nedávno přečtené</string>
+    <string name="cat_labels">Štítky</string>
+    <string name="cat_uncategorized">Bez kategorie</string>
 </resources>
