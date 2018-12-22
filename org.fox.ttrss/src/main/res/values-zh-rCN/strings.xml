@@ -232,4 +232,12 @@
     <string name="logcat_refresh">刷新</string>
     <string name="logcat_copy">复制到剪贴板</string>
     <string name="logcat_title">查看日志</string>
+<string name="theme_amber">琥珀色</string>
+    <string name="cat_special">特别</string>
+    <string name="feed_starred_articles">加星标文章</string>
+    <string name="feed_published_articles">已发布文章</string>
+    <string name="feed_archived_articles">存档的文章</string>
+    <string name="feed_recently_read">最近的阅读</string>
+    <string name="cat_labels">标签</string>
+    <string name="cat_uncategorized">未分类</string>
 </resources>
