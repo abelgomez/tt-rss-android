@@ -118,7 +118,7 @@
     <string name="ssl_trust_any_long">Accetta qualsiasi certificato SSL senza validazione</string>
     <string name="ssl_trust_any_host_long">Non verificare l\'hostname del server</string>
     <string name="ssl">SSL</string>
-    <string name="error_ssl_hostname_rejected">Errore: SSL dell\' hostname non verificato</string>
+    <string name="error_ssl_hostname_rejected">Errore: SSL dell\'hostname non verificato</string>
 
     <plurals name="article_comments">
         <item quantity="one">%1$d commento</item>
@@ -160,7 +160,7 @@
     <string name="headlines_view_mode">Imposta modalità visualizzazione</string>
     <string name="headlines_set_view_mode">Imposta modalità visualizzazione</string>
     <string name="headlines_adaptive">Adattivo</string>
-    <string name="headlines_all_articles">Tutti gli artivoli</string>
+    <string name="headlines_all_articles">Tutti gli articoli</string>
     <string name="headlines_starred">Con Stella</string>
     <string name="headlines_published">Pubblicati</string>
     <string name="headlines_unread">Non letti</string>
@@ -179,10 +179,9 @@
     <string name="author_formatted">di %1$s</string>
 
     <plurals name="n_unread_articles">
-        <item quantity="zero">Nessun articolo non letto</item>
-        <item quantity="one">%1$d articolo non letto</item>
-        <item quantity="other">%1$d articoli non letti</item>
-    </plurals>
+	<item quantity="one">Nessun articolo non letto</item>
+	<item quantity="other">%1$d articoli non letti</item>
+</plurals>
 
     <string name="pref_headline_font_size">Dimensione testo titoli</string>
     <string name="context_confirm_catchup">Segna tutti gli articoli di %1$s come letti?</string>
@@ -234,16 +233,16 @@
     <string name="flavor_image_prompt">(più immagini…)</string>
     <string name="headlines_row_top_changed">Nuovi articoli trovati, ricarica il notiziario per visualizzarli.</string>
     <string name="prefs_custom_tabs_summary">Apri i link esterni con una Chrome custom tabs (più veloce, usato se disponibile)</string>
-    <string name="prefs_use_custom_tabs">Usa preview rapida</string>
+    <string name="prefs_use_custom_tabs">Usa anteprima rapida</string>
     <string name="ask_me_every_time">Chiedimelo ogni volta</string>
     <string name="open_link">Apri link</string>
-    <string name="quick_preview">Preview rapida</string>
+    <string name="quick_preview">Anteprima rapida</string>
     <string name="open_with_app">Apri con app</string>
     <string name="prefs_opening_links">Apertura link</string>
     <string name="open_with">Apri con…</string>
 <string name="offline_switch_failed">Preparazione modalità offline non riuscita</string>
     <string name="offline_media_cache_enabled">Cache elementi media</string>
-    <string name="offline_media_cache_enabled_summary">Scarida gli elementi media sulla card SD. Questo potrebbe aumentare significativamente il tempo per attivare la modalità offline</string>
+    <string name="offline_media_cache_enabled_summary">Scarica gli elementi media sulla card SD. Questo potrebbe aumentare significativamente il tempo per attivare la modalità offline</string>
     <string name="notify_downloading_media">Scaricando elementi media…</string>
     <string name="article_media_share">Condividi</string>
     <string name="confirm_catchup_above">Segna gli articoli come letti\?</string>
@@ -268,4 +267,11 @@
     <string name="logcat_refresh">Aggiorna</string>
     <string name="logcat_copy">Copia negli appunti</string>
     <string name="logcat_title">Visualizzatore log</string>
+<string name="cat_special">Speciali</string>
+    <string name="feed_starred_articles">Articoli con stella</string>
+    <string name="feed_published_articles">Articoli pubblicati</string>
+    <string name="feed_archived_articles">Articoli archiviati</string>
+    <string name="feed_recently_read">Letti di recente</string>
+    <string name="cat_labels">Etichette</string>
+    <string name="cat_uncategorized">Senza categoria</string>
 </resources>
