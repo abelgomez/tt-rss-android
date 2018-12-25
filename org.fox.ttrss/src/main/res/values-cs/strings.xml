@@ -41,7 +41,7 @@
   <string name="headlines_select_none">Zrušit výběr všeho</string>
   <string name="selection_toggle_marked">(Ne)Označené hvězdičkou</string>
   <string name="selection_toggle_published">(Ne)Publikované</string>
-  <string name="selection_toggle_unread">(Ne)Nepřečtené</string>
+  <string name="selection_toggle_unread">(Ne)Přečtené</string>
   <string name="context_selection_toggle_marked">Hvězdička</string>
   <string name="context_selection_toggle_published">Publikovaný</string>
   <string name="article_mark_read_above">Označit nad jako přečtené</string>
@@ -175,7 +175,7 @@
   <string name="article_img_share">Sdílet obrázek</string>
 <string name="unread_only">Pouze nepřečtené</string>
     <string name="article_toggle_unread">(Ne)Přečtené</string>
-    <string name="context_selection_toggle_unread">(Ne)Nepřečtené</string>
+    <string name="context_selection_toggle_unread">(Ne)Přečtené</string>
     <string name="offline_switch_failed">Nepodařilo se připravit režim offline</string>
     <string name="notify_downloading_categories">Stahování kategorií…</string>
     <string name="offline_media_cache_enabled">Ukládat média do mezipaměti</string>
@@ -198,12 +198,12 @@
     <string name="unsubscribe">Odhlásit odběr</string>
     <string name="unsubscribe_from_prompt">Odhlásit odběr %1$s\?</string>
     <string name="error_loading_image">Chyba při načítání obrázku.</string>
-    <string name="toggle_sort_order">Přepnout nejdřív nejstarší</string>
+    <string name="toggle_sort_order">Přepnout nejdříve nejstarší</string>
     <string name="headlines_sort_default">Výchozí</string>
-    <string name="headlines_sort_newest_first">Nejdřív nejnovější</string>
-    <string name="headlines_sort_oldest_first">Nejdřív nejstarší</string>
+    <string name="headlines_sort_newest_first">Nejdříve nejnovější</string>
+    <string name="headlines_sort_oldest_first">Nejdříve nejstarší</string>
     <string name="headlines_sort_title">Název</string>
-    <string name="headlines_sort_articles_title">Seřadit články</string>
+    <string name="headlines_sort_articles_title">Řazení článků</string>
     <string name="fresh_articles">Nové články</string>
     <string name="feed_all_articles">Všechny články</string>
     <string name="prefs_enable_fab">Povolit PAT</string>
