@@ -389,6 +389,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 			builder.setExitAnimations(this, R.anim.slide_in_left, R.anim.slide_out_right);
 
 			builder.setToolbarColor(tvBackground.data);
+			builder.setShowTitle(true);
 
 			Intent shareIntent = getShareIntent(uri.toString(), null);
 
