@@ -1240,7 +1240,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 						Glide.with(HeadlinesFragment.this)
 								.load(article.flavorImageUri)
-								.dontTransform()
+								//.dontTransform()
 								.diskCacheStrategy(DiskCacheStrategy.ALL)
 								.skipMemoryCache(false)
 								.listener(new RequestListener<String, GlideDrawable>() {

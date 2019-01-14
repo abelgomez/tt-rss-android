@@ -1002,7 +1002,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 							Glide.with(OfflineHeadlinesFragment.this)
 									.load(afi.flavorImageUri)
-									.dontTransform()
+									//.dontTransform()
 									.diskCacheStrategy(DiskCacheStrategy.NONE)
 									.skipMemoryCache(false)
 									.listener(new RequestListener<String, GlideDrawable>() {

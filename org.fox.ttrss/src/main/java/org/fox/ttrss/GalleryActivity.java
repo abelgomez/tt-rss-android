@@ -123,7 +123,7 @@ public class GalleryActivity extends CommonActivity {
                                     .asBitmap()
                                     .skipMemoryCache(false)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .dontTransform()
+                                    //.dontTransform()
                                     .into(HeadlinesFragment.FLAVOR_IMG_MIN_SIZE, HeadlinesFragment.FLAVOR_IMG_MIN_SIZE)
                                     .get();
 
