@@ -338,6 +338,7 @@ public class ArticlePager extends StateSavedFragment {
 					put("include_header", "true");
 				}
 
+				put("resize", String.valueOf(m_activity.getScreenWidth()));
 			}			 
 		};
 
