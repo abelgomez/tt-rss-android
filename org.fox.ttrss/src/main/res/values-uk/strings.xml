@@ -1,2 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="login_in_progress">Вхід…</string>
+    <string name="login_need_configure">Будь ласка, спочатку налаштуйте застосунок.</string>
+    <string name="login_ready">Готовий до входу.</string>
+    <string name="login_login">Увійти</string>
+    <string name="login">Ім’я</string>
+    <string name="debugging">Відлагодження</string>
+    <string name="password">Пароль</string>
+    <string name="default_url">https://example.domain/tt-rss/</string>
+    <string name="look_and_feel">Інтерфейс</string>
+    <string name="pref_theme">Тема</string>
+    <string name="ttrss_url">Url сервера Tiny Tiny RSS</string>
+    <string name="theme_light">Світла</string>
+    <string name="theme_dark">Темна</string>
+    <string name="preferences">Налаштування</string>
+    <string name="connection">З’єднання</string>
+    <string name="http_authentication">HTTP автентифікація</string>
+    <string name="loading_message">Завантаження, зачекайте…</string>
+    <string name="unread_only">Лише непрочитані</string>
+    <string name="share_article">Поширити статтю</string>
+    <string name="catchup">Позначити як прочитане</string>
+    <string name="sort_feeds_by_unread">Сортувати за непрочитаними</string>
+    <string name="ssl_trust_any">Приймати будь-які сертифікати</string>
+    <string name="category_browse_feeds">Переглянути канали</string>
+    <string name="transport_debugging">Писати журнал отриманих на надісланих даних</string>
+    <string name="article_toggle_marked">Позначити/Зняти</string>
+    <string name="article_toggle_unread">(Не)Прочитане</string>
+    <string name="article_toggle_published">(Не)(О)публікувати</string>
+    <string name="headlines_select">Обрати статті</string>
+    <string name="headlines_select_dialog">Обрати статті</string>
+    <string name="headlines_select_all">Обрати все</string>
+    <string name="headlines_select_unread">Непрочитані</string>
+    <string name="headlines_select_none">Зняти виділення</string>
+    <string name="selection_toggle_marked">Позначити/Зняти</string>
+    </resources>
