@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="login_need_configure">Пожалуйста настройте приложение.</string>
+<resources><string name="login_need_configure">Пожалуйста, настройте приложение.</string>
     <string name="login_ready">Готов ко входу.</string>
     <string name="login_login">Войти</string>
     <string name="login">Логин</string>
@@ -86,13 +86,13 @@
     <string name="attachments_prompt">Выбрать вложение</string>
     <string name="attachment_view">Просмотреть</string>
     <string name="attachment_copy">Скопировать ссылку</string>
-    <string name="justify_article_text">Разрядить текст статьи</string>
+    <string name="justify_article_text">Выровнять текст статьи</string>
     <string name="dialog_offline_sync_in_progress">Идет синхронизация автономного режима</string>
     <string name="dialog_offline_sync_stop">Остановить синхронизацию</string>
     <string name="dialog_offline_sync_continue">Продолжить</string>
     <string name="article_set_note">Опубликовать с заметкой</string>
     <string name="dialog_open_preferences">Настройки</string>
-    <string name="dialog_need_configure_prompt">Пожалуйста заполните информацию о вашем сервере tt-rss, такую как URL, логин и пароль.</string>
+    <string name="dialog_need_configure_prompt">Пожалуйста, заполните информацию о вашем сервере tt-rss, такую как URL, логин и пароль.</string>
     <string name="error_network_unavailable">Ошибка: сеть недоступна</string>
     <string name="category_browse_headlines">Просмотреть заголовки</string>
     <string name="use_volume_keys">Использовать кнопки громкости</string>
@@ -138,8 +138,8 @@
     <string name="subscribed_to_feed">Подписка добавлена</string>
     <string name="error_feed_already_exists_">Ошибка: канал уже существует.</string>
     <string name="error_invalid_url">Ошибка: некорректная ссылка.</string>
-    <string name="error_url_is_an_html_page_no_feeds_found">Ошибка: ссылка ведет на веб страницу, каналы не найдены.</string>
-    <string name="error_could_not_download_url">Ошибка: не получилось скачать ссылку</string>
+    <string name="error_url_is_an_html_page_no_feeds_found">Ошибка: ссылка ведет на веб-страницу, каналы не найдены.</string>
+    <string name="error_could_not_download_url">Ошибка: не удалось скачать ссылку</string>
     <string name="headlines_view_mode">Вид просмотра</string>
     <string name="headlines_set_view_mode">Вид просмотра</string>
     <string name="headlines_adaptive">Адаптивно</string>
@@ -153,9 +153,9 @@
     <string name="pref_headlines_mark_read_scroll_long">Отмечать заголовки как прочитанные после прокручивания за край экрана</string>
 
     <plurals name="mark_num_headlines_as_read">
-	<item quantity="one">Пометить одну статью как прочитанную\?</item>
-	<item quantity="few">Пометить %1$d статьи как прочитанные\?</item>
-	<item quantity="many">Пометить %1$d статей как прочитанные\?</item>
+	<item quantity="one">Отметить %1$d статью как прочитанную\?</item>
+	<item quantity="few">Отметить %1$d статьи как прочитанные\?</item>
+	<item quantity="many">Отметить %1$d статей как прочитанные\?</item>
 </plurals>
 
     <string name="prefs_confirm_headlines_catchup">Подтверждать отметку прочтения</string>
@@ -194,7 +194,7 @@
     <string name="prefs_widget_show_fresh">Показывать Свежие статьи</string>
     <string name="prefs_widget_show_fresh_summary">Показывать количество Свежих статей вместо непрочитанных</string>
     <string name="prefs_widget">Виджет</string>
-    <string name="title_activity_video_player">Видео Проигрыватель</string>
+    <string name="title_activity_video_player">Видео проигрыватель</string>
 
     <string name="action_settings">Настройки</string>
     <string name="video_player_share">Поделиться видео</string>
@@ -204,7 +204,7 @@
     <string name="ask_me_every_time">Спрашивать каждый раз</string>
     <string name="quick_preview">Быстрый просмотр</string>
     <string name="prefs_opening_links">Как открывать ссылки</string>
-    <string name="open_with">Открыть…..</string>
+    <string name="open_with">Открыть…</string>
     <string name="confirm_catchup_above">Пометить статьи как прочитанные\?</string>
     <string name="dialog_ok">ОК</string>
     <string name="headline_undo_row_button">ОТМЕНА</string>
@@ -228,4 +228,27 @@
     <string name="pref_headlines_swipe_to_dismiss_long">Отключает контекстное меню заголовков</string>
     <string name="cat_labels">Метки</string>
     <string name="cat_uncategorized">Без категории</string>
-</resources>
+<string name="login_in_progress">Вход…</string>
+    <string name="transport_debugging">Журнал отправленных и полученных данных</string>
+    <string name="notify_downloading_init">Начало загрузки…</string>
+    <string name="notify_downloading_feeds">Скачиваю каналы…</string>
+    <string name="api_too_low">Для этого действия требуется более новая версия Tiny Tiny RSS</string>
+    <string name="author_formatted">%1$s</string>
+
+    <plurals name="n_unread_articles">
+	<item quantity="one">Одна непрочитанная статья</item>
+	<item quantity="few">Нет непрочитанных статей</item>
+	<item quantity="many">%1$d непрочитанных статей</item>
+</plurals>
+
+    <string name="context_confirm_catchup">Отметить все статьи в %1$s как прочитанные\?</string>
+    <string name="accel_webview_summary">Отключите, если вы видите мерцание или визуальные глюки</string>
+    <string name="accel_webview_title">Ускорение просмотра веб-страниц (3.0+)</string>
+    <string name="place_shortcut">Разместить ярлык</string>
+    <string name="shortcut_has_been_placed_on_the_home_screen">Ярлык был размещен на главном экране</string>
+    <string name="prefs_version">%1$s (%2$d)</string>
+    <string name="prefs_build_timestamp">%1$s</string>
+    <string name="prefs_build_timestamp_title">Построить временную метку</string>
+    <string name="crash_dialog_text">К сожалению, Tiny Tiny RSS был остановлен. Отправить отчет о сбое на tt-rss.org\?</string>
+    <string name="offline_no_articles">Нет загруженных статей</string>
+    </resources>
