@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -389,6 +390,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 			builder.setExitAnimations(this, R.anim.slide_in_left, R.anim.slide_out_right);
 
 			builder.setToolbarColor(tvBackground.data);
+			builder.setShowTitle(true);
 
 			Intent shareIntent = getShareIntent(uri.toString(), null);
 
@@ -578,5 +580,13 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 	public static void requestWidgetUpdate(Context context) {
 		JobIntentService.enqueueWork(context.getApplicationContext(), WidgetUpdateService.class, 0, new Intent());
 	}
+
+    public int getScreenWidth() {
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+
+		return size.x;
+    }
 }
 

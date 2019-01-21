@@ -1,5 +1,6 @@
 package org.fox.ttrss;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -589,7 +590,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 			final String sessionId = m_activity.getSessionId();
 			final boolean isCat = m_feed.is_cat;
 
-			HeadlinesRequest req = new HeadlinesRequest(getActivity().getApplicationContext(), m_activity, m_feed, m_articles) {
+			@SuppressLint("StaticFieldLeak") HeadlinesRequest req = new HeadlinesRequest(getActivity().getApplicationContext(), m_activity, m_feed, m_articles) {
 				@Override
 				protected void onProgressUpdate(Integer... progress) {
 					m_activity.setProgress(Math.round((((float) progress[0] / (float) progress[1]) * 10000)));
@@ -714,6 +715,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 					put("include_nested", "true");
                     put("has_sandbox", "true");
 					put("order_by", m_activity.getSortMode());
+					put("resize", String.valueOf(m_activity.getScreenWidth()));
 
 					if (isCat) put("is_cat", "true");
 
@@ -1240,7 +1242,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 						Glide.with(HeadlinesFragment.this)
 								.load(article.flavorImageUri)
-								.dontTransform()
+								//.dontTransform()
 								.diskCacheStrategy(DiskCacheStrategy.ALL)
 								.skipMemoryCache(false)
 								.listener(new RequestListener<String, GlideDrawable>() {
