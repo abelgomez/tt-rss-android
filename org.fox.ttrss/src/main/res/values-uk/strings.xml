@@ -32,4 +32,21 @@
     <string name="headlines_select_unread">Непрочитані</string>
     <string name="headlines_select_none">Зняти виділення</string>
     <string name="selection_toggle_marked">Позначити/Зняти</string>
+    <string name="selection_toggle_published">Опублікувати</string>
+    <string name="selection_toggle_unread">(Не)Прочитане</string>
+    <string name="context_selection_toggle_unread">(Не)Прочитане</string>
+    <string name="article_mark_read_above">Позначити зверху як прочитане</string>
+    <string name="http_login_summary">Не обов’язково. Заповніть, якщо ваш сервіс tt-rss захищений базовою автентифікацією HTTP</string>
+    <string name="login_summary">Не потрібно для однокористувацького режиму</string>
+    <string name="ttrss_url_summary">https://example.org/tt-rss</string>
+    <string name="enable_cats">Дозволити категорії каналів</string>
+    <string name="no_caption_to_display">У зображення немає заголовку</string>
+    <string name="browse_cats_like_feeds">Переглядати категорії як канали</string>
+    <string name="browse_cats_like_feeds_summary">Використовуйте контекстне меню категорії щоб перевизначити це налаштування</string>
+    <string name="headlines_mark_as_read">Позначити прочитаним</string>
+    <string name="error_unknown">Помилка: невідома помилка (дивіться журнал)</string>
+    <string name="error_http_unauthorized">Помилка: 401 не авторизовано</string>
+    <string name="error_http_forbidden">Помилка: 403 заборонено</string>
+    <string name="error_http_not_found">Помилка: 404 не знайдено</string>
+    <string name="error_http_server_error">Помилка: 500 помилка сервера</string>
     </resources>
