@@ -52,4 +52,19 @@
     <string name="logcat_refresh">Päivitä</string>
     <string name="logcat_copy">Kopioi leikepöydälle</string>
     <string name="cat_uncategorized">Luokittelematon</string>
-</resources>
+<string name="loading_message">Ladataan, odota…</string>
+    <string name="catchup">Merkitse luetuiksi</string>
+    <string name="headlines_mark_as_read">Merkitse luetuiksi</string>
+    <string name="error_http_other_error">Virhe: muu HTTP-virhe (katso loki)</string>
+    <string name="error_api_unknown">Virhe: tuntematon API-virhe (katso loki)</string>
+    <string name="dialog_cancel">Peru</string>
+    <string name="notify_downloading_articles">Ladataan artikkeleita (%1$d)…</string>
+    <string name="notify_downloading_images">Ladataan kuvia (%1$d)…</string>
+    <string name="search">Etsi</string>
+    <string name="cancel">Peru</string>
+    <string name="dialog_close">Sulje</string>
+    <string name="attachment_copy">Kopioi URL</string>
+    <string name="dialog_offline_sync_continue">Jatka</string>
+    <string name="dialog_open_preferences">Asetukset</string>
+    <string name="error_invalid_url">Virhe: virheellinen URL.</string>
+    </resources>
