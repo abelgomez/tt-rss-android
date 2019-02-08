@@ -11,8 +11,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -25,6 +23,9 @@ import org.fox.ttrss.R;
 import org.fox.ttrss.util.SimpleLoginManager;
 
 import java.util.HashMap;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 public class WidgetUpdateService extends JobIntentService {
     private final String TAG = this.getClass().getSimpleName();

@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -42,6 +41,8 @@ import org.jsoup.select.Elements;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.core.app.NotificationCompat;
 
 public class OfflineDownloadService extends Service {
 

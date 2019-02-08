@@ -14,8 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -27,6 +25,9 @@ import org.fox.ttrss.CommonActivity;
 import org.fox.ttrss.OnlineActivity;
 import org.fox.ttrss.PreferencesActivity;
 import org.fox.ttrss.R;
+
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
 
 public class OfflineActivity extends CommonActivity {
 	private final String TAG = this.getClass().getSimpleName();
@@ -154,7 +155,7 @@ public class OfflineActivity extends CommonActivity {
 
 		setContentView(R.layout.activity_login);
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		invalidateOptionsMenu();

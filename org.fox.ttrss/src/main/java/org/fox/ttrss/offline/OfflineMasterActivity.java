@@ -11,11 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -23,6 +18,12 @@ import android.view.View;
 
 import org.fox.ttrss.Application;
 import org.fox.ttrss.R;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class OfflineMasterActivity extends OfflineActivity implements OfflineHeadlinesEventListener {
 	private final String TAG = this.getClass().getSimpleName();
@@ -49,14 +50,14 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 		
 		setContentView(R.layout.activity_master);
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
         setSmallScreen(findViewById(R.id.sw600dp_anchor) == null);
 
 		Application.getInstance().load(savedInstanceState);
 
-        m_drawerLayout = (DrawerLayout) findViewById(R.id.headlines_drawer);
+        m_drawerLayout = findViewById(R.id.headlines_drawer);
 
         if (m_drawerLayout != null) {
 

@@ -1,8 +1,6 @@
 package org.fox.ttrss;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.livefront.bridge.Bridge;
 import com.livefront.bridge.SavedStateHandler;
@@ -10,6 +8,8 @@ import com.livefront.bridge.SavedStateHandler;
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import icepick.Icepick;
 
 public class Application extends android.app.Application {
