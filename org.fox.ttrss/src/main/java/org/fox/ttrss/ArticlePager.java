@@ -8,16 +8,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ClassloaderWorkaroundFragmentStatePagerAdapter;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
@@ -28,6 +24,10 @@ import org.fox.ttrss.util.HeadlinesRequest;
 
 import java.util.HashMap;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import icepick.State;
 
 public class ArticlePager extends StateSavedFragment {
@@ -45,7 +45,7 @@ public class ArticlePager extends StateSavedFragment {
 	private boolean m_refreshInProgress;
 	private boolean m_lazyLoadDisabled;
 
-	private class PagerAdapter extends ClassloaderWorkaroundFragmentStatePagerAdapter {
+	private class PagerAdapter extends FragmentStatePagerAdapter {
 		
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);

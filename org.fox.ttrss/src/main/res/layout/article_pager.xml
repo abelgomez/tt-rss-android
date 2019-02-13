@@ -5,12 +5,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/article_pager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/article_pager_indicator"
-        android:layout_alignParentTop="true"></android.support.v4.view.ViewPager>
+        android:layout_alignParentTop="true"/>
 
     <com.viewpagerindicator.UnderlinePageIndicator
         android:id="@+id/article_pager_indicator"

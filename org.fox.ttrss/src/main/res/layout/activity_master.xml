@@ -1,4 +1,4 @@
-    <android.support.v4.widget.DrawerLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:fitsSystemWindows="true"
         android:id="@+id/headlines_drawer"
@@ -41,4 +41,4 @@
 
         </org.fox.ttrss.util.ScrimInsetsFrameLayout>
 
-    </android.support.v4.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>

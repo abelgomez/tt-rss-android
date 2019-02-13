@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.gson.JsonElement;
@@ -25,6 +24,8 @@ import org.fox.ttrss.util.DatabaseHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.core.app.NotificationCompat;
 
 public class OfflineUploadService extends IntentService {
 	private final String TAG = this.getClass().getSimpleName();

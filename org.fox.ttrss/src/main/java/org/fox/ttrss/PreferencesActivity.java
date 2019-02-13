@@ -2,8 +2,9 @@ package org.fox.ttrss;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import androidx.appcompat.widget.Toolbar;
 
 public class PreferencesActivity extends CommonActivity {
 	@Override

@@ -5,8 +5,6 @@ import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -19,6 +17,8 @@ import android.widget.MediaController;
 
 import java.io.IOException;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.ViewCompat;
 import icepick.State;
 
 public class GalleryVideoFragment extends GalleryBaseFragment {

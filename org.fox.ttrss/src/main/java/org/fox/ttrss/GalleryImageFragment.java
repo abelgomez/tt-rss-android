@@ -1,8 +1,6 @@
 package org.fox.ttrss;
 
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +16,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.ViewCompat;
 import icepick.State;
 
 public class GalleryImageFragment extends GalleryBaseFragment {
