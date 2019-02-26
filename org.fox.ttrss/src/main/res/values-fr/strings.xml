@@ -30,7 +30,7 @@
     <string name="sort_feeds_by_unread">Trier flux par quantité de non lus</string>
     <string name="ssl_trust_any">Accepter n\'importe quel certificat</string>
     <string name="category_browse_feeds">Parcourir les flux</string>
-    <string name="blank"/>
+    <string name="blank">" "</string>
     <string name="transport_debugging">Journal des données envoyées et reçues</string>
     <string name="article_toggle_marked">Basculer Marqué</string>
     <string name="article_toggle_unread">Basculer Lu</string>
@@ -47,13 +47,13 @@
     <string name="context_selection_toggle_published">Basculer Publié</string>
     <string name="context_selection_toggle_unread">Basculer Non lu</string>
     <string name="article_mark_read_above">Marquer comme lu jusqu\'ici</string>
-    <string name="http_login_summary">Optionnel. Remplissez ceci si votre installation tt-rss est protégée par une authentification HTTP Basique.</string>
-    <string name="login_summary">Votre identifiant tt-rss. Inutile en mode utilisateur unique.</string>
+    <string name="http_login_summary">Optionnel. Remplissez ceci si votre installation tt-rss est protégée par une authentification HTTP Basique</string>
+    <string name="login_summary">Inutile en mode utilisateur unique</string>
     <string name="ttrss_url_summary">L\'URL de votre répertoire d\'installation tt-rss, ex : http://site.com/tt-rss/</string>
     <string name="enable_cats">Activer les catégories des flux</string>
     <string name="no_caption_to_display">Aucun sous-titre trouvé</string>
     <string name="browse_cats_like_feeds">Parcourir les catégories comme les flux</string>
-    <string name="browse_cats_like_feeds_summary">Utilisez le menu contexte des catégories pour redéfinir ce paramètre.</string>
+    <string name="browse_cats_like_feeds_summary">Utilisez le menu contexte des catégories pour redéfinir ce paramètre</string>
     <string name="headlines_mark_as_read">Marquer comme lu</string>
     <string name="error_unknown">Erreur : Erreur inconnue (voir journal)</string>
     <string name="error_http_unauthorized">Erreur : 401 non autorisé</string>
@@ -168,7 +168,7 @@
     <string name="article_img_share">Partager l\'image</string>
     <string name="article_img_view_caption">Montrer le sous-titre</string>
     <string name="pref_headlines_mark_read_scroll">Automatiquement marquer les articles comme lus</string>
-    <string name="pref_headlines_mark_read_scroll_long">Cette option permet de marquer automatiquement les articles comme lus lorsque vous naviguez dans la liste d\'articles.</string>
+    <string name="pref_headlines_mark_read_scroll_long">Cette option permet de marquer automatiquement les articles comme lus lorsque vous naviguez dans la liste d\'articles</string>
 
     <plurals name="mark_num_headlines_as_read">
         <item quantity="one">Marquer %1$d article comme lu ?</item>
@@ -176,7 +176,7 @@
     </plurals>
 
     <string name="prefs_confirm_headlines_catchup">Confirmer marquer comme lu</string>
-    <string name="author_formatted">par %1$s</string>
+    <string name="author_formatted">%1$s</string>
 
     <plurals name="n_unread_articles">
         <item quantity="zero">Aucun article non lu</item>
@@ -186,7 +186,7 @@
 
     <string name="pref_headline_font_size">Taille du texte des titres</string>
     <string name="context_confirm_catchup">Marquer tous les articles de %1$s comme lus ?</string>
-    <string name="accel_webview_summary">Désactivez si vous voyez des défauts visuels ou des clignotements.</string>
+    <string name="accel_webview_summary">Désactivez si vous voyez des défauts visuels ou des clignotements</string>
     <string name="accel_webview_title">Utiliser l\'accélération web (3.0+)</string>
     <string name="place_shortcut">Faire un raccourci</string>
     <string name="shortcut_has_been_placed_on_the_home_screen">Un raccourci a été placé sur votre écran d\'accueil</string>
@@ -241,4 +241,38 @@
     <string name="open_with_app">Ouvrir avec une app</string>
     <string name="prefs_opening_links">Ouverture des liens</string>
     <string name="open_with">Ouvrir avec…</string>
+<string name="offline_switch_failed">Échec lors de la préparation du mode hors connexion</string>
+    <string name="offline_media_cache_enabled">Mettre en cache les media</string>
+    <string name="offline_media_cache_enabled_summary">Télécharger les fichiers multimédia sur la carte SD. Cela pourrait augmenter considérablement le temps pour passer hors connexion</string>
+    <string name="notify_downloading_media">Téléchargement des fichiers médias.…</string>
+    <string name="article_media_share">Partager</string>
+    <string name="cat_special">Spécial</string>
+    <string name="feed_starred_articles">Articles préférés</string>
+    <string name="feed_published_articles">Articles publiés</string>
+    <string name="feed_archived_articles">Articles archivés</string>
+    <string name="feed_recently_read">Lu récemment</string>
+    <string name="confirm_catchup_above">Marquer ces articles comme lus \?</string>
+    <string name="dialog_ok">OK</string>
+    <string name="headline_undo_row_button">Annuler</string>
+    <string name="headline_undo_row_prompt">Marquer comme lu</string>
+    <string name="pref_headlines_swipe_to_dismiss">Glisser pour rejeter</string>
+    <string name="pref_headlines_swipe_to_dismiss_long">Désactiver le menu contextuel des articles</string>
+    <string name="pref_widget_update_interval">Intervalle de mise à jour (en minutes)</string>
+
+    <string name="widget_background_light">Clair</string>
+    <string name="widget_background_dark">Sombre</string>
+    <string name="widget_background_transparent">Transparent</string>
+    <string name="pref_widget_background">Thème du widget</string>
+    <string name="pref_widget_update_interval_summary">Cet intervalle est imprécis en raison des limitations d\'Android</string>
+    <string name="prefs_offline_sort_by_feed">Grouper les articles par flux</string>
+    <string name="reload">Recharger</string>
+    <string name="offline_sync_try_again">Réessayer</string>
+    <string name="offline_tap_to_switch">Toucher pour passer hors connexion</string>
+    <string name="offline_no_articles">Aucun article téléchargé</string>
+    <string name="prefs_network_settings">Plus de paramètres...</string>
+    <string name="logcat_refresh">Actualiser</string>
+    <string name="logcat_copy">Copier vers le presse-papier</string>
+    <string name="logcat_title">Observateur d\'évènements</string>
+    <string name="cat_labels">Etiquettes</string>
+    <string name="cat_uncategorized">Sans catégorie</string>
 </resources>
