@@ -96,4 +96,81 @@
     <string name="dialog_offline_sync_continue">Продовжити</string>
     <string name="article_set_note">Поширити з нотаткою</string>
     <string name="dialog_open_preferences">Налаштування</string>
+    <string name="dialog_need_configure_prompt">"Заповніть інформацію про свій  tt-rss сервер: адреса, ім’я та пароль."</string>
+    <string name="error_network_unavailable">Помилка: мережа відсутня</string>
+    <string name="category_browse_headlines">Переглянути заголовки</string>
+    <string name="use_volume_keys">Використовувати кнопки гучності</string>
+    <string name="use_volume_keys_long">Переходити між статтями за допомогою кнопок гучності</string>
+    <string name="ssl_trust_any_host">Не перевіряти ім’я сервера</string>
+    <string name="error_api_unknown_method">Помилка: невідомий метод API</string>
+    <string name="ssl_trust_any_long">Приймати всі сертифікати SSL без перевірки</string>
+    <string name="ssl_trust_any_host_long">Не перевіряти ім’я сервера</string>
+    <string name="ssl">SSL</string>
+    <string name="error_ssl_hostname_rejected">Помилка: ім’я сервера SSL не вдалося перевірити</string>
+
+    <plurals name="article_comments">
+	<item quantity="one">%1$d коментар</item>
+	<item quantity="few">%1$d коментарі</item>
+	<item quantity="many">%1$d коментарів</item>
+</plurals>
+
+    <plurals name="trial_mode_prompt">
+	<item quantity="one">Пробний режим, залишився один день.</item>
+	<item quantity="few">Пробний режим, залишилося %1$d дні.</item>
+	<item quantity="many">Пробний режим, залишилося %1$d днів.</item>
+</plurals>
+
+    <string name="trial_purchase">Купити повну версію</string>
+    <string name="trial_expired">Пробний режим закінчився</string>
+    <string name="trial_expired_message">Щоб продовжити користуватися Tiny Tiny RSS, придбайте ключ для повної версії.</string>
+    <string name="theme_amber">Янтар</string>
+    <string name="reading">Читання</string>
+    <string name="offline_articles_to_download">Скільки статей завантажувати</string>
+    <string name="offline_articles_to_download_long">Скільки статей завантажувати для автономного режиму (спочатку нові)</string>
+    <string name="pref_headlines_show_content_long">Показувати передогляд вмісту в списку заголовків</string>
+    <string name="pref_headlines_show_content">Передогляд вмісту статті</string>
+    <string name="api_too_low">Ця дія вимагає новішої версії сервера Tiny Tiny RSS</string>
+    <string name="share_url_hint">Посилання на статтю</string>
+    <string name="share_content_hint">Вміст статті</string>
+    <string name="share_title_hint">Заголовок статті</string>
+    <string name="share_share_button">Поширити</string>
+    <string name="share_article_posted">Стаття збережена.</string>
+    <string name="subscribe_name">Підписатися з Tiny Tiny RSS</string>
+    <string name="feed_url">Посилання на канал</string>
+    <string name="subscribe_to_feed">Підписатися на канал</string>
+    <string name="error_while_subscribing">Помилка при підписанні.</string>
+    <string name="category_list_updated">Список категорій оновлений</string>
+    <string name="subscribed_to_feed">Підписка додана</string>
+    <string name="error_feed_already_exists_">Помилка: канал вже є.</string>
+    <string name="error_invalid_url">Помилка: неправильне посилання.</string>
+    <string name="error_url_is_an_html_page_no_feeds_found">Помилка: посилання є HTML сторінкою, канали не знайдені.</string>
+    <string name="error_could_not_download_url">Помилка: не вдається завантажити посилання</string>
+    <string name="headlines_view_mode">Режим перегляду</string>
+    <string name="headlines_set_view_mode">Режим перегляду</string>
+    <string name="headlines_adaptive">Адаптивно</string>
+    <string name="headlines_all_articles">Всі статті</string>
+    <string name="headlines_starred">Із зірочкою</string>
+    <string name="headlines_published">Опубліковані</string>
+    <string name="headlines_unread">Непрочитані</string>
+    <string name="article_media_share">Поширити</string>
+    <string name="article_img_view_caption">Переглянути підпис</string>
+    <string name="pref_headlines_mark_read_scroll">Відмічати прочитаним при прокрутці</string>
+    <string name="pref_headlines_mark_read_scroll_long">Позначати заголовки прочитаними при прокручуванні за ними</string>
+
+    <plurals name="mark_num_headlines_as_read">
+	<item quantity="one">Позначити %1$d статтю прочитаною\?</item>
+	<item quantity="few">Позначити %1$d статті прочитаними\?</item>
+	<item quantity="many">Позначити %1$d статей прочитаними\?</item>
+</plurals>
+
+    <string name="prefs_confirm_headlines_catchup">Підтверджувати позначення прочитаним</string>
+    <string name="author_formatted">%1$s</string>
+
+    <plurals name="n_unread_articles">
+	<item quantity="one">Немає непрочитаних статей</item>
+	<item quantity="few">Одна непрочитана стаття</item>
+	<item quantity="many">%1$d непрочитаних статей</item>
+</plurals>
+
+    <string name="pref_headline_font_size">Розмір тексту заголовку</string>
     </resources>
