@@ -241,16 +241,19 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 						return a.order_id - b.order_id;
 					else
 						return a.title.toUpperCase().compareTo(b.title.toUpperCase());
-				else if (a.is_cat && !b.is_cat)
+				else if (a.is_cat)
 					return -1;
-				else if (!a.is_cat && b.is_cat) 
+				else if (b.is_cat)
 					return 1;
 				else if (a.order_id != 0 && b.order_id != 0)
 					return a.order_id - b.order_id;
 				else
 					return a.title.toUpperCase().compareTo(b.title.toUpperCase());
 			else
-				return a.id - b.id;
+				if (a.id < CommonActivity.LABEL_BASE_INDEX && b.id < CommonActivity.LABEL_BASE_INDEX)
+					return a.title.toUpperCase().compareTo(b.title.toUpperCase());
+				else
+					return a.id - b.id;
 		}
 		
 	}
