@@ -271,4 +271,6 @@
     <string name="feed_published_articles">Veröffentlichte Artikel</string>
     <string name="feed_archived_articles">Archivierte Artikel</string>
     <string name="feed_recently_read">Kürzlich gelesen</string>
-    </resources>
+    <string name="cat_labels">Etiketten</string>
+    <string name="cat_uncategorized">Nicht kategorisiert</string>
+</resources>
