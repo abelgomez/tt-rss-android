@@ -76,6 +76,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 
 	public static final int EXCERPT_MAX_LENGTH = 256;
     public static final int EXCERPT_MAX_QUERY_LENGTH = 2048;
+	public static final int LABEL_BASE_INDEX = -1024;
 
 	public static final int PENDING_INTENT_CHROME_SHARE = 1;
 
