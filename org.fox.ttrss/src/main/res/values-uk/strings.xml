@@ -96,4 +96,159 @@
     <string name="dialog_offline_sync_continue">Продовжити</string>
     <string name="article_set_note">Поширити з нотаткою</string>
     <string name="dialog_open_preferences">Налаштування</string>
-    </resources>
+    <string name="dialog_need_configure_prompt">"Заповніть інформацію про свій  tt-rss сервер: адреса, ім’я та пароль."</string>
+    <string name="error_network_unavailable">Помилка: мережа відсутня</string>
+    <string name="category_browse_headlines">Переглянути заголовки</string>
+    <string name="use_volume_keys">Використовувати кнопки гучності</string>
+    <string name="use_volume_keys_long">Переходити між статтями за допомогою кнопок гучності</string>
+    <string name="ssl_trust_any_host">Не перевіряти ім’я сервера</string>
+    <string name="error_api_unknown_method">Помилка: невідомий метод API</string>
+    <string name="ssl_trust_any_long">Приймати всі сертифікати SSL без перевірки</string>
+    <string name="ssl_trust_any_host_long">Не перевіряти ім’я сервера</string>
+    <string name="ssl">SSL</string>
+    <string name="error_ssl_hostname_rejected">Помилка: ім’я сервера SSL не вдалося перевірити</string>
+
+    <plurals name="article_comments">
+	<item quantity="one">%1$d коментар</item>
+	<item quantity="few">%1$d коментарі</item>
+	<item quantity="many">%1$d коментарів</item>
+</plurals>
+
+    <plurals name="trial_mode_prompt">
+	<item quantity="one">Пробний режим, залишився один день.</item>
+	<item quantity="few">Пробний режим, залишилося %1$d дні.</item>
+	<item quantity="many">Пробний режим, залишилося %1$d днів.</item>
+</plurals>
+
+    <string name="trial_purchase">Купити повну версію</string>
+    <string name="trial_expired">Пробний режим закінчився</string>
+    <string name="trial_expired_message">Щоб продовжити користуватися Tiny Tiny RSS, придбайте ключ для повної версії.</string>
+    <string name="theme_amber">Янтар</string>
+    <string name="reading">Читання</string>
+    <string name="offline_articles_to_download">Скільки статей завантажувати</string>
+    <string name="offline_articles_to_download_long">Скільки статей завантажувати для автономного режиму (спочатку нові)</string>
+    <string name="pref_headlines_show_content_long">Показувати передогляд вмісту в списку заголовків</string>
+    <string name="pref_headlines_show_content">Передогляд вмісту статті</string>
+    <string name="api_too_low">Ця дія вимагає новішої версії сервера Tiny Tiny RSS</string>
+    <string name="share_url_hint">Посилання на статтю</string>
+    <string name="share_content_hint">Вміст статті</string>
+    <string name="share_title_hint">Заголовок статті</string>
+    <string name="share_share_button">Поширити</string>
+    <string name="share_article_posted">Стаття збережена.</string>
+    <string name="subscribe_name">Підписатися з Tiny Tiny RSS</string>
+    <string name="feed_url">Посилання на канал</string>
+    <string name="subscribe_to_feed">Підписатися на канал</string>
+    <string name="error_while_subscribing">Помилка при підписанні.</string>
+    <string name="category_list_updated">Список категорій оновлений</string>
+    <string name="subscribed_to_feed">Підписка додана</string>
+    <string name="error_feed_already_exists_">Помилка: канал вже є.</string>
+    <string name="error_invalid_url">Помилка: неправильне посилання.</string>
+    <string name="error_url_is_an_html_page_no_feeds_found">Помилка: посилання є HTML сторінкою, канали не знайдені.</string>
+    <string name="error_could_not_download_url">Помилка: не вдається завантажити посилання</string>
+    <string name="headlines_view_mode">Режим перегляду</string>
+    <string name="headlines_set_view_mode">Режим перегляду</string>
+    <string name="headlines_adaptive">Адаптивно</string>
+    <string name="headlines_all_articles">Всі статті</string>
+    <string name="headlines_starred">Із зірочкою</string>
+    <string name="headlines_published">Опубліковані</string>
+    <string name="headlines_unread">Непрочитані</string>
+    <string name="article_media_share">Поширити</string>
+    <string name="article_img_view_caption">Переглянути підпис</string>
+    <string name="pref_headlines_mark_read_scroll">Відмічати прочитаним при прокрутці</string>
+    <string name="pref_headlines_mark_read_scroll_long">Позначати заголовки прочитаними при прокручуванні за ними</string>
+
+    <plurals name="mark_num_headlines_as_read">
+	<item quantity="one">Позначити %1$d статтю прочитаною\?</item>
+	<item quantity="few">Позначити %1$d статті прочитаними\?</item>
+	<item quantity="many">Позначити %1$d статей прочитаними\?</item>
+</plurals>
+
+    <string name="prefs_confirm_headlines_catchup">Підтверджувати позначення прочитаним</string>
+    <string name="author_formatted">%1$s</string>
+
+    <plurals name="n_unread_articles">
+	<item quantity="one">Немає непрочитаних статей</item>
+	<item quantity="few">Одна непрочитана стаття</item>
+	<item quantity="many">%1$d непрочитаних статей</item>
+</plurals>
+
+    <string name="pref_headline_font_size">Розмір тексту заголовку</string>
+    <string name="context_confirm_catchup">Позначити всі статті в %1$s прочитаними\?</string>
+    <string name="accel_webview_summary">Вимкніть, якщо ви бачите блимання чи візуальні спотворення</string>
+    <string name="accel_webview_title">Прискорений веб перегляд (3.0+)</string>
+    <string name="place_shortcut">Розмістити ярлик</string>
+    <string name="shortcut_has_been_placed_on_the_home_screen">Ярлик було розміщено на домашньому екрані</string>
+    <string name="download_articles_and_go_offline">Завантажити статті та перейти до автономного режиму</string>
+    <string name="tasker_save_and_close">Зберегти та закрити</string>
+    <string name="synchronize_read_articles_and_go_online">Синхронізувати прочитані статті та перейти онлайн</string>
+    <string name="font_size_dialog_suffix">sp</string>
+    <string name="server_function_not_available">Вибачте, ця функція не працює у вашій версії tt-rss.</string>
+    <string name="unsubscribe">Відписатися</string>
+    <string name="unsubscribe_from_prompt">Відписатися від %1$s\?</string>
+    <string name="error_loading_image">Помилка завантаження картинки.</string>
+    <string name="toggle_sort_order">Спочатку нові чи старі</string>
+    <string name="headlines_sort_default">Типово</string>
+    <string name="headlines_sort_newest_first">Спочатку нові</string>
+    <string name="headlines_sort_oldest_first">Спочатку старі</string>
+    <string name="headlines_sort_title">Заголовок</string>
+    <string name="headlines_sort_articles_title">Сортувати статті</string>
+    <string name="fresh_articles">Свіжі статті</string>
+    <string name="cat_special">Особливі</string>
+    <string name="feed_starred_articles">Статті, позначені зірочкою</string>
+    <string name="feed_published_articles">Поширені статті</string>
+    <string name="feed_archived_articles">Архівні статті</string>
+    <string name="feed_recently_read">Нещодавно прочитані</string>
+    <string name="feed_all_articles">Всі статті</string>
+    <string name="prefs_enable_fab">Увімкнути FAB</string>
+    <string name="prefs_enable_fab_long">"Показувати кнопку-коло при читанні "</string>
+    <string name="prefs_open_fresh_on_startup">Показувати Свіжі статті при запуску</string>
+    <string name="prefs_headline_display_mode">Режим показу заголовків</string>
+    <string name="prefs_headline_display_mode_long">Типовий, без картинок, чи компактний режим</string>
+    <string name="headline_display_mode_default">Типовий</string>
+    <string name="headline_display_mode_no_images">Без картинок</string>
+    <string name="headline_display_mode_compact">Компактний</string>
+    <string name="headline_display_mode_compact_noimages">Компактний (без картинок)</string>
+    <string name="prefs_version">%1$s (%2$d)</string>
+    <string name="prefs_version_title">Версія</string>
+    <string name="prefs_build_timestamp">%1$s</string>
+    <string name="prefs_build_timestamp_title">Дата збірки</string>
+    <string name="crash_dialog_text">"На жаль, Tiny Tiny RSS  перестав працювати. Відправити звіт про збій до  tt-rss.org\?"</string>
+    <string name="prefs_widget_show_fresh">Показувати Свіжі статті</string>
+    <string name="prefs_widget_show_fresh_summary">"Показувати кількість свіжих статей, а не загальну "</string>
+    <string name="prefs_widget">Віджет</string>
+    <string name="title_activity_video_player">Відео програвач</string>
+
+    <string name="action_settings">Налаштування</string>
+    <string name="video_player_share">Поширити відео</string>
+    <string name="headlines_row_top_changed">Знайдено нові статті, перезавантажте канал для продовження.</string>
+    <string name="prefs_custom_tabs_summary">Відкривати зовнішні посилання за допомогою custom tabs (швидше, використовується по можливості)</string>
+    <string name="prefs_use_custom_tabs">Використовувати швидкий перегляд</string>
+    <string name="ask_me_every_time">Щоразу питати</string>
+    <string name="quick_preview">Швидкий перегляд</string>
+    <string name="prefs_opening_links">Як відкривати посилання</string>
+    <string name="open_with">Відкривати за допомогою…</string>
+    <string name="confirm_catchup_above">Позначити всі статті прочитаними\?</string>
+    <string name="dialog_ok">Добре</string>
+    <string name="headline_undo_row_button">Відмінити</string>
+    <string name="headline_undo_row_prompt">Позначити прочитаними</string>
+    <string name="pref_headlines_swipe_to_dismiss">Зсунути заголовки</string>
+    <string name="pref_headlines_swipe_to_dismiss_long">Вимикає контекстне меню заголовків</string>
+    <string name="pref_widget_update_interval">Інтервал оновлення (у хвилинах)</string>
+
+    <string name="widget_background_light">Світлий</string>
+    <string name="widget_background_dark">Темний</string>
+    <string name="widget_background_transparent">Прозорий</string>
+    <string name="pref_widget_background">Фон віджета</string>
+    <string name="pref_widget_update_interval_summary">Інтервал неточний через обмеження Android</string>
+    <string name="prefs_offline_sort_by_feed">Групувати заголовки за каналами</string>
+    <string name="reload">Оновити</string>
+    <string name="offline_sync_try_again">Спробувати ще</string>
+    <string name="offline_tap_to_switch">Натисніть, щоб перейти до автономного режиму</string>
+    <string name="offline_no_articles">Немає завантажених статей</string>
+    <string name="prefs_network_settings">Більше налаштувань...</string>
+    <string name="logcat_refresh">Оновити</string>
+    <string name="logcat_copy">Скопіювати до буфера обміну</string>
+    <string name="logcat_title">Перегляд журналу</string>
+    <string name="cat_labels">Мітки</string>
+    <string name="cat_uncategorized">Без категорії</string>
+</resources>
