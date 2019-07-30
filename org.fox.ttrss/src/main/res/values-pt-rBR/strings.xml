@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="login_in_progress">Conectando…</string>
     <string name="app_name" translatable="false">Tiny Tiny RSS</string>
     <string name="login_need_configure">Por favor, configure a aplicação.</string>
@@ -120,17 +119,14 @@
     <string name="ssl_trust_any_host_long">Não verificar o nome de host do servidor</string>
     <string name="ssl">SSL</string>
     <string name="error_ssl_hostname_rejected">Erro: Nome de host SSL não corresponde</string>
-
     <plurals name="article_comments">
         <item quantity="one">%1$d comentário</item>
         <item quantity="other">%1$d comentários</item>
     </plurals>
-
     <plurals name="trial_mode_prompt">
         <item quantity="one">Modo de teste, resta um dia.</item>
         <item quantity="other">Modo de teste, restam %1$d dias.</item>
     </plurals>
-
     <string name="trial_purchase">Desbloquear a versão completa</string>
     <string name="trial_expired">Período de teste encerrado</string>
     <string name="trial_expired_message">Para continuar usando o Tiny Tiny RSS por favor desbloqueie a versão completa comprando a chave.</string>
@@ -138,7 +134,7 @@
     <string name="theme_amber">Âmbar</string> -->
     <string name="reading">Leitura</string>
     <string name="offline_articles_to_download">Número de artigos a baixar</string>
-    <string name="offline_articles_to_download_long">Número de artigos a baixar para o modo offline (mais novos primeiro).</string>
+    <string name="offline_articles_to_download_long">Número de artigos a baixar para o modo offline (mais novos primeiro)</string>
     <string name="pref_headlines_show_content_long">Mostrar prévia do conteúdo na lista de títulos</string>
     <string name="pref_headlines_show_content">Prévia do conteúdo do artigo</string>
     <string name="api_too_low">Esta ação precisa de uma nova versão do Tiny Tiny RSS</string>
@@ -169,20 +165,16 @@
     <string name="article_img_view_caption">Ver legenda</string>
     <string name="pref_headlines_mark_read_scroll">Marcar como lido ao visualizar</string>
     <string name="pref_headlines_mark_read_scroll_long">Artigos serão marcados como lidos ao rodar depois deles</string>
-
     <plurals name="mark_num_headlines_as_read">
         <item quantity="one">Marcar um artigos como lido?</item>
         <item quantity="other">Marcar %1$d artigos como lidos?</item>
     </plurals>
-
     <string name="prefs_confirm_headlines_catchup">Confirme marcação de artigos como lidos</string>
-    <string name="author_formatted">por %1$s</string>
-
+    <string name="author_formatted">%1$s</string>
     <plurals name="n_unread_articles">
         <item quantity="one">%1$d artigo não lido</item>
         <item quantity="other">%1$d artigos não lidos</item>
     </plurals>
-
     <string name="pref_headline_font_size">Tamanho do texto para os títulos</string>
     <string name="context_confirm_catchup">Marcar todos os artigos em %1$s como lidos?</string>
     <string name="accel_webview_summary">Desabilite se vir problemas visuais</string>
@@ -224,12 +216,10 @@
     <string name="prefs_widget_show_fresh_summary">Ao invés do total de artigos não lidos, exibir a quantidade de artigos recentes</string>
     <string name="prefs_widget">Widget</string>
     <string name="title_activity_video_player">Reprodutor de vídeos</string>
-
     <!-- <string name="hello_world">Olá, mundo!</string> -->
     <string name="action_settings">Configurações</string>
     <string name="video_player_share">Compartilhar vídeo</string>
     <!-- <string name="video_player_open">Abrir vídeo</string> -->
-
     <!-- <string name="flavor_image_prompt">(mais imagens…)</string> -->
     <string name="headlines_row_top_changed">Novos artigos encontrados, recarregue o feed para continuar.</string>
     <string name="prefs_custom_tabs_summary">Abrir links externos com custom tabs do Chrome (mais rápido, usado se disponível)</string>
@@ -247,7 +237,6 @@
     <string name="pref_headlines_swipe_to_dismiss">Deslizar para marcar como lido</string>
     <string name="pref_headlines_swipe_to_dismiss_long">Desabilita menu de contexto dos títulos</string>
     <string name="pref_widget_update_interval">Intervalo de atualização (em minutos)</string>
-
     <string name="widget_background_light">Claro</string>
     <string name="widget_background_dark">Escuro</string>
     <string name="widget_background_transparent">Transparente</string>
@@ -258,4 +247,16 @@
     <string name="offline_sync_try_again">Tentar novamente</string>
     <string name="offline_tap_to_switch">Pressione para alterar para offline</string>
     <string name="offline_no_articles">Nenhum artigo baixado</string>
+    <string name="cat_uncategorized">Não categorizados</string>
+    <string name="cat_labels">Rótulos</string>
+    <string name="logcat_title">Visualizador de logs</string>
+    <string name="logcat_copy">Copiar para a área de transferência</string>
+    <string name="logcat_refresh">Recarregar</string>
+    <string name="prefs_network_settings">Mais configurações...</string>
+    <string name="feed_recently_read">Lidos recentemente</string>
+    <string name="feed_archived_articles">Artigos arquivados</string>
+    <string name="feed_published_articles">Artigos publicados</string>
+    <string name="feed_starred_articles">Artigos com estrela</string>
+    <string name="cat_special">Especial</string>
+    <string name="theme_amber">Âmbar</string>
 </resources>
