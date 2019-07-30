@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -464,27 +465,41 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 	
 	public void onArticleSelected(Article article, boolean open) {
 		if (open) {
-			HeadlinesFragment hf = (HeadlinesFragment)getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+			boolean alwaysOpenUri = m_prefs.getBoolean("always_open_uri", false);
+			if (alwaysOpenUri) {
+				if (article.unread) {
+					article.unread = false;
+					saveArticleUnread(article);
+				}
 
-			Intent intent = new Intent(MasterActivity.this, DetailActivity.class);
-			intent.putExtra("feed", hf.getFeed());
-			//intent.putExtra("article", article);
-			intent.putExtra("searchQuery", hf.getSearchQuery());
-            //intent.putExtra("articles", (Parcelable)hf.getAllArticles());
-            Application.getInstance().tmpArticleList = hf.getAllArticles();
-			Application.getInstance().tmpArticle = article;
+				HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+				if (hf != null) {
+					hf.setActiveArticle(article);
+				}
 
-            /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivityForResult(intent, HEADLINES_REQUEST, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-            } else {
-                startActivityForResult(intent, HEADLINES_REQUEST);
-            } */
+				openUri(Uri.parse(article.link));
+			}
+			else {
+				HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
 
-            // mysterious crashes somewhere in gl layer (?) on some feeds if we use activitycompat transitions here on LP so welp
-            startActivityForResult(intent, HEADLINES_REQUEST);
-			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+				Intent intent = new Intent(MasterActivity.this, DetailActivity.class);
+				intent.putExtra("feed", hf.getFeed());
+				//intent.putExtra("article", article);
+				intent.putExtra("searchQuery", hf.getSearchQuery());
+				//intent.putExtra("articles", (Parcelable)hf.getAllArticles());
+				Application.getInstance().tmpArticleList = hf.getAllArticles();
+				Application.getInstance().tmpArticle = article;
 
+				/* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+					startActivityForResult(intent, HEADLINES_REQUEST, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+				} else {
+					startActivityForResult(intent, HEADLINES_REQUEST);
+				} */
 
+				// mysterious crashes somewhere in gl layer (?) on some feeds if we use activitycompat transitions here on LP so welp
+				startActivityForResult(intent, HEADLINES_REQUEST);
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+			}
 		} else {
 			invalidateOptionsMenu();
 
