@@ -14,6 +14,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -61,6 +63,7 @@ public class OnlineActivity extends CommonActivity {
 	private HeadlinesActionModeCallback m_headlinesActionModeCallback;
 
 	private String m_lastImageHitTestUrl;
+	private ConnectivityManager m_cmgr;
 
 	//protected PullToRefreshAttacher m_pullToRefreshAttacher;
 
@@ -147,6 +150,8 @@ public class OnlineActivity extends CommonActivity {
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
+		m_cmgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		Intent intent = getIntent();
 
@@ -1111,7 +1116,7 @@ public class OnlineActivity extends CommonActivity {
 		
 		return true;
 	}
-	
+
 	public int getApiLevel() {
 		return Application.getInstance().m_apiLevel;
 	}
@@ -1212,7 +1217,7 @@ public class OnlineActivity extends CommonActivity {
 		String tmp = "";
 
 		for (Article a : articles)
-			tmp += String.valueOf(a.id) + ",";
+			tmp += a.id + ",";
 
 		return tmp.replaceAll(",$", "");
 	}
@@ -1562,4 +1567,12 @@ public class OnlineActivity extends CommonActivity {
 		return m_lastImageHitTestUrl;
 	}
 
+	public boolean isWifiConnected() {
+		NetworkInfo wifi = m_cmgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		if (wifi != null)
+			return wifi.isConnected();
+
+		return false;
+	}
 }
