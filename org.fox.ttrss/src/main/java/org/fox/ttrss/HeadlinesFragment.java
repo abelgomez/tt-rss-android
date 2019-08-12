@@ -630,7 +630,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 							}
 						}
 
-						if (m_amountLoaded < Integer.valueOf(m_prefs.getString("headlines_request_size", "30"))) {
+						if (m_amountLoaded < Integer.valueOf(m_prefs.getString("headlines_request_size", "15"))) {
 							//Log.d(TAG, "amount loaded < request size, disabling lazy load");
 							m_lazyLoadDisabled = true;
 						}
@@ -708,7 +708,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 					put("show_content", "true");
 					put("include_attachments", "true");
 					put("view_mode", m_activity.getViewMode());
-					put("limit", m_prefs.getString("headlines_request_size", "30"));
+					put("limit", m_prefs.getString("headlines_request_size", "15"));
 					put("offset", String.valueOf(0));
 					put("skip", String.valueOf(fskip));
 					put("include_nested", "true");

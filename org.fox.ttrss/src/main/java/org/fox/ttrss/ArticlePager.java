@@ -236,7 +236,7 @@ public class ArticlePager extends StateSavedFragment {
 								}).show();
 					}
 
-					if (m_amountLoaded < Integer.valueOf(m_prefs.getString("headlines_request_size", "30"))) {
+					if (m_amountLoaded < Integer.valueOf(m_prefs.getString("headlines_request_size", "15"))) {
 						m_lazyLoadDisabled = true;
 					}
 
@@ -316,7 +316,7 @@ public class ArticlePager extends StateSavedFragment {
                 put("excerpt_length", String.valueOf(CommonActivity.EXCERPT_MAX_LENGTH));
 				put("show_content", "true");
 				put("include_attachments", "true");
-				put("limit", m_prefs.getString("headlines_request_size", "30"));
+				put("limit", m_prefs.getString("headlines_request_size", "15"));
 				put("offset", String.valueOf(0));
 				put("view_mode", m_activity.getViewMode());
 				put("skip", String.valueOf(fskip));
