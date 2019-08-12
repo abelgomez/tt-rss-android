@@ -98,7 +98,7 @@
             android:title="@string/prefs_headline_display_mode" />
 
         <ListPreference
-            android:defaultValue="30"
+            android:defaultValue="15"
             android:entries="@array/pref_headlines_request_values"
             android:entryValues="@array/pref_headlines_request_values"
             android:key="headlines_request_size"
