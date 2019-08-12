@@ -95,7 +95,7 @@
     <string name="article_set_labels">Set labels</string>
     <string name="search">Search</string>
     <string name="cancel">Cancel</string>
-    <string name="pref_font_size">Article text size</string>
+    <string name="pref_font_size">Text size</string>
     <string name="dialog_close">Close</string>
     <string name="article_link_copy">Copy link to clipboard</string>
     <string name="text_copied_to_clipboard">Text copied to clipboard</string>
@@ -139,7 +139,7 @@
     <string name="offline_articles_to_download">Amount of articles to download</string>
     <string name="offline_articles_to_download_long">How many articles to download for offline mode (newest first)</string>
     <string name="pref_headlines_show_content_long">Show content previews in headlines list</string>
-    <string name="pref_headlines_show_content">Preview article content</string>
+    <string name="pref_headlines_show_content">Show content preview</string>
     <string name="api_too_low">This action requires newer version of Tiny Tiny RSS</string>
     <string name="share_url_hint">Article URL</string>
     <string name="share_content_hint">Article Content</string>
@@ -183,7 +183,7 @@
         <item quantity="other">%1$d unread articles</item>
     </plurals>
 
-    <string name="pref_headline_font_size">Headline text size</string>
+    <string name="pref_headline_font_size">Text size</string>
     <string name="context_confirm_catchup">Mark all articles in %1$s as read?</string>
     <string name="accel_webview_summary">Disable if you see flicker or visual glitches</string>
     <string name="accel_webview_title">Accelerate web views (3.0+)</string>
@@ -214,7 +214,7 @@
     <string name="prefs_enable_fab">Enable FAB</string>
     <string name="prefs_enable_fab_long">Show floating action button when reading</string>
     <string name="prefs_open_fresh_on_startup">Open Fresh articles on startup</string>
-    <string name="prefs_headline_display_mode">Headline display mode</string>
+    <string name="prefs_headline_display_mode">Display mode</string>
     <string name="prefs_headline_display_mode_long">Default, no images, or compact mode</string>
     <string name="headline_display_mode_default">Default</string>
     <string name="headline_display_mode_no_images">No images</string>
@@ -274,5 +274,7 @@
     <string name="prefs_headline_request_size">How many headlines to request</string>
     <string name="prefs_headline_request_size_long">Use lower values on slow connections</string>
     <string name="headlines">Headlines</string>
-    <string name="prefs_headline_images_wifi_only">Show headline images on Wi-Fi only</string>
+    <string name="prefs_headline_images_wifi_only">Show images on Wi-Fi only</string>
+    <string name="prefs_headline_images_wifi_only_long">Overrides previous setting</string>
+    <string name="prefs_inline_video_player">Experimental. Long tap to open separate player</string>
 </resources>
