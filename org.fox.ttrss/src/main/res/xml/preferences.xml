@@ -50,12 +50,23 @@
             android:defaultValue="false"
             android:key="enable_cats"
             android:title="@string/enable_cats" />
+
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
             android:dependency="enable_cats"
             android:key="browse_cats_like_feeds"
             android:summary="@string/browse_cats_like_feeds_summary"
             android:title="@string/browse_cats_like_feeds" />
+
+        <org.fox.ttrss.util.LessBrokenSwitchPreference
+            android:defaultValue="true"
+            android:key="open_fresh_on_startup"
+            android:title="@string/prefs_open_fresh_on_startup" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="category_headlines"
+        android:title="@string/headlines" >
 
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="true"
@@ -97,6 +108,11 @@
             android:summary="@string/prefs_headline_display_mode_long"
             android:title="@string/prefs_headline_display_mode" />
 
+        <org.fox.ttrss.util.LessBrokenSwitchPreference
+            android:defaultValue="false"
+            android:key="headline_images_wifi_only"
+            android:title="@string/prefs_headline_images_wifi_only" />
+
         <ListPreference
             android:defaultValue="15"
             android:entries="@array/pref_headlines_request_values"
@@ -106,16 +122,13 @@
             android:title="@string/prefs_headline_request_size" />
 
         <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="true"
-            android:key="open_fresh_on_startup"
-            android:title="@string/prefs_open_fresh_on_startup" />
-
-        <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
             android:key="inline_video_player"
             android:summary="Experimental: play videos inside headlines list. Long tap to open separate player"
             android:title="Inline video player" />
+
     </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/reading" >
         <org.fox.ttrss.util.FontSizeDialogPreference
             android:defaultValue="16"

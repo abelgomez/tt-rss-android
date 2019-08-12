@@ -15,6 +15,8 @@ import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -865,11 +867,30 @@ public class HeadlinesFragment extends StateSavedFragment {
         private ColorGenerator m_colorGenerator = ColorGenerator.DEFAULT;
         private TextDrawable.IBuilder m_drawableBuilder = TextDrawable.builder().round();
 
-		boolean showFlavorImage;
+		boolean flavorImageEnabled;
 		private int m_minimumHeightToEmbed;
 		boolean m_youtubeInstalled;
 		private int m_screenHeight;
 		private int m_lastAddedPosition;
+
+		private final ConnectivityManager m_cmgr;
+
+		private boolean canShowFlavorImage() {
+			if (flavorImageEnabled) {
+				if (m_prefs.getBoolean("headline_images_wifi_only", false)) {
+					// why do i have to get this service every time instead of using a member variable :(
+					NetworkInfo wifi = m_cmgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+					if (wifi != null)
+						return wifi.isConnected();
+
+				} else {
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		public ArticleListAdapter(Context context, int textViewResourceId, ArrayList<Article> items) {
 			super();
@@ -882,7 +903,9 @@ public class HeadlinesFragment extends StateSavedFragment {
 			m_screenHeight = size.y;
 
 			String headlineMode = m_prefs.getString("headline_mode", "HL_DEFAULT");
-			showFlavorImage = "HL_DEFAULT".equals(headlineMode) || "HL_COMPACT".equals(headlineMode);
+			flavorImageEnabled = "HL_DEFAULT".equals(headlineMode) || "HL_COMPACT".equals(headlineMode);
+
+			m_cmgr = (ConnectivityManager) m_activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 			Theme theme = context.getTheme();
 			TypedValue tv = new TypedValue();
@@ -1122,7 +1145,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 					holder.excerptView.setTextSize(TypedValue.COMPLEX_UNIT_SP, headlineFontSize);
 					holder.excerptView.setText(excerpt);
 
-					if (!showFlavorImage) {
+					if (!canShowFlavorImage()) {
 						holder.excerptView.setPadding(holder.excerptView.getPaddingLeft(),
 								0,
 								holder.excerptView.getPaddingRight(),
@@ -1167,7 +1190,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 					}
 				});
 
-				if (showFlavorImage && article.flavorImageUri != null && holder.flavorImageView != null) {
+				if (canShowFlavorImage() && article.flavorImageUri != null && holder.flavorImageView != null) {
 					if (holder.flavorImageOverflow != null) {
 						holder.flavorImageOverflow.setOnClickListener(new View.OnClickListener() {
 							@Override
@@ -1525,7 +1548,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 				holder.textImage.setImageDrawable(textDrawable);
 
-				if (!showFlavorImage || article.flavorImage == null) {
+				if (!canShowFlavorImage() || article.flavorImage == null) {
 					holder.textImage.setImageDrawable(textDrawable);
 
 				} else {
