@@ -97,6 +97,14 @@
             android:summary="@string/prefs_headline_display_mode_long"
             android:title="@string/prefs_headline_display_mode" />
 
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/pref_headlines_request_values"
+            android:entryValues="@array/pref_headlines_request_values"
+            android:key="headlines_request_size"
+            android:summary="@string/prefs_headline_request_size_long"
+            android:title="@string/prefs_headline_request_size" />
+
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="true"
             android:key="open_fresh_on_startup"
@@ -107,7 +115,6 @@
             android:key="inline_video_player"
             android:summary="Experimental: play videos inside headlines list. Long tap to open separate player"
             android:title="Inline video player" />
-
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/reading" >
         <org.fox.ttrss.util.FontSizeDialogPreference

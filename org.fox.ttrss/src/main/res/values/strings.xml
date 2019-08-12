@@ -271,4 +271,6 @@
     <string name="logcat_title">Log viewer</string>
     <string name="cat_labels">Labels</string>
     <string name="cat_uncategorized">Uncategorized</string>
+    <string name="prefs_headline_request_size">How many headlines to request</string>
+    <string name="prefs_headline_request_size_long">Use lower values on slow connections</string>
 </resources>

@@ -330,7 +330,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 		Log.d(TAG, "onSharedPreferenceChanged:" + key);
 
 		String[] filter = new String[] { "theme", "enable_cats", "headline_mode", "widget_update_interval",
-				"headlines_swipe_to_dismiss", "headlines_mark_read_scroll" };
+				"headlines_swipe_to_dismiss", "headlines_mark_read_scroll", "headlines_request_size" };
 
 		m_needRestart = Arrays.asList(filter).indexOf(key) != -1;
 	}

@@ -197,7 +197,7 @@ public class ArticlePager extends StateSavedFragment {
 
 		m_refreshInProgress = true;
 
-		HeadlinesRequest req = new HeadlinesRequest(getActivity().getApplicationContext(), m_activity, m_feed, m_articles) {
+		@SuppressLint("StaticFieldLeak") HeadlinesRequest req = new HeadlinesRequest(getActivity().getApplicationContext(), m_activity, m_feed, m_articles) {
 			@Override
 			protected void onProgressUpdate(Integer... progress) {
 				m_activity.setProgress(progress[0] / progress[1] * 10000);
@@ -236,7 +236,7 @@ public class ArticlePager extends StateSavedFragment {
 								}).show();
 					}
 
-					if (m_amountLoaded < HeadlinesFragment.HEADLINES_REQUEST_SIZE) {
+					if (m_amountLoaded < Integer.valueOf(m_prefs.getString("headlines_request_size", "30"))) {
 						m_lazyLoadDisabled = true;
 					}
 
@@ -316,7 +316,7 @@ public class ArticlePager extends StateSavedFragment {
                 put("excerpt_length", String.valueOf(CommonActivity.EXCERPT_MAX_LENGTH));
 				put("show_content", "true");
 				put("include_attachments", "true");
-				put("limit", String.valueOf(HeadlinesFragment.HEADLINES_REQUEST_SIZE));
+				put("limit", m_prefs.getString("headlines_request_size", "30"));
 				put("offset", String.valueOf(0));
 				put("view_mode", m_activity.getViewMode());
 				put("skip", String.valueOf(fskip));

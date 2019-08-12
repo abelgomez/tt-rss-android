@@ -99,7 +99,6 @@ public class HeadlinesFragment extends StateSavedFragment {
     public static final int FLAVOR_IMG_MIN_SIZE = 128;
 	public static final int THUMB_IMG_MIN_SIZE = 32;
 
-    public static final int HEADLINES_REQUEST_SIZE = 30;
 	public static final int HEADLINES_BUFFER_MAX = 1000;
 
 	private final String TAG = this.getClass().getSimpleName();
@@ -631,7 +630,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 							}
 						}
 
-						if (m_amountLoaded < HEADLINES_REQUEST_SIZE) {
+						if (m_amountLoaded < Integer.valueOf(m_prefs.getString("headlines_request_size", "30"))) {
 							//Log.d(TAG, "amount loaded < request size, disabling lazy load");
 							m_lazyLoadDisabled = true;
 						}
@@ -709,7 +708,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 					put("show_content", "true");
 					put("include_attachments", "true");
 					put("view_mode", m_activity.getViewMode());
-					put("limit", String.valueOf(HEADLINES_REQUEST_SIZE));
+					put("limit", m_prefs.getString("headlines_request_size", "30"));
 					put("offset", String.valueOf(0));
 					put("skip", String.valueOf(fskip));
 					put("include_nested", "true");
@@ -1240,7 +1239,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 					try {
 
-						Glide.with(HeadlinesFragment.this)
+						Glide.with(getContext())
 								.load(article.flavorImageUri)
 								//.dontTransform()
 								.diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -1530,7 +1529,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 					holder.textImage.setImageDrawable(textDrawable);
 
 				} else {
-					Glide.with(HeadlinesFragment.this)
+					Glide.with(getContext())
 							.load(article.flavorImageUri)
 							.placeholder(textDrawable)
 							.thumbnail(0.5f)

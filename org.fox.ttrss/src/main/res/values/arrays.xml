@@ -46,4 +46,10 @@
         <item>@string/widget_background_dark</item>
         <item>@string/widget_background_transparent</item>
     </string-array>
+    <string-array name="pref_headlines_request_values" translatable="false">
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+    </string-array>
 </resources>
