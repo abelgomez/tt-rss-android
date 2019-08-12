@@ -122,6 +122,12 @@
 
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
+            android:key="enable_image_downsampling"
+            android:title="@string/prefs_enable_image_downsampling"
+            android:summary="@string/prefs_enable_image_downsampling_long" />
+
+        <org.fox.ttrss.util.LessBrokenSwitchPreference
+            android:defaultValue="false"
             android:key="inline_video_player"
             android:summary="@string/prefs_inline_video_player"
             android:title="Inline video player" />

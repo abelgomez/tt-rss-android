@@ -338,8 +338,11 @@ public class ArticlePager extends StateSavedFragment {
 					put("include_header", "true");
 				}
 
-				put("resize_width", String.valueOf(m_activity.getScreenWidth()/2));
-				put("resize_enabled", String.valueOf(!m_activity.isWifiConnected()));
+				if (m_prefs.getBoolean("enable_image_downsampling", false)) {
+					if (!m_activity.isWifiConnected()) {
+						put("resize_width", String.valueOf(m_activity.getScreenWidth() * 0.75));
+					}
+				}
 			}			 
 		};
 

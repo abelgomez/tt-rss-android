@@ -277,4 +277,6 @@
     <string name="prefs_headline_images_wifi_only">Show images on Wi-Fi only</string>
     <string name="prefs_headline_images_wifi_only_long">Overrides previous setting</string>
     <string name="prefs_inline_video_player">Experimental. Long tap to open separate player</string>
+    <string name="prefs_enable_image_downsampling">Auto-resize images</string>
+    <string name="prefs_enable_image_downsampling_long">Asks backend to downsample images if not on Wi-Fi. Needs a plugin (ttrss-api-resize).</string>
 </resources>
