@@ -1,9 +1,8 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="login_in_progress">Connexion…</string>
     <string name="app_name">Tiny Tiny RSS</string>
-    <string name="login_need_configure">Configurer l\'application d\'abord.</string>
+    <string name="login_need_configure">Veuillez d\'abord configurer l\'application.</string>
     <string name="login_ready">Prêt à se connecter.</string>
     <string name="login_login">Connexion</string>
     <string name="logout">Déconnexion</string>
@@ -119,17 +118,14 @@
     <string name="ssl_trust_any_host_long">Ne pas vérifier si les noms des serveurs concordent</string>
     <string name="ssl">SSL</string>
     <string name="error_ssl_hostname_rejected">Erreur : nom d\'hôte SSL refusé</string>
-
     <plurals name="article_comments">
         <item quantity="one">%1$d commentaire</item>
         <item quantity="other">%1$d commentaires</item>
     </plurals>
-
     <plurals name="trial_mode_prompt">
         <item quantity="one">Mode évaluation, un seul jour restant.</item>
         <item quantity="other">Mode évaluation, %1$d jours restants.</item>
     </plurals>
-
     <string name="trial_purchase">Débloquer la version complète</string>
     <string name="trial_expired">La période d\'évaluation a expiré</string>
     <string name="trial_expired_message">Pour continuer à utiliser Tiny Tiny RSS merci de débloquer la version complète en achetant la clé.</string>
@@ -169,21 +165,17 @@
     <string name="article_img_view_caption">Montrer le sous-titre</string>
     <string name="pref_headlines_mark_read_scroll">Automatiquement marquer les articles comme lus</string>
     <string name="pref_headlines_mark_read_scroll_long">Cette option permet de marquer automatiquement les articles comme lus lorsque vous naviguez dans la liste d\'articles</string>
-
     <plurals name="mark_num_headlines_as_read">
         <item quantity="one">Marquer %1$d article comme lu ?</item>
         <item quantity="other">Marquer %1$d articles comme lus ?</item>
     </plurals>
-
     <string name="prefs_confirm_headlines_catchup">Confirmer marquer comme lu</string>
     <string name="author_formatted">%1$s</string>
-
     <plurals name="n_unread_articles">
         <item quantity="zero">Aucun article non lu</item>
         <item quantity="one">Un article non lu</item>
         <item quantity="other">%1$d articles non lus</item>
     </plurals>
-
     <string name="pref_headline_font_size">Taille du texte des titres</string>
     <string name="context_confirm_catchup">Marquer tous les articles de %1$s comme lus ?</string>
     <string name="accel_webview_summary">Désactivez si vous voyez des défauts visuels ou des clignotements</string>
@@ -225,12 +217,10 @@
     <string name="prefs_widget_show_fresh_summary">Afficher le nombre d\'articles récents plutôt que le total d\'articles non lus</string>
     <string name="prefs_widget">Widget</string>
     <string name="title_activity_video_player">Lecteur Vidéo</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Paramètres</string>
     <string name="video_player_share">Partager la vidéo</string>
     <string name="video_player_open">Ouvrir la vidéo</string>
-
     <string name="flavor_image_prompt">(plus d\'images…)</string>
     <string name="headlines_row_top_changed">Nouveaux articles trouvés, rechargez le flux pour continuer.</string>
     <string name="prefs_custom_tabs_summary">Ouvrir les liens externes avec les onglets rapides de Chrome (plus rapide, si disponible)</string>
@@ -241,7 +231,7 @@
     <string name="open_with_app">Ouvrir avec une app</string>
     <string name="prefs_opening_links">Ouverture des liens</string>
     <string name="open_with">Ouvrir avec…</string>
-<string name="offline_switch_failed">Échec lors de la préparation du mode hors connexion</string>
+    <string name="offline_switch_failed">Échec lors de la préparation du mode hors connexion</string>
     <string name="offline_media_cache_enabled">Mettre en cache les media</string>
     <string name="offline_media_cache_enabled_summary">Télécharger les fichiers multimédia sur la carte SD. Cela pourrait augmenter considérablement le temps pour passer hors connexion</string>
     <string name="notify_downloading_media">Téléchargement des fichiers médias.…</string>
@@ -258,7 +248,6 @@
     <string name="pref_headlines_swipe_to_dismiss">Glisser pour rejeter</string>
     <string name="pref_headlines_swipe_to_dismiss_long">Désactiver le menu contextuel des articles</string>
     <string name="pref_widget_update_interval">Intervalle de mise à jour (en minutes)</string>
-
     <string name="widget_background_light">Clair</string>
     <string name="widget_background_dark">Sombre</string>
     <string name="widget_background_transparent">Transparent</string>
