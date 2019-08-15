@@ -39,6 +39,8 @@ public class Article implements Parcelable {
 	public String author;
 	public String note;
     public boolean selected;
+    public String flavor_image;
+    public String flavor_stream;
 
 	/* not serialized */
 	transient public Document articleDoc;
@@ -67,6 +69,19 @@ public class Article implements Parcelable {
 	}
 
 	public void collectMediaInfo() {
+		if (flavor_image != null && flavor_image.length() > 0) {
+			flavorImageUri = flavor_image;
+
+			flavorImage = new Element("img")
+					.attr("src", flavorImageUri);
+
+			if (flavor_stream != null && flavor_stream.length() > 0) {
+				flavorStreamUri = flavor_stream;
+			}
+
+			return;
+		}
+
 		articleDoc = Jsoup.parse(content);
 
 		if (articleDoc != null) {

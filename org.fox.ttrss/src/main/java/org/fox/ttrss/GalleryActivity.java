@@ -151,6 +151,72 @@ public class GalleryActivity extends CommonActivity {
         }
     }
 
+    boolean collectGalleryContents(String imgSrcFirst, Document doc, List<GalleryEntry> uncheckedItems ) {
+        Elements elems = doc.select("img,video");
+
+        boolean firstFound = false;
+
+        for (Element elem : elems) {
+
+            GalleryEntry item = new GalleryEntry();
+
+            if ("video".equals(elem.tagName().toLowerCase())) {
+                String cover = elem.attr("poster");
+
+                Element source = elem.select("source").first();
+                String src = source.attr("src");
+
+                //Log.d(TAG, "vid/src=" + src);
+
+                if (src.startsWith("//")) {
+                    src = "https:" + src;
+                }
+
+                if (imgSrcFirst.equals(src))
+                    firstFound = true;
+
+                item.url = src;
+                item.coverUrl = cover;
+                item.type = GalleryEntry.GalleryEntryType.TYPE_VIDEO;
+
+            } else {
+                String src = elem.attr("src");
+
+                if (src.startsWith("//")) {
+                    src = "https:" + src;
+                }
+
+                if (imgSrcFirst.equals(src))
+                    firstFound = true;
+
+                Log.d(TAG, "img/fir=" + imgSrcFirst + ";");
+                Log.d(TAG, "img/src=" + src + "; ff=" + firstFound);
+
+                try {
+                    Uri checkUri = Uri.parse(src);
+
+                    if (!"data".equals(checkUri.getScheme().toLowerCase())) {
+                        item.url = src;
+                        item.type = GalleryEntry.GalleryEntryType.TYPE_IMAGE;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if ((firstFound || imgSrcFirst.equals("")) && item.url != null) {
+                if (m_items.size() == 0)
+                    m_items.add(item);
+                else
+                    uncheckedItems.add(item);
+            }
+        }
+
+        return firstFound;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         ActivityCompat.postponeEnterTransition(this);
@@ -182,67 +248,11 @@ public class GalleryActivity extends CommonActivity {
             String imgSrcFirst = getIntent().getStringExtra("firstSrc");
 
             Document doc = Jsoup.parse(m_content);
-            Elements elems = doc.select("img,video");
 
-            boolean firstFound = false;
-
-            for (Element elem : elems) {
-
-                GalleryEntry item = new GalleryEntry();
-
-                if ("video".equals(elem.tagName().toLowerCase())) {
-                    String cover = elem.attr("poster");
-
-                    Element source = elem.select("source").first();
-                    String src = source.attr("src");
-
-                    //Log.d(TAG, "vid/src=" + src);
-
-                    if (src.startsWith("//")) {
-                        src = "https:" + src;
-                    }
-
-                    if (imgSrcFirst.equals(src))
-                        firstFound = true;
-
-                    item.url = src;
-                    item.coverUrl = cover;
-                    item.type = GalleryEntry.GalleryEntryType.TYPE_VIDEO;
-
-                } else {
-                    String src = elem.attr("src");
-
-                    if (src.startsWith("//")) {
-                        src = "https:" + src;
-                    }
-
-                    if (imgSrcFirst.equals(src))
-                        firstFound = true;
-
-                    Log.d(TAG, "img/fir=" + imgSrcFirst);
-                    Log.d(TAG, "img/src=" + src + "; ff=" + firstFound);
-
-                    try {
-                        Uri checkUri = Uri.parse(src);
-
-                        if (!"data".equals(checkUri.getScheme().toLowerCase())) {
-                            item.url = src;
-                            item.type = GalleryEntry.GalleryEntryType.TYPE_IMAGE;
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                if (firstFound && item.url != null) {
-                    if (m_items.size() == 0)
-                        m_items.add(item);
-                    else
-                        uncheckedItems.add(item);
-                }
-            }
+            // if we were unable to find first image, try again for all media content so that
+            // gallery doesn't lock up because of a pending shared transition
+            if (!collectGalleryContents(imgSrcFirst, doc, uncheckedItems))
+                collectGalleryContents("", doc, uncheckedItems);
         }
 
         findViewById(R.id.gallery_overflow).setOnClickListener(new View.OnClickListener() {

@@ -1131,12 +1131,12 @@ public class HeadlinesFragment extends StateSavedFragment {
 				if (!m_prefs.getBoolean("headlines_show_content", true)) {
 					holder.excerptView.setVisibility(View.GONE);
 				} else {
-					String excerpt;
+					String excerpt = "";
 
 					try {
 						if (article.excerpt != null) {
 							excerpt = article.excerpt;
-						} else {
+						} else if (article.articleDoc != null) {
 							excerpt = article.articleDoc.text();
 
 							if (excerpt.length() > CommonActivity.EXCERPT_MAX_LENGTH)
