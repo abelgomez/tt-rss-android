@@ -14,12 +14,14 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -1574,5 +1576,13 @@ public class OnlineActivity extends CommonActivity {
 			return wifi.isConnected();
 
 		return false;
+	}
+
+	public int getResizeWidth() {
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+
+		return size.x > size.y ? (int)(size.y * 0.75) : (int)(size.x * 0.75);
 	}
 }

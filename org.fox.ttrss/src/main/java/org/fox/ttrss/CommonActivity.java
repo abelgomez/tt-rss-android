@@ -582,12 +582,5 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 		JobIntentService.enqueueWork(context.getApplicationContext(), WidgetUpdateService.class, 0, new Intent());
 	}
 
-    public int getScreenWidth() {
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-
-		return size.x;
-    }
 }
 

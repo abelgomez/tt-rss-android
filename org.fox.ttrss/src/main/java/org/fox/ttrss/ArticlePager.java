@@ -340,7 +340,7 @@ public class ArticlePager extends StateSavedFragment {
 
 				if (m_prefs.getBoolean("enable_image_downsampling", false)) {
 					if (!m_activity.isWifiConnected()) {
-						put("resize_width", String.valueOf(m_activity.getScreenWidth() * 0.75));
+						put("resize_width", String.valueOf(m_activity.getResizeWidth()));
 					}
 				}
 			}			 
