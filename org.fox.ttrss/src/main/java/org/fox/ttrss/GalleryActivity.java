@@ -252,7 +252,8 @@ public class GalleryActivity extends CommonActivity {
             // if we were unable to find first image, try again for all media content so that
             // gallery doesn't lock up because of a pending shared transition
             if (!collectGalleryContents(imgSrcFirst, doc, uncheckedItems))
-                collectGalleryContents("", doc, uncheckedItems);
+                if (!collectGalleryContents("", doc, uncheckedItems))
+                    m_items.add(new GalleryEntry(imgSrcFirst, GalleryEntry.GalleryEntryType.TYPE_IMAGE, null));
         }
 
         findViewById(R.id.gallery_overflow).setOnClickListener(new View.OnClickListener() {
