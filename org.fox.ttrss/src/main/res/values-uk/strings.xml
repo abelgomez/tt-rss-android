@@ -1,5 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="login_in_progress">Вхід…</string>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_in_progress">Вхід…</string>
     <string name="login_need_configure">Будь ласка, спочатку налаштуйте застосунок.</string>
     <string name="login_ready">Готовий до входу.</string>
     <string name="login_login">Увійти</string>
@@ -83,7 +84,7 @@
     <string name="article_set_labels">Встановити мітки</string>
     <string name="search">Пошук</string>
     <string name="cancel">Відміна</string>
-    <string name="pref_font_size">Розмір тексту статей</string>
+    <string name="pref_font_size">Розмір тексту</string>
     <string name="dialog_close">Закрити</string>
     <string name="article_link_copy">Копіювати посилання в буфер обміну</string>
     <string name="text_copied_to_clipboard">Тексп покладено в буфер обміну</string>
@@ -107,19 +108,16 @@
     <string name="ssl_trust_any_host_long">Не перевіряти ім’я сервера</string>
     <string name="ssl">SSL</string>
     <string name="error_ssl_hostname_rejected">Помилка: ім’я сервера SSL не вдалося перевірити</string>
-
     <plurals name="article_comments">
-	<item quantity="one">%1$d коментар</item>
-	<item quantity="few">%1$d коментарі</item>
-	<item quantity="many">%1$d коментарів</item>
-</plurals>
-
+        <item quantity="one">%1$d коментар</item>
+        <item quantity="few">%1$d коментарі</item>
+        <item quantity="many">%1$d коментарів</item>
+    </plurals>
     <plurals name="trial_mode_prompt">
-	<item quantity="one">Пробний режим, залишився один день.</item>
-	<item quantity="few">Пробний режим, залишилося %1$d дні.</item>
-	<item quantity="many">Пробний режим, залишилося %1$d днів.</item>
-</plurals>
-
+        <item quantity="one">Пробний режим, залишився один день.</item>
+        <item quantity="few">Пробний режим, залишилося %1$d дні.</item>
+        <item quantity="many">Пробний режим, залишилося %1$d днів.</item>
+    </plurals>
     <string name="trial_purchase">Купити повну версію</string>
     <string name="trial_expired">Пробний режим закінчився</string>
     <string name="trial_expired_message">Щоб продовжити користуватися Tiny Tiny RSS, придбайте ключ для повної версії.</string>
@@ -128,7 +126,7 @@
     <string name="offline_articles_to_download">Скільки статей завантажувати</string>
     <string name="offline_articles_to_download_long">Скільки статей завантажувати для автономного режиму (спочатку нові)</string>
     <string name="pref_headlines_show_content_long">Показувати передогляд вмісту в списку заголовків</string>
-    <string name="pref_headlines_show_content">Передогляд вмісту статті</string>
+    <string name="pref_headlines_show_content">Показувати передогляд вмісту</string>
     <string name="api_too_low">Ця дія вимагає новішої версії сервера Tiny Tiny RSS</string>
     <string name="share_url_hint">Посилання на статтю</string>
     <string name="share_content_hint">Вміст статті</string>
@@ -156,23 +154,19 @@
     <string name="article_img_view_caption">Переглянути підпис</string>
     <string name="pref_headlines_mark_read_scroll">Відмічати прочитаним при прокрутці</string>
     <string name="pref_headlines_mark_read_scroll_long">Позначати заголовки прочитаними при прокручуванні за ними</string>
-
     <plurals name="mark_num_headlines_as_read">
-	<item quantity="one">Позначити %1$d статтю прочитаною\?</item>
-	<item quantity="few">Позначити %1$d статті прочитаними\?</item>
-	<item quantity="many">Позначити %1$d статей прочитаними\?</item>
-</plurals>
-
+        <item quantity="one">Позначити %1$d статтю прочитаною\?</item>
+        <item quantity="few">Позначити %1$d статті прочитаними\?</item>
+        <item quantity="many">Позначити %1$d статей прочитаними\?</item>
+    </plurals>
     <string name="prefs_confirm_headlines_catchup">Підтверджувати позначення прочитаним</string>
     <string name="author_formatted">%1$s</string>
-
     <plurals name="n_unread_articles">
-	<item quantity="one">Немає непрочитаних статей</item>
-	<item quantity="few">Одна непрочитана стаття</item>
-	<item quantity="many">%1$d непрочитаних статей</item>
-</plurals>
-
-    <string name="pref_headline_font_size">Розмір тексту заголовку</string>
+        <item quantity="one">Немає непрочитаних статей</item>
+        <item quantity="few">Одна непрочитана стаття</item>
+        <item quantity="many">%1$d непрочитаних статей</item>
+    </plurals>
+    <string name="pref_headline_font_size">Розмір тексту</string>
     <string name="context_confirm_catchup">Позначити всі статті в %1$s прочитаними\?</string>
     <string name="accel_webview_summary">Вимкніть, якщо ви бачите блимання чи візуальні спотворення</string>
     <string name="accel_webview_title">Прискорений веб перегляд (3.0+)</string>
@@ -202,7 +196,7 @@
     <string name="prefs_enable_fab">Увімкнути FAB</string>
     <string name="prefs_enable_fab_long">"Показувати кнопку-коло при читанні "</string>
     <string name="prefs_open_fresh_on_startup">Показувати Свіжі статті при запуску</string>
-    <string name="prefs_headline_display_mode">Режим показу заголовків</string>
+    <string name="prefs_headline_display_mode">Режим показу</string>
     <string name="prefs_headline_display_mode_long">Типовий, без картинок, чи компактний режим</string>
     <string name="headline_display_mode_default">Типовий</string>
     <string name="headline_display_mode_no_images">Без картинок</string>
@@ -217,7 +211,6 @@
     <string name="prefs_widget_show_fresh_summary">"Показувати кількість свіжих статей, а не загальну "</string>
     <string name="prefs_widget">Віджет</string>
     <string name="title_activity_video_player">Відео програвач</string>
-
     <string name="action_settings">Налаштування</string>
     <string name="video_player_share">Поширити відео</string>
     <string name="headlines_row_top_changed">Знайдено нові статті, перезавантажте канал для продовження.</string>
@@ -234,7 +227,6 @@
     <string name="pref_headlines_swipe_to_dismiss">Зсунути заголовки</string>
     <string name="pref_headlines_swipe_to_dismiss_long">Вимикає контекстне меню заголовків</string>
     <string name="pref_widget_update_interval">Інтервал оновлення (у хвилинах)</string>
-
     <string name="widget_background_light">Світлий</string>
     <string name="widget_background_dark">Темний</string>
     <string name="widget_background_transparent">Прозорий</string>
@@ -251,4 +243,14 @@
     <string name="logcat_title">Перегляд журналу</string>
     <string name="cat_labels">Мітки</string>
     <string name="cat_uncategorized">Без категорії</string>
+    <string name="prefs_enable_image_downsampling_long">Просити сервер зменшувати зображення коли не у Wi-Fi. Потрібен плагін (ttrss-api-resize).</string>
+    <string name="prefs_enable_image_downsampling">Авторозмір зображень</string>
+    <string name="prefs_inline_video_player">Експериментально. Довге натиснення для відкриття у зовнішньому плеєрі</string>
+    <string name="prefs_headline_images_wifi_only_long">Перевизначає попередні налаштування</string>
+    <string name="prefs_headline_images_wifi_only">Показувати зображення лише по Wi-Fi</string>
+    <string name="headlines">Заголовки</string>
+    <string name="prefs_headline_request_size_long">Ставте менші значення на повільних мережах</string>
+    <string name="prefs_headline_request_size">Скільки заголовків запитувати</string>
+    <string name="prefs_always_open_uri_summary">Відкривати статті у вашому веб браузері, не відкриваючи перегляд деталей</string>
+    <string name="prefs_always_open_uri">Завжди відкривати у браузері</string>
 </resources>
