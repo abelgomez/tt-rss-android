@@ -64,7 +64,7 @@
     <string name="error_parse_error">Erro: Falha ao converter string JSON</string>
     <string name="error_io_error">Erro: Falha de I/O (Servidor fora do ar?)</string>
     <string name="error_other_error">Erro: Erro desconhecido (veja log)</string>
-    <string name="error_api_disabled">Erro: Habilite o acesso por API externa na configuração tt-rss (seção Avançado)</string>
+    <string name="error_api_disabled">Erro: Habilite o acesso por API na configuração do tt-rss</string>
     <string name="error_api_unknown">Erro: Erro desconhecido na API (veja log)</string>
     <string name="error_api_incorrect_usage">Erro: Uso incorreto da API</string>
     <string name="error_login_failed">Erro: Usuário ou senha inválidos</string>
@@ -94,7 +94,7 @@
     <string name="article_set_labels">Definir marcadores</string>
     <string name="search">Pesquisar</string>
     <string name="cancel">Cancelar</string>
-    <string name="pref_font_size">Tamanho do texto dos artigos</string>
+    <string name="pref_font_size">Tamanho do texto</string>
     <string name="dialog_close">Fechar</string>
     <string name="article_link_copy">Copiar link para a área de transferência</string>
     <string name="text_copied_to_clipboard">Texto copiado para a área de transferência</string>
@@ -136,7 +136,7 @@
     <string name="offline_articles_to_download">Número de artigos a baixar</string>
     <string name="offline_articles_to_download_long">Número de artigos a baixar para o modo offline (mais novos primeiro)</string>
     <string name="pref_headlines_show_content_long">Mostrar prévia do conteúdo na lista de títulos</string>
-    <string name="pref_headlines_show_content">Prévia do conteúdo do artigo</string>
+    <string name="pref_headlines_show_content">Exibir prévia do conteúdo</string>
     <string name="api_too_low">Esta ação precisa de uma nova versão do Tiny Tiny RSS</string>
     <string name="share_url_hint">URL do artigo</string>
     <string name="share_content_hint">Conteúdo do artigo</string>
@@ -175,7 +175,7 @@
         <item quantity="one">%1$d artigo não lido</item>
         <item quantity="other">%1$d artigos não lidos</item>
     </plurals>
-    <string name="pref_headline_font_size">Tamanho do texto para os títulos</string>
+    <string name="pref_headline_font_size">Tamanho do texto</string>
     <string name="context_confirm_catchup">Marcar todos os artigos em %1$s como lidos?</string>
     <string name="accel_webview_summary">Desabilite se vir problemas visuais</string>
     <string name="accel_webview_title">Usar web views com aceleração (3.0+)</string>
@@ -201,7 +201,7 @@
     <string name="prefs_enable_fab">Habilitar BFA</string>
     <string name="prefs_enable_fab_long">Exibir botão flutuante de ação durante a leitura</string>
     <string name="prefs_open_fresh_on_startup">Abrir artigos recentes ao iniciar</string>
-    <string name="prefs_headline_display_mode">Modo de exibição dos títulos</string>
+    <string name="prefs_headline_display_mode">Modo de exibição</string>
     <string name="prefs_headline_display_mode_long">Padrão, sem imagens, ou modo compacto</string>
     <string name="headline_display_mode_default">Padrão</string>
     <string name="headline_display_mode_no_images">Sem imagens</string>
@@ -259,4 +259,14 @@
     <string name="feed_starred_articles">Artigos com estrela</string>
     <string name="cat_special">Especial</string>
     <string name="theme_amber">Âmbar</string>
+    <string name="prefs_enable_image_downsampling_long">Solicita ao backend para reduzir a resolução das imagens se não conectado a uma rede Wi-Fi. Requer um plugin (ttrss-api-resize).</string>
+    <string name="prefs_enable_image_downsampling">Redimensionar imagens automaticamente</string>
+    <string name="prefs_inline_video_player">Experimental. Aperte e seguro para abrir um reprodutor separado</string>
+    <string name="prefs_headline_images_wifi_only_long">Sobrescreve a configuração anterior</string>
+    <string name="prefs_headline_images_wifi_only">Exibir imagens apenas em redes Wi-Fi</string>
+    <string name="headlines">Títulos</string>
+    <string name="prefs_headline_request_size_long">Use valores mais baixos em conexões lentas</string>
+    <string name="prefs_headline_request_size">Quantos artigos solicitar</string>
+    <string name="prefs_always_open_uri_summary">Abrir artigos diretamente no seu navegador web, ao invés de ir para a visualização detalhada</string>
+    <string name="prefs_always_open_uri">Sempre abrir no navegador</string>
 </resources>
