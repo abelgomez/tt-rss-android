@@ -52,7 +52,7 @@
     <string name="error_parse_error">Ошибка: не получилось декодировать JSON</string>
     <string name="error_io_error">Ошибка: ошибка ввода/вывода (сервер недоступен\?)</string>
     <string name="error_other_error">Ошибка: неизвестная ошибка (см. журнал)</string>
-    <string name="error_api_disabled">Ошибка: пожалуйста включите доступ к APB в Настройках - Расширенные</string>
+    <string name="error_api_disabled">Ошибка: включите доступ к API в настройках tt-rss</string>
     <string name="error_api_unknown">Ошибка: неизвестная ошибка API (см. журнал)</string>
     <string name="error_api_incorrect_usage">Ошибка: API использован некорректно</string>
     <string name="error_login_failed">Ошибка: имя пользователя или пароль неверны</string>
