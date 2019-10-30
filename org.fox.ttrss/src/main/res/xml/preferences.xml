@@ -128,6 +128,13 @@
 
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
+            android:key="always_downsample_images"
+            android:dependency="enable_image_downsampling"
+            android:title="Always resize images"
+            android:summary="Even on Wi-Fi" />
+
+        <org.fox.ttrss.util.LessBrokenSwitchPreference
+            android:defaultValue="false"
             android:key="inline_video_player"
             android:summary="@string/prefs_inline_video_player"
             android:title="Inline video player" />

@@ -13,6 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 import com.viewpagerindicator.UnderlinePageIndicator;
@@ -24,10 +29,6 @@ import org.fox.ttrss.util.HeadlinesRequest;
 
 import java.util.HashMap;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import icepick.State;
 
 public class ArticlePager extends StateSavedFragment {
@@ -339,7 +340,7 @@ public class ArticlePager extends StateSavedFragment {
 				}
 
 				if (m_prefs.getBoolean("enable_image_downsampling", false)) {
-					if (!m_activity.isWifiConnected()) {
+					if (m_prefs.getBoolean("always_downsample_images", false) || !m_activity.isWifiConnected()) {
 						put("resize_width", String.valueOf(m_activity.getResizeWidth()));
 					}
 				}
