@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion "28.0.3"
 
     defaultConfig {
@@ -9,7 +9,7 @@ android {
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
         buildConfigField "boolean", "ENABLE_TRIAL", "true"
         minSdkVersion 16
-        targetSdkVersion 28 // we're not targeting SDK 25 because of this: https://issuetracker.google.com/issues/37103380#makechanges
+        targetSdkVersion 29
     }
 
     signingConfigs {
@@ -48,7 +48,7 @@ android {
 
 dependencies {
     implementation files('libs/dashclock-api-r1.1.jar')
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.5'
     implementation('com.github.bumptech.glide:okhttp3-integration:1.5.0') {
         exclude group: 'glide-parent'
     }
@@ -58,10 +58,10 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:2.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.shamanland:fab:0.0.8'
     implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     implementation 'me.relex:circleindicator:1.2.2@aar'
