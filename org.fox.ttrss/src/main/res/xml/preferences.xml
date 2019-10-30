@@ -130,14 +130,14 @@
             android:defaultValue="false"
             android:key="always_downsample_images"
             android:dependency="enable_image_downsampling"
-            android:title="Always resize images"
-            android:summary="Even on Wi-Fi" />
+            android:title="@string/prefs_always_downsample_images"
+            android:summary="@string/prefs_always_downsample_images_long" />
 
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
             android:key="inline_video_player"
             android:summary="@string/prefs_inline_video_player"
-            android:title="Inline video player" />
+            android:title="@string/prefs_inline_video_player_title" />
 
     </PreferenceCategory>
 
