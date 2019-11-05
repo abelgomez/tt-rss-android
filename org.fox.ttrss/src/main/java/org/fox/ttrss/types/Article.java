@@ -39,6 +39,8 @@ public class Article implements Parcelable {
 	public String author;
 	public String note;
     public boolean selected;
+    public String flavor_image;
+    public String flavor_stream;
 
 	/* not serialized */
 	transient public Document articleDoc;
@@ -67,88 +69,99 @@ public class Article implements Parcelable {
 	}
 
 	public void collectMediaInfo() {
+		if (flavor_image != null && flavor_image.length() > 0) {
+			flavorImageUri = flavor_image;
 
-		// consider attachments first
-		if (attachments != null) {
-			for (Attachment a : attachments) {
-				if (a.content_type != null && a.content_type.contains("image/")) {
-					flavorImageUri = a.content_url;
+			flavorImage = new Element("img")
+					.attr("src", flavorImageUri);
 
-					if (flavorImageUri != null && flavorImageUri.startsWith("//")) {
-						flavorImageUri = "https:" + flavorImageUri;
-					}
+			if (flavor_stream != null && flavor_stream.length() > 0) {
+				flavorStreamUri = flavor_stream;
+			}
 
-					// this is needed for the gallery view
-					flavorImage = new Element("img")
-						.attr("src", flavorImageUri);
+			return;
+		}
 
+		articleDoc = Jsoup.parse(content);
+
+		if (articleDoc != null) {
+			mediaList = articleDoc.select("img,video,iframe[src*=youtube.com/embed/]");
+
+			for (Element e : mediaList) {
+				if ("iframe".equals(e.tagName().toLowerCase())) {
+					flavorImage = e;
 					break;
+				} /*else if ("video".equals(e.tagName().toLowerCase())) {
+					flavorImage = e;
+					break;
+				}*/
+			}
+
+			if (flavorImage == null) {
+				for (Element e : mediaList) {
+					flavorImage = e;
+					break;
+				}
+			}
+
+			if (flavorImage != null) {
+				try {
+
+					if ("video".equals(flavorImage.tagName().toLowerCase())) {
+						Element source = flavorImage.select("source").first();
+						flavorStreamUri = source.attr("src");
+
+						flavorImageUri = flavorImage.attr("poster");
+					} else if ("iframe".equals(flavorImage.tagName().toLowerCase())) {
+
+						String srcEmbed = flavorImage.attr("src");
+
+						if (srcEmbed.length() > 0) {
+							Pattern pattern = Pattern.compile("/embed/([\\w-]+)");
+							Matcher matcher = pattern.matcher(srcEmbed);
+
+							if (matcher.find()) {
+								youtubeVid = matcher.group(1);
+
+								flavorImageUri = "https://img.youtube.com/vi/" + youtubeVid + "/hqdefault.jpg";
+								flavorStreamUri = "https://youtu.be/" + youtubeVid;
+							}
+						}
+					} else {
+						flavorImageUri = flavorImage.attr("src");
+
+						if (flavorImageUri != null && flavorImageUri.startsWith("//")) {
+							flavorImageUri = "https:" + flavorImageUri;
+						}
+
+						flavorStreamUri = null;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					flavorImage = null;
+					flavorImageUri = null;
+					flavorStreamUri = null;
 				}
 			}
 		}
 
-		// doing this the hard way then
 		if (flavorImageUri == null) {
-			articleDoc = Jsoup.parse(content);
+			// consider attachments
+			if (attachments != null) {
+				for (Attachment a : attachments) {
+					if (a.content_type != null && a.content_type.contains("image/")) {
+						flavorImageUri = a.content_url;
 
-			if (articleDoc != null) {
-				mediaList = articleDoc.select("img,video,iframe[src*=youtube.com/embed/]");
-
-				for (Element e : mediaList) {
-					if ("iframe".equals(e.tagName().toLowerCase())) {
-						flavorImage = e;
-						break;
-					} /*else if ("video".equals(e.tagName().toLowerCase())) {
-					flavorImage = e;
-					break;
-				}*/
-				}
-
-				if (flavorImage == null) {
-					for (Element e : mediaList) {
-						flavorImage = e;
-						break;
-					}
-				}
-
-				if (flavorImage != null) {
-					try {
-
-						if ("video".equals(flavorImage.tagName().toLowerCase())) {
-							Element source = flavorImage.select("source").first();
-							flavorStreamUri = source.attr("src");
-
-							flavorImageUri = flavorImage.attr("poster");
-						} else if ("iframe".equals(flavorImage.tagName().toLowerCase())) {
-
-							String srcEmbed = flavorImage.attr("src");
-
-							if (srcEmbed.length() > 0) {
-								Pattern pattern = Pattern.compile("/embed/([\\w-]+)");
-								Matcher matcher = pattern.matcher(srcEmbed);
-
-								if (matcher.find()) {
-									youtubeVid = matcher.group(1);
-
-									flavorImageUri = "https://img.youtube.com/vi/" + youtubeVid + "/hqdefault.jpg";
-									flavorStreamUri = "https://youtu.be/" + youtubeVid;
-								}
-							}
-						} else {
-							flavorImageUri = flavorImage.attr("src");
-
-							if (flavorImageUri != null && flavorImageUri.startsWith("//")) {
-								flavorImageUri = "https:" + flavorImageUri;
-							}
-
-							flavorStreamUri = null;
+						if (flavorImageUri != null && flavorImageUri.startsWith("//")) {
+							flavorImageUri = "https:" + flavorImageUri;
 						}
-					} catch (Exception e) {
-						e.printStackTrace();
 
-						flavorImage = null;
-						flavorImageUri = null;
-						flavorStreamUri = null;
+						// this is needed for the gallery view
+						flavorImage = new Element("img")
+								.attr("src", flavorImageUri);
+
+						break;
 					}
 				}
 			}
@@ -159,7 +172,7 @@ public class Article implements Parcelable {
 
 	public Article(int id) {
 		this.id = id;
-		this.title = "ID:" + String.valueOf(id);
+		this.title = "ID:" + id;
 		this.link = "";
 		this.tags = new ArrayList<String>();
 	}

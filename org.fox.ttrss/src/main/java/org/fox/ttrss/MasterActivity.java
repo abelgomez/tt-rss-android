@@ -7,14 +7,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -26,11 +22,15 @@ import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
 import org.fox.ttrss.types.Feed;
 import org.fox.ttrss.types.FeedCategory;
-import org.fox.ttrss.widget.SmallWidgetProvider;
 
 import java.util.Date;
 import java.util.HashMap;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import icepick.State;
 
 public class MasterActivity extends OnlineActivity implements HeadlinesEventListener {
@@ -127,6 +127,21 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 						int feedId = i.getIntExtra("feed_id", 0);
 						boolean isCat = i.getBooleanExtra("feed_is_cat", false);
 						String feedTitle = i.getStringExtra("feed_title");
+
+						// app shortcuts are not allowed to pass string extras
+						if (feedTitle == null) {
+							switch (feedId) {
+								case -1:
+									feedTitle = getString(R.string.feed_starred_articles);
+									break;
+								case -3:
+									feedTitle = getString(R.string.fresh_articles);
+									break;
+								case -4:
+									feedTitle = getString(R.string.feed_all_articles);
+									break;
+							}
+						}
 						
 						Feed tmpFeed = new Feed(feedId, feedTitle, isCat);
 						
@@ -160,11 +175,11 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 				ft.replace(R.id.feeds_fragment, new FeedsFragment(), FRAG_FEEDS);
 			}
 
-            if (m_prefs.getBoolean("open_fresh_on_startup", true)) {
+            if (!shortcutMode && m_prefs.getBoolean("open_fresh_on_startup", true)) {
                 HeadlinesFragment hf = new HeadlinesFragment();
 
                 if (BuildConfig.DEBUG) {
-                    hf.initialize(new Feed(-1, "Starred articles", false));
+                    hf.initialize(new Feed(-1, getString(R.string.feed_starred_articles), false));
                 } else {
                     hf.initialize(new Feed(-3, getString(R.string.fresh_articles), false));
                 }
@@ -450,27 +465,41 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 	
 	public void onArticleSelected(Article article, boolean open) {
 		if (open) {
-			HeadlinesFragment hf = (HeadlinesFragment)getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+			boolean alwaysOpenUri = m_prefs.getBoolean("always_open_uri", false);
+			if (alwaysOpenUri) {
+				if (article.unread) {
+					article.unread = false;
+					saveArticleUnread(article);
+				}
 
-			Intent intent = new Intent(MasterActivity.this, DetailActivity.class);
-			intent.putExtra("feed", hf.getFeed());
-			//intent.putExtra("article", article);
-			intent.putExtra("searchQuery", hf.getSearchQuery());
-            //intent.putExtra("articles", (Parcelable)hf.getAllArticles());
-            Application.getInstance().tmpArticleList = hf.getAllArticles();
-			Application.getInstance().tmpArticle = article;
+				HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+				if (hf != null) {
+					hf.setActiveArticle(article);
+				}
 
-            /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivityForResult(intent, HEADLINES_REQUEST, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-            } else {
-                startActivityForResult(intent, HEADLINES_REQUEST);
-            } */
+				openUri(Uri.parse(article.link));
+			}
+			else {
+				HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
 
-            // mysterious crashes somewhere in gl layer (?) on some feeds if we use activitycompat transitions here on LP so welp
-            startActivityForResult(intent, HEADLINES_REQUEST);
-			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+				Intent intent = new Intent(MasterActivity.this, DetailActivity.class);
+				intent.putExtra("feed", hf.getFeed());
+				//intent.putExtra("article", article);
+				intent.putExtra("searchQuery", hf.getSearchQuery());
+				//intent.putExtra("articles", (Parcelable)hf.getAllArticles());
+				Application.getInstance().tmpArticleList = hf.getAllArticles();
+				Application.getInstance().tmpArticle = article;
 
+				/* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+					startActivityForResult(intent, HEADLINES_REQUEST, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+				} else {
+					startActivityForResult(intent, HEADLINES_REQUEST);
+				} */
 
+				// mysterious crashes somewhere in gl layer (?) on some feeds if we use activitycompat transitions here on LP so welp
+				startActivityForResult(intent, HEADLINES_REQUEST);
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+			}
 		} else {
 			invalidateOptionsMenu();
 
@@ -490,8 +519,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 		if (isFinishing() || date.getTime() - m_lastWidgetRefresh > 60*1000) {
 			m_lastWidgetRefresh = date.getTime();
 
-			Intent updateWidgetIntent = new Intent(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
-			sendBroadcast(updateWidgetIntent);
+			CommonActivity.requestWidgetUpdate(MasterActivity.this);
 		}
 
     }
@@ -534,6 +562,7 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 		}		
 	}
 
+	// TODO: remove; not supported on oreo
 	public void createFeedShortcut(Feed feed) {
 		final Intent shortcutIntent = new Intent(this, MasterActivity.class);
 		shortcutIntent.putExtra("feed_id", feed.id);
@@ -552,7 +581,8 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 		
 		toast(R.string.shortcut_has_been_placed_on_the_home_screen);
 	}
-	
+
+	// TODO: remove; not supported on oreo
 	public void createCategoryShortcut(FeedCategory cat) {
 		createFeedShortcut(new Feed(cat.id, cat.title, true));
 	}

@@ -161,7 +161,7 @@
                     android:background="@drawable/ripple"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
-                    android:src="@drawable/ic_dots_vertical"
+                    android:src="@drawable/ic_dots_vertical_circle"
                     android:layout_gravity="bottom|right"
                     android:tint="?colorAccent"
                     android:layout_marginBottom="10dp" />

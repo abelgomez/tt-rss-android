@@ -20,7 +20,7 @@
         android:layout_weight="0"
         android:scaleType="fitXY"
         android:tint="?colorAccent"
-        android:src="?ic_keyboard_backspace" />
+        android:src="?ic_go_back" />
 
     <TextView
         android:fontFamily="sans-serif-medium"

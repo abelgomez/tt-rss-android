@@ -7,8 +7,6 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -25,6 +23,9 @@ import android.widget.TextView;
 
 import org.fox.ttrss.BaseFeedlistFragment;
 import org.fox.ttrss.R;
+
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class OfflineFeedsFragment extends BaseFeedlistFragment implements OnItemClickListener, OnSharedPreferenceChangeListener {
 	private final String TAG = this.getClass().getSimpleName();
@@ -85,7 +86,7 @@ public class OfflineFeedsFragment extends BaseFeedlistFragment implements OnItem
 		menu.findItem(R.id.create_shortcut).setEnabled(false);
 
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-		Cursor cursor = (Cursor)getFeedAtPosition(info.position);
+		Cursor cursor = getFeedAtPosition(info.position);
 		
 		if (cursor != null) 
 			menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex("title")));
@@ -138,7 +139,7 @@ public class OfflineFeedsFragment extends BaseFeedlistFragment implements OnItem
 
 		View view = inflater.inflate(R.layout.fragment_feeds, container, false);
 
-        m_swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.feeds_swipe_container);
+        m_swipeLayout = view.findViewById(R.id.feeds_swipe_container);
 
         m_swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -147,7 +148,7 @@ public class OfflineFeedsFragment extends BaseFeedlistFragment implements OnItem
             }
         });
 
-		m_list = (ListView)view.findViewById(R.id.feeds);
+		m_list = view.findViewById(R.id.feeds);
 
 		initDrawerHeader(inflater, view, m_list, m_activity, m_prefs, !m_enableParentBtn);
 
@@ -210,7 +211,7 @@ public class OfflineFeedsFragment extends BaseFeedlistFragment implements OnItem
 	
 	@Override
 	public void onItemClick(AdapterView<?> av, View view, int position, long id) {
-		ListView list = (ListView)getActivity().findViewById(R.id.feeds);
+		ListView list = getActivity().findViewById(R.id.feeds);
 		
 		if (list != null) {
 			Cursor cursor = (Cursor) list.getItemAtPosition(position);
@@ -248,7 +249,7 @@ public class OfflineFeedsFragment extends BaseFeedlistFragment implements OnItem
 
         @Override
         public boolean isEmpty() {
-            return m_enableParentBtn ? false : super.isEmpty();
+            return !m_enableParentBtn && super.isEmpty();
         }
 
 		@Override
@@ -282,13 +283,13 @@ public class OfflineFeedsFragment extends BaseFeedlistFragment implements OnItem
 
 			}
 
-			TextView tt = (TextView) v.findViewById(R.id.title);
+			TextView tt = v.findViewById(R.id.title);
 
 			if (tt != null) {
 				tt.setText(cursor.getString(cursor.getColumnIndex("title")));
 			}
 
-			TextView tu = (TextView) v.findViewById(R.id.unread_counter);
+			TextView tu = v.findViewById(R.id.unread_counter);
 
 			if (tu != null) {
 				tu.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("unread"))));

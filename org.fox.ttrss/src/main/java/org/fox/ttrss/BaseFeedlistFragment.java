@@ -2,9 +2,6 @@ package org.fox.ttrss;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.widget.SwitchCompat;
 import android.util.TypedValue;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -18,6 +15,8 @@ import org.fox.ttrss.offline.OfflineActivity;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 public abstract class BaseFeedlistFragment extends StateSavedFragment {
     abstract public void refresh();
@@ -54,10 +53,7 @@ public abstract class BaseFeedlistFragment extends StateSavedFragment {
                                 Intent intent = new Intent(getActivity(),
                                         PreferencesActivity.class);
 
-                                ActivityOptionsCompat options = ActivityOptionsCompat
-                                        .makeSceneTransitionAnimation(getActivity(), v, "SETTINGS_REVEAL");
-
-                                ActivityCompat.startActivityForResult(getActivity(), intent, 0, options.toBundle());
+                                startActivityForResult(intent, 0);
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -121,10 +117,7 @@ public abstract class BaseFeedlistFragment extends StateSavedFragment {
                                     Intent intent = new Intent(getActivity(),
                                             PreferencesActivity.class);
 
-                                    ActivityOptionsCompat options = ActivityOptionsCompat
-                                            .makeSceneTransitionAnimation(getActivity(), v, "SETTINGS_REVEAL");
-
-                                    ActivityCompat.startActivityForResult(getActivity(), intent, 0, options.toBundle());
+                                    startActivityForResult(intent, 0);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();

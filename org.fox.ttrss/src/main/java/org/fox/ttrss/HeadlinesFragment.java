@@ -1,5 +1,6 @@
 package org.fox.ttrss;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,22 +15,13 @@ import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Html;
 import android.transition.Fade;
 import android.transition.Transition;
@@ -58,6 +50,17 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -66,6 +69,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
@@ -98,7 +102,6 @@ public class HeadlinesFragment extends StateSavedFragment {
     public static final int FLAVOR_IMG_MIN_SIZE = 128;
 	public static final int THUMB_IMG_MIN_SIZE = 32;
 
-    public static final int HEADLINES_REQUEST_SIZE = 30;
 	public static final int HEADLINES_BUFFER_MAX = 1000;
 
 	private final String TAG = this.getClass().getSimpleName();
@@ -512,6 +515,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 				//Log.d(TAG, "onScrolled: " + m_refreshInProgress + " " + m_lazyLoadDisabled + " " + lastVisibleItem + " " + m_articles.size());
 
 				if (!m_refreshInProgress && !m_lazyLoadDisabled && lastVisibleItem >= m_articles.size() - 5) {
+					m_refreshInProgress = true;
 					new Handler().postDelayed(new Runnable() {
 						@Override
 						public void run() {
@@ -588,7 +592,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 			final String sessionId = m_activity.getSessionId();
 			final boolean isCat = m_feed.is_cat;
 
-			HeadlinesRequest req = new HeadlinesRequest(getActivity().getApplicationContext(), m_activity, m_feed, m_articles) {
+			@SuppressLint("StaticFieldLeak") HeadlinesRequest req = new HeadlinesRequest(getActivity().getApplicationContext(), m_activity, m_feed, m_articles) {
 				@Override
 				protected void onProgressUpdate(Integer... progress) {
 					m_activity.setProgress(Math.round((((float) progress[0] / (float) progress[1]) * 10000)));
@@ -629,7 +633,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 							}
 						}
 
-						if (m_amountLoaded < HEADLINES_REQUEST_SIZE) {
+						if (m_amountLoaded < Integer.valueOf(m_prefs.getString("headlines_request_size", "15"))) {
 							//Log.d(TAG, "amount loaded < request size, disabling lazy load");
 							m_lazyLoadDisabled = true;
 						}
@@ -707,12 +711,18 @@ public class HeadlinesFragment extends StateSavedFragment {
 					put("show_content", "true");
 					put("include_attachments", "true");
 					put("view_mode", m_activity.getViewMode());
-					put("limit", String.valueOf(HEADLINES_REQUEST_SIZE));
+					put("limit", m_prefs.getString("headlines_request_size", "15"));
 					put("offset", String.valueOf(0));
 					put("skip", String.valueOf(fskip));
 					put("include_nested", "true");
                     put("has_sandbox", "true");
 					put("order_by", m_activity.getSortMode());
+
+					if (m_prefs.getBoolean("enable_image_downsampling", false)) {
+						if (m_prefs.getBoolean("always_downsample_images", false) || !m_activity.isWifiConnected()) {
+							put("resize_width", String.valueOf(m_activity.getResizeWidth()));
+						}
+					}
 
 					if (isCat) put("is_cat", "true");
 
@@ -863,11 +873,30 @@ public class HeadlinesFragment extends StateSavedFragment {
         private ColorGenerator m_colorGenerator = ColorGenerator.DEFAULT;
         private TextDrawable.IBuilder m_drawableBuilder = TextDrawable.builder().round();
 
-		boolean showFlavorImage;
+		boolean flavorImageEnabled;
 		private int m_minimumHeightToEmbed;
 		boolean m_youtubeInstalled;
 		private int m_screenHeight;
 		private int m_lastAddedPosition;
+
+		private final ConnectivityManager m_cmgr;
+
+		private boolean canShowFlavorImage() {
+			if (flavorImageEnabled) {
+				if (m_prefs.getBoolean("headline_images_wifi_only", false)) {
+					// why do i have to get this service every time instead of using a member variable :(
+					NetworkInfo wifi = m_cmgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+					if (wifi != null)
+						return wifi.isConnected();
+
+				} else {
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		public ArticleListAdapter(Context context, int textViewResourceId, ArrayList<Article> items) {
 			super();
@@ -880,7 +909,9 @@ public class HeadlinesFragment extends StateSavedFragment {
 			m_screenHeight = size.y;
 
 			String headlineMode = m_prefs.getString("headline_mode", "HL_DEFAULT");
-			showFlavorImage = "HL_DEFAULT".equals(headlineMode) || "HL_COMPACT".equals(headlineMode);
+			flavorImageEnabled = "HL_DEFAULT".equals(headlineMode) || "HL_COMPACT".equals(headlineMode);
+
+			m_cmgr = (ConnectivityManager) m_activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 			Theme theme = context.getTheme();
 			TypedValue tv = new TypedValue();
@@ -938,7 +969,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 			if (article.id == Article.TYPE_AMR_FOOTER && m_prefs.getBoolean("headlines_mark_read_scroll", false)) {
 				WindowManager wm = (WindowManager) m_activity.getSystemService(Context.WINDOW_SERVICE);
 				Display display = wm.getDefaultDisplay();
-				int screenHeight = display.getHeight();
+				int screenHeight = (int)(display.getHeight() * 1.5);
 
 				holder.view.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT, screenHeight));
 			}
@@ -1101,12 +1132,12 @@ public class HeadlinesFragment extends StateSavedFragment {
 				if (!m_prefs.getBoolean("headlines_show_content", true)) {
 					holder.excerptView.setVisibility(View.GONE);
 				} else {
-					String excerpt;
+					String excerpt = "";
 
 					try {
 						if (article.excerpt != null) {
 							excerpt = article.excerpt;
-						} else {
+						} else if (article.articleDoc != null) {
 							excerpt = article.articleDoc.text();
 
 							if (excerpt.length() > CommonActivity.EXCERPT_MAX_LENGTH)
@@ -1120,7 +1151,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 					holder.excerptView.setTextSize(TypedValue.COMPLEX_UNIT_SP, headlineFontSize);
 					holder.excerptView.setText(excerpt);
 
-					if (!showFlavorImage) {
+					if (!canShowFlavorImage()) {
 						holder.excerptView.setPadding(holder.excerptView.getPaddingLeft(),
 								0,
 								holder.excerptView.getPaddingRight(),
@@ -1165,7 +1196,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 					}
 				});
 
-				if (showFlavorImage && article.flavorImageUri != null && holder.flavorImageView != null) {
+				if (canShowFlavorImage() && article.flavorImageUri != null && holder.flavorImageView != null) {
 					if (holder.flavorImageOverflow != null) {
 						holder.flavorImageOverflow.setOnClickListener(new View.OnClickListener() {
 							@Override
@@ -1237,9 +1268,9 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 					try {
 
-						Glide.with(HeadlinesFragment.this)
+						Glide.with(getContext())
 								.load(article.flavorImageUri)
-								.dontTransform()
+								//.dontTransform()
 								.diskCacheStrategy(DiskCacheStrategy.ALL)
 								.skipMemoryCache(false)
 								.listener(new RequestListener<String, GlideDrawable>() {
@@ -1523,11 +1554,11 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 				holder.textImage.setImageDrawable(textDrawable);
 
-				if (!showFlavorImage || article.flavorImage == null) {
+				if (!canShowFlavorImage() || article.flavorImage == null) {
 					holder.textImage.setImageDrawable(textDrawable);
 
 				} else {
-					Glide.with(HeadlinesFragment.this)
+					Glide.with(getContext())
 							.load(article.flavorImageUri)
 							.placeholder(textDrawable)
 							.thumbnail(0.5f)
@@ -1651,7 +1682,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 			//Log.d(TAG, "XYR: " + pxToDp(w) + " " + pxToDp(h) + " " + r);
 
-			if (forceDown || h < m_minimumHeightToEmbed || r >= 1.2) {
+			if (forceDown || h < m_minimumHeightToEmbed || r >= 1) {
 
 				lp.addRule(RelativeLayout.BELOW, R.id.headline_header);
 

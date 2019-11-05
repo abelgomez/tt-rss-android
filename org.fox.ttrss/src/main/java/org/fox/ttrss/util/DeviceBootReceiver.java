@@ -9,7 +9,8 @@ import org.fox.ttrss.CommonActivity;
 public class DeviceBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+            CommonActivity.requestWidgetUpdate(context);
             CommonActivity.setupWidgetUpdates(context);
         }
     }

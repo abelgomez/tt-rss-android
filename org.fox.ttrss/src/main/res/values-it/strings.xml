@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
 
     <string name="login_in_progress">Accesso…</string>
@@ -30,7 +30,7 @@
     <string name="sort_feeds_by_unread">Ordina i notiziari per numero di articoli non letti</string>
     <string name="ssl_trust_any">Accetta qualsiasi certificato</string>
     <string name="category_browse_feeds">Naviga i notiziari</string>
-    <string name="blank"></string>
+    <string name="blank"/>
     <string name="transport_debugging">Scrivi in un log i dati inviati e ricevuti</string>
     <string name="article_toggle_marked">(non)Stella</string>
     <string name="article_toggle_unread">(non)Letto</string>
@@ -48,7 +48,7 @@
     <string name="context_selection_toggle_unread">(non)Letto</string>
     <string name="article_mark_read_above">Segna sopra come letti</string>
     <string name="http_login_summary">Opzionale. Compila questo solo se la tua istanza di tt-rss è protetta tramite autenticazione HTTP Basica</string>
-    <string name="login_summary">Nome utente per tt-rss. Non è necessario per la modalità "utente singolo".</string>
+    <string name="login_summary">Non necessario per la modalità utente singolo</string>
     <string name="ttrss_url_summary">URL dell\'istanza di tt-rss, es. http://sito.it/tt-rss/</string>
     <string name="enable_cats">Abilita categorie di notiziari</string>
     <string name="no_caption_to_display">Nessuna etichetta da mostrare</string>
@@ -118,7 +118,7 @@
     <string name="ssl_trust_any_long">Accetta qualsiasi certificato SSL senza validazione</string>
     <string name="ssl_trust_any_host_long">Non verificare l\'hostname del server</string>
     <string name="ssl">SSL</string>
-    <string name="error_ssl_hostname_rejected">Errore: SSL dell\' hostname non verificato</string>
+    <string name="error_ssl_hostname_rejected">Errore: SSL dell\'hostname non verificato</string>
 
     <plurals name="article_comments">
         <item quantity="one">%1$d commento</item>
@@ -149,7 +149,7 @@
     <string name="subscribe_name">Sottoscrivi con Tiny Tiny RSS</string>
     <string name="feed_url">URL notiziario</string>
     <string name="subscribe_to_feed">Sottoscrivi il notiziario</string>
-    <string name="error_while_subscribing">Errore durante la sottoscrizione</string>
+    <string name="error_while_subscribing">Errore durante la sottoscrizione.</string>
     <string name="category_list_updated">Lista delle categorie aggiornata</string>
     <string name="subscribed_to_feed">Notiziario sottoscritto</string>
     <string name="error_feed_already_exists_">Errore: notiziario già sottoscritto.</string>
@@ -160,7 +160,7 @@
     <string name="headlines_view_mode">Imposta modalità visualizzazione</string>
     <string name="headlines_set_view_mode">Imposta modalità visualizzazione</string>
     <string name="headlines_adaptive">Adattivo</string>
-    <string name="headlines_all_articles">Tutti gli artivoli</string>
+    <string name="headlines_all_articles">Tutti gli articoli</string>
     <string name="headlines_starred">Con Stella</string>
     <string name="headlines_published">Pubblicati</string>
     <string name="headlines_unread">Non letti</string>
@@ -179,14 +179,13 @@
     <string name="author_formatted">di %1$s</string>
 
     <plurals name="n_unread_articles">
-        <item quantity="zero">Nessun articolo non letto</item>
-        <item quantity="one">%1$d articolo non letto</item>
-        <item quantity="other">%1$d articoli non letti</item>
-    </plurals>
+	<item quantity="one">Nessun articolo non letto</item>
+	<item quantity="other">%1$d articoli non letti</item>
+</plurals>
 
     <string name="pref_headline_font_size">Dimensione testo titoli</string>
     <string name="context_confirm_catchup">Segna tutti gli articoli di %1$s come letti?</string>
-    <string name="accel_webview_summary">Disabilita in caso di problemi di render o sfarfallamenti.</string>
+    <string name="accel_webview_summary">Disabilita se vedi sfarfallamenti o artefatti visuali</string>
     <string name="accel_webview_title">Accelerazione vista web (3.0+)</string>
     <string name="place_shortcut">Inserisci una scorciatoia</string>
     <string name="shortcut_has_been_placed_on_the_home_screen">La scorciatoia è stata inserita sulla schermata home</string>
@@ -194,11 +193,11 @@
     <string name="tasker_save_and_close">Salva e chiudi</string>
     <string name="synchronize_read_articles_and_go_online">Sincronizza gli articoli letti e passa alla modalità in linea</string>
     <string name="font_size_dialog_suffix">sp</string>
-    <string name="server_function_not_available">Scusa, questa funzione non è disponibile con la tua versione di tt-rss</string>
+    <string name="server_function_not_available">Scusa, questa funzione non è disponibile con la tua versione di tt-rss.</string>
     <string name="unsubscribe">Annulla la sottoscrizione</string>
     <string name="unsubscribe_from_prompt">Annullare la sottoscrizione a %1$s?</string>
     <string name="open_article_in_web_browser">Apri nel browser web</string>
-    <string name="error_loading_image">Errore nel caricamento dell\'immagine</string>
+    <string name="error_loading_image">Errore nel caricamento dell\'immagine.</string>
     <string name="toggle_sort_order">Scegli prima i più vecchi</string>
     <string name="headlines_sort_default">Default</string>
     <string name="headlines_sort_newest_first">Prima i più nuovi</string>
@@ -222,7 +221,7 @@
     <string name="prefs_build_timestamp_title">Ora della compilazione</string>
     <string name="crash_dialog_text">Sfortunatamente, Tiny Tiny RSS si è arrestato. Inviare il report dell\'arresto a tt-rss.org?</string>
     <string name="prefs_widget_show_fresh">Mostra nuovi articoli</string>
-    <string name="prefs_widget_show_fresh_summary">Invece del totale degli articoli non letti, mostra il numero di nuovi articoli.</string>
+    <string name="prefs_widget_show_fresh_summary">Invece del totale degli articoli non letti, mostra il numero di nuovi articoli</string>
     <string name="prefs_widget">Widget</string>
     <string name="title_activity_video_player">Riproduttore Video</string>
 
@@ -234,11 +233,45 @@
     <string name="flavor_image_prompt">(più immagini…)</string>
     <string name="headlines_row_top_changed">Nuovi articoli trovati, ricarica il notiziario per visualizzarli.</string>
     <string name="prefs_custom_tabs_summary">Apri i link esterni con una Chrome custom tabs (più veloce, usato se disponibile)</string>
-    <string name="prefs_use_custom_tabs">Usa preview rapida</string>
+    <string name="prefs_use_custom_tabs">Usa anteprima rapida</string>
     <string name="ask_me_every_time">Chiedimelo ogni volta</string>
     <string name="open_link">Apri link</string>
-    <string name="quick_preview">Preview rapida</string>
+    <string name="quick_preview">Anteprima rapida</string>
     <string name="open_with_app">Apri con app</string>
     <string name="prefs_opening_links">Apertura link</string>
     <string name="open_with">Apri con…</string>
+<string name="offline_switch_failed">Preparazione modalità offline non riuscita</string>
+    <string name="offline_media_cache_enabled">Cache elementi media</string>
+    <string name="offline_media_cache_enabled_summary">Scarica gli elementi media sulla card SD. Questo potrebbe aumentare significativamente il tempo per attivare la modalità offline</string>
+    <string name="notify_downloading_media">Scaricando elementi media…</string>
+    <string name="article_media_share">Condividi</string>
+    <string name="confirm_catchup_above">Segna gli articoli come letti\?</string>
+    <string name="dialog_ok">OK</string>
+    <string name="headline_undo_row_button">Annulla</string>
+    <string name="headline_undo_row_prompt">Segna come letto</string>
+    <string name="pref_headlines_swipe_to_dismiss">Scorri per eliminare</string>
+    <string name="pref_headlines_swipe_to_dismiss_long">Disabilita il menù contestuale per i titoli</string>
+    <string name="pref_widget_update_interval">Intervallo di aggiornamento (in minuti)</string>
+
+    <string name="widget_background_light">Chiaro</string>
+    <string name="widget_background_dark">Scuro</string>
+    <string name="widget_background_transparent">Trasparente</string>
+    <string name="pref_widget_background">Tema del widget</string>
+    <string name="pref_widget_update_interval_summary">Questo intervallo è impreciso a causa di limitazioni di Android</string>
+    <string name="prefs_offline_sort_by_feed">Raggruppa titoli per notiziario</string>
+    <string name="reload">Ricarica</string>
+    <string name="offline_sync_try_again">Prova ancora</string>
+    <string name="offline_tap_to_switch">Tap per passare a offline</string>
+    <string name="offline_no_articles">Nessun articolo scaricato</string>
+    <string name="prefs_network_settings">Più impostazioni...</string>
+    <string name="logcat_refresh">Aggiorna</string>
+    <string name="logcat_copy">Copia negli appunti</string>
+    <string name="logcat_title">Visualizzatore log</string>
+<string name="cat_special">Speciali</string>
+    <string name="feed_starred_articles">Articoli con stella</string>
+    <string name="feed_published_articles">Articoli pubblicati</string>
+    <string name="feed_archived_articles">Articoli archiviati</string>
+    <string name="feed_recently_read">Letti di recente</string>
+    <string name="cat_labels">Etichette</string>
+    <string name="cat_uncategorized">Senza categoria</string>
 </resources>

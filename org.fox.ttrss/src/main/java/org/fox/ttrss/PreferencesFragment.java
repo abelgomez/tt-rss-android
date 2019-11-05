@@ -1,18 +1,15 @@
 package org.fox.ttrss;
 
 import android.app.Activity;
-import android.content.pm.ApplicationInfo;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class PreferencesFragment extends PreferenceFragment {
 
@@ -23,10 +20,27 @@ public class PreferencesFragment extends PreferenceFragment {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
-    }
+        findPreference("show_logcat").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), LogcatActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
 
-    public void onResume() {
-        super.onResume();
+        findPreference("network_settings").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.preferences_container, new NetworkPreferencesFragment() )
+                        .addToBackStack( NetworkPreferencesFragment.class.getSimpleName() )
+                        .commit();
+
+                return false;
+            }
+        });
 
         try {
             String version;

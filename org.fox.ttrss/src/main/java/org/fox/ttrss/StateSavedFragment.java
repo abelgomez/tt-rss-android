@@ -1,9 +1,10 @@
 package org.fox.ttrss;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.livefront.bridge.Bridge;
+
+import androidx.fragment.app.Fragment;
 
 public class StateSavedFragment extends Fragment {
     @Override

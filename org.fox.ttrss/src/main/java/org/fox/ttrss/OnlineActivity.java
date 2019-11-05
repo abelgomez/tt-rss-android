@@ -14,12 +14,14 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,6 +48,9 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
+
 public class OnlineActivity extends CommonActivity {
 	private final String TAG = this.getClass().getSimpleName();
 
@@ -60,6 +65,7 @@ public class OnlineActivity extends CommonActivity {
 	private HeadlinesActionModeCallback m_headlinesActionModeCallback;
 
 	private String m_lastImageHitTestUrl;
+	private ConnectivityManager m_cmgr;
 
 	//protected PullToRefreshAttacher m_pullToRefreshAttacher;
 
@@ -146,6 +152,8 @@ public class OnlineActivity extends CommonActivity {
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
+		m_cmgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		Intent intent = getIntent();
 
@@ -329,7 +337,7 @@ public class OnlineActivity extends CommonActivity {
 	
 	/*
 	public void checkTrial(boolean notify) {
-        if (!BuildConfig.DEBUG) {
+        if (BuildConfig.ENABLE_TRIAL && !BuildConfig.DEBUG) {
 
             boolean isTrial = getPackageManager().checkSignatures(
                     getPackageName(), "org.fox.ttrss.key") != PackageManager.SIGNATURE_MATCH;
@@ -1115,7 +1123,7 @@ public class OnlineActivity extends CommonActivity {
 		
 		return true;
 	}
-	
+
 	public int getApiLevel() {
 		return Application.getInstance().m_apiLevel;
 	}
@@ -1216,7 +1224,7 @@ public class OnlineActivity extends CommonActivity {
 		String tmp = "";
 
 		for (Article a : articles)
-			tmp += String.valueOf(a.id) + ",";
+			tmp += a.id + ",";
 
 		return tmp.replaceAll(",$", "");
 	}
@@ -1566,4 +1574,20 @@ public class OnlineActivity extends CommonActivity {
 		return m_lastImageHitTestUrl;
 	}
 
+	public boolean isWifiConnected() {
+		NetworkInfo wifi = m_cmgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		if (wifi != null)
+			return wifi.isConnected();
+
+		return false;
+	}
+
+	public int getResizeWidth() {
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+
+		return size.x > size.y ? (int)(size.y * 0.75) : (int)(size.x * 0.75);
+	}
 }

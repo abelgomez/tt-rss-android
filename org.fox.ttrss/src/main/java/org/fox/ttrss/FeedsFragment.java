@@ -9,11 +9,9 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -47,6 +45,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import icepick.State;
 
 public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickListener, OnSharedPreferenceChangeListener,
@@ -114,6 +115,31 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 							if (m_activeCategory != null || f.id >= 0) {
 								m_feeds.add(f);
 								catUnread += f.unread;
+							}
+
+							// localize special feed names
+							// TODO: join with shortcut title lookup by id?
+							if (m_activeCategory != null && m_activeCategory.id == -1) {
+								switch (f.id) {
+									case -1:
+										f.title = getString(R.string.feed_starred_articles);
+										break;
+									case -2:
+										f.title = getString(R.string.feed_published_articles);
+										break;
+									case -3:
+										f.title = getString(R.string.fresh_articles);
+										break;
+									case -4:
+										f.title = getString(R.string.feed_all_articles);
+										break;
+									case -6:
+										f.title = getString(R.string.feed_recently_read);
+										break;
+									case 0:
+										f.title = getString(R.string.feed_archived_articles);
+										break;
+								}
 							}
 						}
 
@@ -206,8 +232,8 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 
 		@Override
 		public int compare(Feed a, Feed b) {
-			Log.d(TAG, "A:" + a.title + " " + a.is_cat + " " + a.order_id);
-			Log.d(TAG, "B:" + b.title + " " + b.is_cat + " " + b.order_id);
+			//Log.d(TAG, "A:" + a.title + " " + a.is_cat + " " + a.order_id);
+			//Log.d(TAG, "B:" + b.title + " " + b.is_cat + " " + b.order_id);
 
 			if (a.id >= 0 && b.id >= 0)
 				if (a.is_cat && b.is_cat)
@@ -215,16 +241,19 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 						return a.order_id - b.order_id;
 					else
 						return a.title.toUpperCase().compareTo(b.title.toUpperCase());
-				else if (a.is_cat && !b.is_cat)
+				else if (a.is_cat)
 					return -1;
-				else if (!a.is_cat && b.is_cat) 
+				else if (b.is_cat)
 					return 1;
 				else if (a.order_id != 0 && b.order_id != 0)
 					return a.order_id - b.order_id;
 				else
 					return a.title.toUpperCase().compareTo(b.title.toUpperCase());
 			else
-				return a.id - b.id;
+				if (a.id < CommonActivity.LABEL_BASE_INDEX && b.id < CommonActivity.LABEL_BASE_INDEX)
+					return a.title.toUpperCase().compareTo(b.title.toUpperCase());
+				else
+					return a.id - b.id;
 		}
 		
 	}
@@ -347,6 +376,10 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 		if (feed.id <= 0) {
 			menu.findItem(R.id.unsubscribe_feed).setVisible(false);
 		}
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            menu.findItem(R.id.create_shortcut).setVisible(false);
+        }
 
 		super.onCreateContextMenu(menu, v, menuInfo);		
 		
@@ -520,13 +553,16 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 					m_activity.getTheme().resolveAttribute(R.attr.ic_star, tv, true);
 					icon.setImageResource(tv.resourceId);
 				} else if (feed.id == -2 && !feed.is_cat) {
-					m_activity.getTheme().resolveAttribute(R.attr.ic_checkbox_marked, tv, true);
+					m_activity.getTheme().resolveAttribute(R.attr.ic_rss_box, tv, true);
 					icon.setImageResource(tv.resourceId);
 				} else if (feed.id == -3 && !feed.is_cat) {
-					m_activity.getTheme().resolveAttribute(R.attr.ic_coffee, tv, true);
+					m_activity.getTheme().resolveAttribute(R.attr.ic_fresh, tv, true);
 					icon.setImageResource(tv.resourceId);
 				} else if (feed.id == -4 && !feed.is_cat) {
-					m_activity.getTheme().resolveAttribute(R.attr.ic_folder_outline, tv, true);
+					m_activity.getTheme().resolveAttribute(R.attr.ic_inbox, tv, true);
+					icon.setImageResource(tv.resourceId);
+				} else if (feed.id == -6 && !feed.is_cat) {
+					m_activity.getTheme().resolveAttribute(R.attr.ic_restore, tv, true);
 					icon.setImageResource(tv.resourceId);
 				} else if (feed.is_cat) {
 					m_activity.getTheme().resolveAttribute(R.attr.ic_folder_outline, tv, true);

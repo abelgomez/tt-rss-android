@@ -1,2 +1,1 @@
-include ':taskerlocaleapi'
 include ':org.fox.ttrss'

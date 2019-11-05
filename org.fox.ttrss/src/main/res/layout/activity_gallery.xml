@@ -19,7 +19,7 @@
         android:layout_height="26dp"
         android:layout_weight="0"
         android:background="@drawable/ripple"
-        android:src="@drawable/ic_dots_vertical"
+        android:src="@drawable/ic_dots_vertical_circle"
         android:layout_alignParentRight="true"
         android:tint="?colorAccent"
         android:layout_marginRight="8dp"

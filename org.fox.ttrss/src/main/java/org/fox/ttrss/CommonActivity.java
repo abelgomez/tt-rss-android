@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -24,13 +25,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.customtabs.CustomTabsCallback;
-import android.support.customtabs.CustomTabsClient;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.customtabs.CustomTabsServiceConnection;
-import android.support.customtabs.CustomTabsSession;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -39,10 +33,12 @@ import android.view.View;
 import android.widget.CheckBox;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.livefront.bridge.Bridge;
 
 import org.fox.ttrss.util.DatabaseHelper;
 import org.fox.ttrss.widget.SmallWidgetProvider;
+import org.fox.ttrss.widget.WidgetUpdateService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -51,6 +47,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsCallback;
+import androidx.browser.customtabs.CustomTabsClient;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsServiceConnection;
+import androidx.browser.customtabs.CustomTabsSession;
+import androidx.core.app.JobIntentService;
 import icepick.State;
 
 public class CommonActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -65,7 +68,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 	public final static String THEME_DARK = "THEME_DARK";
 	public final static String THEME_LIGHT = "THEME_LIGHT";
 	//public final static String THEME_SEPIA = "THEME_SEPIA";
-    //public final static String THEME_AMBER = "THEME_AMBER";
+    public final static String THEME_AMBER = "THEME_AMBER";
 	public final static String THEME_DEFAULT = CommonActivity.THEME_LIGHT;
 
 	public final static String NOTIFICATION_CHANNEL_NORMAL = "channel_normal";
@@ -73,6 +76,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 
 	public static final int EXCERPT_MAX_LENGTH = 256;
     public static final int EXCERPT_MAX_QUERY_LENGTH = 2048;
+	public static final int LABEL_BASE_INDEX = -1024;
 
 	public static final int PENDING_INTENT_CHROME_SHARE = 1;
 
@@ -313,7 +317,9 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 		String theme = prefs.getString("theme", CommonActivity.THEME_DEFAULT);
 		
 		if (theme.equals(THEME_DARK)) {
-            setTheme(R.style.DarkTheme);
+			setTheme(R.style.DarkTheme);
+		} else if (theme.equals(THEME_AMBER)) {
+			setTheme(R.style.AmberTheme);
 		} else {
 			setTheme(R.style.LightTheme);
 		}
@@ -324,7 +330,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 		Log.d(TAG, "onSharedPreferenceChanged:" + key);
 
 		String[] filter = new String[] { "theme", "enable_cats", "headline_mode", "widget_update_interval",
-				"headlines_swipe_to_dismiss", "headlines_mark_read_scroll" };
+				"headlines_swipe_to_dismiss", "headlines_mark_read_scroll", "headlines_request_size" };
 
 		m_needRestart = Arrays.asList(filter).indexOf(key) != -1;
 	}
@@ -385,6 +391,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 			builder.setExitAnimations(this, R.anim.slide_in_left, R.anim.slide_out_right);
 
 			builder.setToolbarColor(tvBackground.data);
+			builder.setShowTitle(true);
 
 			Intent shareIntent = getShareIntent(uri.toString(), null);
 
@@ -510,7 +517,8 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 
 		AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
 
-		Intent intentUpdate = new Intent(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
+		Intent intentUpdate = new Intent(context, SmallWidgetProvider.class);
+		intentUpdate.setAction(SmallWidgetProvider.ACTION_REQUEST_UPDATE);
 
 		PendingIntent pendingIntentAlarm = PendingIntent.getBroadcast(context,
 				0, intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -568,6 +576,10 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 		super.onLowMemory();
 		Log.d(TAG, "onLowMemory called");
 		Glide.get(this).clearMemory();
+	}
+
+	public static void requestWidgetUpdate(Context context) {
+		JobIntentService.enqueueWork(context.getApplicationContext(), WidgetUpdateService.class, 0, new Intent());
 	}
 
 }

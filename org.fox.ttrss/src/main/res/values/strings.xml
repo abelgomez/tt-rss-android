@@ -65,7 +65,7 @@
     <string name="error_parse_error">Error: JSON parse failed</string>
     <string name="error_io_error">Error: I/O failure (server down?)</string>
     <string name="error_other_error">Error: unknown error (see log)</string>
-    <string name="error_api_disabled">Error: Please enable external API access in tt-rss Settings - Advanced</string>
+    <string name="error_api_disabled">Error: enable API access in tt-rss settings</string>
     <string name="error_api_unknown">Error: unknown API error (see log)</string>
     <string name="error_api_incorrect_usage">Error: incorrect API usage</string>
     <string name="error_login_failed">Error: username or password incorrect</string>
@@ -95,7 +95,7 @@
     <string name="article_set_labels">Set labels</string>
     <string name="search">Search</string>
     <string name="cancel">Cancel</string>
-    <string name="pref_font_size">Article text size</string>
+    <string name="pref_font_size">Text size</string>
     <string name="dialog_close">Close</string>
     <string name="article_link_copy">Copy link to clipboard</string>
     <string name="text_copied_to_clipboard">Text copied to clipboard</string>
@@ -134,13 +134,12 @@
     <string name="trial_purchase">Unlock full version</string>
     <string name="trial_expired">Trial expired</string>
     <string name="trial_expired_message">To continue using Tiny Tiny RSS please unlock the full version by purchasing the key.</string>
-    <!-- <string name="theme_sepia">Sepia</string>
-    <string name="theme_amber">Amber</string> -->
+    <string name="theme_amber">Amber</string>
     <string name="reading">Reading</string>
     <string name="offline_articles_to_download">Amount of articles to download</string>
     <string name="offline_articles_to_download_long">How many articles to download for offline mode (newest first)</string>
     <string name="pref_headlines_show_content_long">Show content previews in headlines list</string>
-    <string name="pref_headlines_show_content">Preview article content</string>
+    <string name="pref_headlines_show_content">Show content preview</string>
     <string name="api_too_low">This action requires newer version of Tiny Tiny RSS</string>
     <string name="share_url_hint">Article URL</string>
     <string name="share_content_hint">Article Content</string>
@@ -176,7 +175,7 @@
     </plurals>
 
     <string name="prefs_confirm_headlines_catchup">Confirm mark as read</string>
-    <string name="author_formatted">by %1$s</string>
+    <string name="author_formatted">%1$s</string>
 
     <plurals name="n_unread_articles">
         <item quantity="zero">No unread articles</item>
@@ -184,7 +183,7 @@
         <item quantity="other">%1$d unread articles</item>
     </plurals>
 
-    <string name="pref_headline_font_size">Headline text size</string>
+    <string name="pref_headline_font_size">Text size</string>
     <string name="context_confirm_catchup">Mark all articles in %1$s as read?</string>
     <string name="accel_webview_summary">Disable if you see flicker or visual glitches</string>
     <string name="accel_webview_title">Accelerate web views (3.0+)</string>
@@ -206,11 +205,16 @@
     <string name="headlines_sort_title">Title</string>
     <string name="headlines_sort_articles_title">Sort articles</string>
     <string name="fresh_articles">Fresh articles</string>
+    <string name="cat_special">Special</string>
+    <string name="feed_starred_articles">Starred articles</string>
+    <string name="feed_published_articles">Published articles</string>
+    <string name="feed_archived_articles">Archived articles</string>
+    <string name="feed_recently_read">Recently read</string>
     <string name="feed_all_articles">All articles</string>
     <string name="prefs_enable_fab">Enable FAB</string>
     <string name="prefs_enable_fab_long">Show floating action button when reading</string>
     <string name="prefs_open_fresh_on_startup">Open Fresh articles on startup</string>
-    <string name="prefs_headline_display_mode">Headline display mode</string>
+    <string name="prefs_headline_display_mode">Display mode</string>
     <string name="prefs_headline_display_mode_long">Default, no images, or compact mode</string>
     <string name="headline_display_mode_default">Default</string>
     <string name="headline_display_mode_no_images">No images</string>
@@ -235,6 +239,8 @@
     <string name="headlines_row_top_changed">New articles found, reload feed to continue.</string>
     <string name="prefs_custom_tabs_summary">Open external links with browser custom tabs (faster, used if available)</string>
     <string name="prefs_use_custom_tabs">Use quick preview</string>
+    <string name="prefs_always_open_uri">Always open in browser</string>
+    <string name="prefs_always_open_uri_summary">Open articles directly in your web browser, instead of going to the detail view</string>
     <string name="ask_me_every_time">Ask me every time</string>
     <!-- <string name="open_link">Open link</string> -->
     <string name="quick_preview">Quick preview</string>
@@ -259,4 +265,21 @@
     <string name="offline_sync_try_again">Try again</string>
     <string name="offline_tap_to_switch">Tap to switch offline</string>
     <string name="offline_no_articles">No articles downloaded</string>
+    <string name="prefs_network_settings">More settings...</string>
+    <string name="logcat_refresh">Refresh</string>
+    <string name="logcat_copy">Copy to clipboard</string>
+    <string name="logcat_title">Log viewer</string>
+    <string name="cat_labels">Labels</string>
+    <string name="cat_uncategorized">Uncategorized</string>
+    <string name="prefs_headline_request_size">How many headlines to request</string>
+    <string name="prefs_headline_request_size_long">Use lower values on slow connections</string>
+    <string name="headlines">Headlines</string>
+    <string name="prefs_headline_images_wifi_only">Show images on Wi-Fi only</string>
+    <string name="prefs_headline_images_wifi_only_long">Overrides previous setting</string>
+    <string name="prefs_inline_video_player">Experimental. Long tap to open separate player</string>
+    <string name="prefs_enable_image_downsampling">Auto-resize images</string>
+    <string name="prefs_enable_image_downsampling_long">Asks backend to downsample images if not on Wi-Fi. Needs a plugin (ttrss-api-resize)</string>
+    <string name="prefs_always_downsample_images">Always resize images</string>
+    <string name="prefs_always_downsample_images_long">Even on Wi-Fi</string>
+    <string name="prefs_inline_video_player_title">Inline video player</string>
 </resources>

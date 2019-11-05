@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
@@ -41,6 +40,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import androidx.appcompat.app.ActionBar;
 import icepick.State;
 
 public class ArticleFragment extends StateSavedFragment  {
@@ -469,7 +469,8 @@ public class ArticleFragment extends StateSavedFragment  {
             ws.setMediaPlaybackRequiresUserGesture(false);
         }
 
-        if (CommonActivity.THEME_DARK.equals(m_prefs.getString("theme", CommonActivity.THEME_DEFAULT))) {
+        String theme = m_prefs.getString("theme", CommonActivity.THEME_DEFAULT);
+        if (CommonActivity.THEME_DARK.equals(theme) || CommonActivity.THEME_AMBER.equals(theme)) {
             m_web.setBackgroundColor(Color.BLACK);
         }
 

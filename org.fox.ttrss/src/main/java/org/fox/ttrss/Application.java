@@ -1,24 +1,17 @@
 package org.fox.ttrss;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.livefront.bridge.Bridge;
 import com.livefront.bridge.SavedStateHandler;
 
-import org.acra.ACRA;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import icepick.Icepick;
 
-@ReportsCrashes(mode = ReportingInteractionMode.SILENT,
-        excludeMatchingSharedPreferencesKeys = {"password"},
-        resDialogText = R.string.crash_dialog_text,
-        formUri = "https://tt-rss.org/acra/submit/")
 public class Application extends android.app.Application {
 	private static Application m_singleton;
 	
@@ -35,10 +28,6 @@ public class Application extends android.app.Application {
 	@Override
 	public final void onCreate() {
 		super.onCreate();
-
-        if (!BuildConfig.DEBUG) {
-            ACRA.init(this);
-        }
 
 		Bridge.initialize(getApplicationContext(), new SavedStateHandler() {
 			@Override

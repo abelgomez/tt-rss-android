@@ -14,11 +14,11 @@
    viewBox="0 0 300.00001 120.00001"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="s_drawer_header_dark.svg"
-   inkscape:export-filename="C:\Users\andrew\Projects\tt-rss-android\org.fox.ttrss\src\main\res\drawable-xxhdpi\drawer_header_dark.png"
-   inkscape:export-xdpi="307.20001"
-   inkscape:export-ydpi="307.20001">
+   inkscape:export-filename="/home/fox/Projects/tt-rss-android/org.fox.ttrss/src/main/res/drawable-hdpi/drawer_header_amber.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192">
   <defs
      id="defs4">
     <filter
@@ -158,17 +158,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="52.474109"
-     inkscape:cy="70.376366"
+     inkscape:cx="95.15268"
+     inkscape:cy="76.447795"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="px"
      borderlayer="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1137"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="1170"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -178,7 +178,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -188,18 +188,18 @@
      id="layer1"
      transform="translate(0,-932.36214)">
     <path
-       style="fill:#b2d9ee;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#eed5b2;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 96.7857,905.93357 63.21428,60.35714 -55.35714,95.71429 -32.857141,-1.0714 z"
        id="path4208"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:#164964;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#624318;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 198.57141,994.505 64.64286,68.9286 -126.78572,-2.5 z"
        id="path4162"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:#2579a6;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4234)"
+       style="fill:#a0712c;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4234)"
        d="M 219.2857,1007.3621 71.071414,1113.0764 161.78572,948.79071 Z"
        id="path4154"
        inkscape:connector-curvature="0"
@@ -216,7 +216,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
     <path
-       style="fill:#1e6286;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4306)"
+       style="fill:#b87d2c;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4306)"
        d="m 83.571414,898.07643 163.214276,159.99997 63.21429,-0.7143 -3.57143,-161.42853 z"
        id="path4142"
        inkscape:connector-curvature="0" />

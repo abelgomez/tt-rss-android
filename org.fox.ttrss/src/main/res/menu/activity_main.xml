@@ -6,19 +6,17 @@
             <item
                 android:id="@+id/subscribe_to_feed"
                 android:orderInCategory="1"
-                android:icon="@drawable/ic_plus_circle"
                 app:showAsAction=""
                 android:title="@string/subscribe_to_feed"/> <!-- iRroom -->
         </group>
         <group android:id="@+id/menu_group_headlines" >
             <item
                 android:id="@+id/search"
-                android:icon="@drawable/ic_magnify"
+                android:icon="@drawable/ic_search"
                 app:showAsAction="ifRoom"
                 android:title="@string/search"/>
             <item
                 android:id="@+id/headlines_mark_as_read"
-                android:icon="@drawable/ic_check_all"
                 app:showAsAction=""
                 android:title="@string/headlines_mark_as_read"/>
             <item
@@ -35,7 +33,6 @@
 
             <item
                 android:id="@+id/headlines_view_mode"
-                android:icon="@drawable/ic_filter_outline"
                 app:showAsAction=""
                 android:title="@string/headlines_view_mode"/>
         </group>
@@ -68,11 +65,9 @@
             <item
                 android:id="@+id/set_labels"
                 app:showAsAction=""
-                android:icon="@drawable/ic_bookmark_outline_plus"
                 android:title="@string/article_set_labels"/>
             <item
                 android:id="@+id/article_set_note"
-                android:icon="@drawable/ic_comment_plus_outline"
                 app:showAsAction=""
                 android:title="@string/article_set_note"/>
 

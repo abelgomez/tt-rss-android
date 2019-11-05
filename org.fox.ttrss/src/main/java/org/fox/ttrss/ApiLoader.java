@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Base64;
 import android.util.Log;
 
@@ -20,10 +19,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+
+import androidx.loader.content.AsyncTaskLoader;
 
 public class ApiLoader extends AsyncTaskLoader<JsonElement> {
 	private final String TAG = this.getClass().getSimpleName();
@@ -99,15 +100,9 @@ public class ApiLoader extends AsyncTaskLoader<JsonElement> {
 		String requestStr = gson.toJson(new HashMap<>(m_params));
 		byte[] postData = null;
 
-		try {
-			postData = requestStr.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			m_lastError = ApiError.OTHER_ERROR;
-			e.printStackTrace();
-			return null;
-		}
+        postData = requestStr.getBytes(StandardCharsets.UTF_8);
 
-		if (m_transportDebugging) Log.d(TAG, ">>> (" + requestStr + ") " + m_api);
+        if (m_transportDebugging) Log.d(TAG, ">>> (" + requestStr + ") " + m_api);
 
 		URL url;
 
@@ -132,7 +127,7 @@ public class ApiLoader extends AsyncTaskLoader<JsonElement> {
 				if (m_transportDebugging) Log.d(TAG, "Using HTTP Basic authentication.");
 
 				conn.setRequestProperty("Authorization", "Basic " +
-						Base64.encodeToString((httpLogin + ":" + httpPassword).getBytes("UTF-8"), Base64.NO_WRAP));
+						Base64.encodeToString((httpLogin + ":" + httpPassword).getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP));
 			}
 
 			conn.setDoInput(true);
@@ -151,7 +146,7 @@ public class ApiLoader extends AsyncTaskLoader<JsonElement> {
 		    switch (m_responseCode) {
 			case HttpURLConnection.HTTP_OK:
 				StringBuffer response = new StringBuffer();
-				InputStreamReader in = new InputStreamReader(conn.getInputStream(), "UTF-8");
+				InputStreamReader in = new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8);
 				char[] buf = new char[256];
 				int read = 0;
 
@@ -249,9 +244,6 @@ public class ApiLoader extends AsyncTaskLoader<JsonElement> {
 	    
 	    // if no network is available networkInfo will be null
 	    // otherwise check if we are connected
-	    if (networkInfo != null && networkInfo.isConnected()) {
-	        return true;
-	    }
-	    return false;
-	} 
+        return networkInfo != null && networkInfo.isConnected();
+    }
 }

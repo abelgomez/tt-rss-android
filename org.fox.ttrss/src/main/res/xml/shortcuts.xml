@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="SHORTCUT:OPEN_MARKED"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_star"
+        android:shortcutShortLabel="@string/feed_starred_articles">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.fox.ttrss"
+            android:targetClass="org.fox.ttrss.MasterActivity">
+            <extra android:name="shortcut_mode" android:value="true"/>
+            <extra android:name="feed_id" android:value="-1"/>
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="SHORTCUT:OPEN_FRESH"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_fresh"
+        android:shortcutShortLabel="@string/fresh_articles">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.fox.ttrss"
+            android:targetClass="org.fox.ttrss.MasterActivity">
+                <extra android:name="shortcut_mode" android:value="true"/>
+                <extra android:name="feed_id" android:value="-3"/>
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="SHORTCUT:OPEN_ALL_ARTICLES"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_folder_open"
+        android:shortcutShortLabel="@string/feed_all_articles">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.fox.ttrss"
+            android:targetClass="org.fox.ttrss.MasterActivity">
+            <extra android:name="shortcut_mode" android:value="true"/>
+            <extra android:name="feed_id" android:value="-4"/>
+        </intent>
+    </shortcut>
+
+</shortcuts>

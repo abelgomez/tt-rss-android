@@ -8,16 +8,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ClassloaderWorkaroundFragmentStatePagerAdapter;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
@@ -45,7 +46,7 @@ public class ArticlePager extends StateSavedFragment {
 	private boolean m_refreshInProgress;
 	private boolean m_lazyLoadDisabled;
 
-	private class PagerAdapter extends ClassloaderWorkaroundFragmentStatePagerAdapter {
+	private class PagerAdapter extends FragmentStatePagerAdapter {
 		
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -197,7 +198,7 @@ public class ArticlePager extends StateSavedFragment {
 
 		m_refreshInProgress = true;
 
-		HeadlinesRequest req = new HeadlinesRequest(getActivity().getApplicationContext(), m_activity, m_feed, m_articles) {
+		@SuppressLint("StaticFieldLeak") HeadlinesRequest req = new HeadlinesRequest(getActivity().getApplicationContext(), m_activity, m_feed, m_articles) {
 			@Override
 			protected void onProgressUpdate(Integer... progress) {
 				m_activity.setProgress(progress[0] / progress[1] * 10000);
@@ -236,7 +237,7 @@ public class ArticlePager extends StateSavedFragment {
 								}).show();
 					}
 
-					if (m_amountLoaded < HeadlinesFragment.HEADLINES_REQUEST_SIZE) {
+					if (m_amountLoaded < Integer.valueOf(m_prefs.getString("headlines_request_size", "15"))) {
 						m_lazyLoadDisabled = true;
 					}
 
@@ -316,7 +317,7 @@ public class ArticlePager extends StateSavedFragment {
                 put("excerpt_length", String.valueOf(CommonActivity.EXCERPT_MAX_LENGTH));
 				put("show_content", "true");
 				put("include_attachments", "true");
-				put("limit", String.valueOf(HeadlinesFragment.HEADLINES_REQUEST_SIZE));
+				put("limit", m_prefs.getString("headlines_request_size", "15"));
 				put("offset", String.valueOf(0));
 				put("view_mode", m_activity.getViewMode());
 				put("skip", String.valueOf(fskip));
@@ -338,6 +339,11 @@ public class ArticlePager extends StateSavedFragment {
 					put("include_header", "true");
 				}
 
+				if (m_prefs.getBoolean("enable_image_downsampling", false)) {
+					if (m_prefs.getBoolean("always_downsample_images", false) || !m_activity.isWifiConnected()) {
+						put("resize_width", String.valueOf(m_activity.getResizeWidth()));
+					}
+				}
 			}			 
 		};
 

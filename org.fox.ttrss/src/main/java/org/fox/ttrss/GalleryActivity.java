@@ -5,12 +5,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,6 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import icepick.State;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -123,7 +123,7 @@ public class GalleryActivity extends CommonActivity {
                                     .asBitmap()
                                     .skipMemoryCache(false)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .dontTransform()
+                                    //.dontTransform()
                                     .into(HeadlinesFragment.FLAVOR_IMG_MIN_SIZE, HeadlinesFragment.FLAVOR_IMG_MIN_SIZE)
                                     .get();
 
@@ -149,6 +149,72 @@ public class GalleryActivity extends CommonActivity {
 
             return m_checkedItems;
         }
+    }
+
+    boolean collectGalleryContents(String imgSrcFirst, Document doc, List<GalleryEntry> uncheckedItems ) {
+        Elements elems = doc.select("img,video");
+
+        boolean firstFound = false;
+
+        for (Element elem : elems) {
+
+            GalleryEntry item = new GalleryEntry();
+
+            if ("video".equals(elem.tagName().toLowerCase())) {
+                String cover = elem.attr("poster");
+
+                Element source = elem.select("source").first();
+                String src = source.attr("src");
+
+                //Log.d(TAG, "vid/src=" + src);
+
+                if (src.startsWith("//")) {
+                    src = "https:" + src;
+                }
+
+                if (imgSrcFirst.equals(src))
+                    firstFound = true;
+
+                item.url = src;
+                item.coverUrl = cover;
+                item.type = GalleryEntry.GalleryEntryType.TYPE_VIDEO;
+
+            } else {
+                String src = elem.attr("src");
+
+                if (src.startsWith("//")) {
+                    src = "https:" + src;
+                }
+
+                if (imgSrcFirst.equals(src))
+                    firstFound = true;
+
+                Log.d(TAG, "img/fir=" + imgSrcFirst + ";");
+                Log.d(TAG, "img/src=" + src + "; ff=" + firstFound);
+
+                try {
+                    Uri checkUri = Uri.parse(src);
+
+                    if (!"data".equals(checkUri.getScheme().toLowerCase())) {
+                        item.url = src;
+                        item.type = GalleryEntry.GalleryEntryType.TYPE_IMAGE;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if ((firstFound || imgSrcFirst.equals("")) && item.url != null) {
+                if (m_items.size() == 0)
+                    m_items.add(item);
+                else
+                    uncheckedItems.add(item);
+            }
+        }
+
+        return firstFound;
     }
 
     @Override
@@ -182,67 +248,12 @@ public class GalleryActivity extends CommonActivity {
             String imgSrcFirst = getIntent().getStringExtra("firstSrc");
 
             Document doc = Jsoup.parse(m_content);
-            Elements elems = doc.select("img,video");
 
-            boolean firstFound = false;
-
-            for (Element elem : elems) {
-
-                GalleryEntry item = new GalleryEntry();
-
-                if ("video".equals(elem.tagName().toLowerCase())) {
-                    String cover = elem.attr("poster");
-
-                    Element source = elem.select("source").first();
-                    String src = source.attr("src");
-
-                    //Log.d(TAG, "vid/src=" + src);
-
-                    if (src.startsWith("//")) {
-                        src = "https:" + src;
-                    }
-
-                    if (imgSrcFirst.equals(src))
-                        firstFound = true;
-
-                    item.url = src;
-                    item.coverUrl = cover;
-                    item.type = GalleryEntry.GalleryEntryType.TYPE_VIDEO;
-
-                } else {
-                    String src = elem.attr("src");
-
-                    if (src.startsWith("//")) {
-                        src = "https:" + src;
-                    }
-
-                    if (imgSrcFirst.equals(src))
-                        firstFound = true;
-
-                    Log.d(TAG, "img/fir=" + imgSrcFirst);
-                    Log.d(TAG, "img/src=" + src + "; ff=" + firstFound);
-
-                    try {
-                        Uri checkUri = Uri.parse(src);
-
-                        if (!"data".equals(checkUri.getScheme().toLowerCase())) {
-                            item.url = src;
-                            item.type = GalleryEntry.GalleryEntryType.TYPE_IMAGE;
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                if (firstFound && item.url != null) {
-                    if (m_items.size() == 0)
-                        m_items.add(item);
-                    else
-                        uncheckedItems.add(item);
-                }
-            }
+            // if we were unable to find first image, try again for all media content so that
+            // gallery doesn't lock up because of a pending shared transition
+            if (!collectGalleryContents(imgSrcFirst, doc, uncheckedItems))
+                if (!collectGalleryContents("", doc, uncheckedItems))
+                    m_items.add(new GalleryEntry(imgSrcFirst, GalleryEntry.GalleryEntryType.TYPE_IMAGE, null));
         }
 
         findViewById(R.id.gallery_overflow).setOnClickListener(new View.OnClickListener() {

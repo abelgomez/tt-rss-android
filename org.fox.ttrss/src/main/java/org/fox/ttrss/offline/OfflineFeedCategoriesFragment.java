@@ -8,8 +8,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -27,6 +25,9 @@ import android.widget.TextView;
 
 import org.fox.ttrss.BaseFeedlistFragment;
 import org.fox.ttrss.R;
+
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class OfflineFeedCategoriesFragment extends BaseFeedlistFragment implements OnItemClickListener, OnSharedPreferenceChangeListener {
 	private final String TAG = this.getClass().getSimpleName();
@@ -132,7 +133,7 @@ public class OfflineFeedCategoriesFragment extends BaseFeedlistFragment implemen
 
 		View view = inflater.inflate(R.layout.fragment_feeds, container, false);
 
-        m_swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.feeds_swipe_container);
+        m_swipeLayout = view.findViewById(R.id.feeds_swipe_container);
 
         m_swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -141,7 +142,7 @@ public class OfflineFeedCategoriesFragment extends BaseFeedlistFragment implemen
             }
         });
 
-		m_list = (ListView)view.findViewById(R.id.feeds);
+		m_list = view.findViewById(R.id.feeds);
 
 		m_cursor = createCursor();
 		
@@ -184,7 +185,7 @@ public class OfflineFeedCategoriesFragment extends BaseFeedlistFragment implemen
 	
 	@Override
 	public void onItemClick(AdapterView<?> av, View view, int position, long id) {
-		ListView list = (ListView)getActivity().findViewById(R.id.feeds);
+		ListView list = getActivity().findViewById(R.id.feeds);
 		
 		if (list != null) {
 			Cursor cursor = (Cursor) list.getItemAtPosition(position);
@@ -263,7 +264,7 @@ public class OfflineFeedCategoriesFragment extends BaseFeedlistFragment implemen
 
 			}
 
-			ImageView icon = (ImageView) v.findViewById(R.id.icon);
+			ImageView icon = v.findViewById(R.id.icon);
 
 			if (icon != null) {
 				TypedValue tv = new TypedValue();
@@ -273,13 +274,13 @@ public class OfflineFeedCategoriesFragment extends BaseFeedlistFragment implemen
 
 			}
 
-			TextView tt = (TextView) v.findViewById(R.id.title);
+			TextView tt = v.findViewById(R.id.title);
 
 			if (tt != null) {
 				tt.setText(cursor.getString(cursor.getColumnIndex("title")));
 			}
 
-			TextView tu = (TextView) v.findViewById(R.id.unread_counter);
+			TextView tu = v.findViewById(R.id.unread_counter);
 
 			if (tu != null) {
 				tu.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("unread"))));

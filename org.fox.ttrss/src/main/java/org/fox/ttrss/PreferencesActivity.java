@@ -2,8 +2,9 @@ package org.fox.ttrss;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import androidx.appcompat.widget.Toolbar;
 
 public class PreferencesActivity extends CommonActivity {
 	@Override
@@ -18,17 +19,19 @@ public class PreferencesActivity extends CommonActivity {
 
         setContentView(R.layout.activity_preferences);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().hide();
 
-        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (savedInstanceState == null) {
+            android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        ft.replace(R.id.preferences_container, new PreferencesFragment());
-        ft.commit();
+            ft.replace(R.id.preferences_container, new PreferencesFragment());
+            ft.commit();
+        }
     }
 
     @Override

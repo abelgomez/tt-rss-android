@@ -10,8 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -48,6 +46,9 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.Fragment;
 
 public class OfflineArticleFragment extends Fragment {
 	private final String TAG = this.getClass().getSimpleName();
@@ -320,7 +321,9 @@ public class OfflineArticleFragment extends Fragment {
 			m_web = view.findViewById(R.id.article_content);
 			
 			if (m_web != null) {
-				if (CommonActivity.THEME_DARK.equals(m_prefs.getString("theme", CommonActivity.THEME_DEFAULT))) {
+
+				String theme = m_prefs.getString("theme", CommonActivity.THEME_DEFAULT);
+				if (CommonActivity.THEME_DARK.equals(theme) || CommonActivity.THEME_AMBER.equals(theme)) {
 					m_web.setBackgroundColor(Color.BLACK);
 				}
 
@@ -378,7 +381,9 @@ public class OfflineArticleFragment extends Fragment {
 				}
 
 				// we need to show "insecure" file:// urls
-				if (m_prefs.getBoolean("offline_image_cache_enabled", false)) {
+				if (m_prefs.getBoolean("offline_image_cache_enabled", false) &&
+						android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
 					ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 				}
 

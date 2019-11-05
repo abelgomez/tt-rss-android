@@ -13,7 +13,6 @@ import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import org.fox.ttrss.CommonActivity;
@@ -30,6 +29,8 @@ import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+
+import androidx.core.app.NotificationCompat;
 
 public class ImageCacheService extends IntentService {
 

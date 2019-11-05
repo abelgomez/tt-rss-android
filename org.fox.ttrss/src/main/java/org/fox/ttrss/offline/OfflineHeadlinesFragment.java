@@ -17,12 +17,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
@@ -76,6 +70,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class OfflineHeadlinesFragment extends Fragment implements OnItemClickListener, AbsListView.OnScrollListener {
@@ -371,7 +371,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
         if (m_prefs.getBoolean("headlines_mark_read_scroll", false)) {
             WindowManager wm = (WindowManager) m_activity.getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
-            int screenHeight = display.getHeight();
+            int screenHeight = (int)(display.getHeight() * 1.5);
 
             View layout = inflater.inflate(R.layout.headlines_footer, container, false);
 
@@ -1002,7 +1002,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 							Glide.with(OfflineHeadlinesFragment.this)
 									.load(afi.flavorImageUri)
-									.dontTransform()
+									//.dontTransform()
 									.diskCacheStrategy(DiskCacheStrategy.NONE)
 									.skipMemoryCache(false)
 									.listener(new RequestListener<String, GlideDrawable>() {
