@@ -1,5 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="login_need_configure">Пожалуйста, настройте приложение.</string>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_need_configure">Пожалуйста, настройте приложение.</string>
     <string name="login_ready">Готов ко входу.</string>
     <string name="login_login">Войти</string>
     <string name="login">Логин</string>
@@ -79,7 +80,7 @@
     <string name="article_set_labels">Поставить метки</string>
     <string name="search">Искать</string>
     <string name="cancel">Отмена</string>
-    <string name="pref_font_size">Размер шрифта статьи</string>
+    <string name="pref_font_size">Размер шрифта</string>
     <string name="dialog_close">Закрыть</string>
     <string name="article_link_copy">Скопировать ссылку в буфер обмена</string>
     <string name="text_copied_to_clipboard">Текст скопирован в буфер обмена</string>
@@ -103,19 +104,16 @@
     <string name="ssl_trust_any_host_long">Не проверять имя сервера</string>
     <string name="ssl">SSL</string>
     <string name="error_ssl_hostname_rejected">Ошибка: имя сервера SSL не прошло проверку</string>
-
     <plurals name="article_comments">
-	<item quantity="one">%1$d комментарий</item>
-	<item quantity="few">%1$d комментария</item>
-	<item quantity="many">%1$d комментариев</item>
-</plurals>
-
+        <item quantity="one">%1$d комментарий</item>
+        <item quantity="few">%1$d комментария</item>
+        <item quantity="many">%1$d комментариев</item>
+    </plurals>
     <plurals name="trial_mode_prompt">
-	<item quantity="one">Пробный режим, остался один день.</item>
-	<item quantity="few">Пробный режим, осталось %1$d дня.</item>
-	<item quantity="many">Пробный режим, осталось %1$d дней.</item>
-</plurals>
-
+        <item quantity="one">Пробный режим, остался один день.</item>
+        <item quantity="few">Пробный режим, осталось %1$d дня.</item>
+        <item quantity="many">Пробный режим, осталось %1$d дней.</item>
+    </plurals>
     <string name="trial_purchase">Купить полную версию</string>
     <string name="trial_expired">Пробный режим завершен</string>
     <string name="trial_expired_message">Чтобы продолжить пользоваться Tiny Tiny RSS пожалуйста купите полную версию.</string>
@@ -151,15 +149,13 @@
     <string name="article_img_view_caption">Посмотреть подпись</string>
     <string name="pref_headlines_mark_read_scroll">Отмечать при прокрутке</string>
     <string name="pref_headlines_mark_read_scroll_long">Отмечать заголовки как прочитанные после прокручивания за край экрана</string>
-
     <plurals name="mark_num_headlines_as_read">
-	<item quantity="one">Отметить %1$d статью как прочитанную\?</item>
-	<item quantity="few">Отметить %1$d статьи как прочитанные\?</item>
-	<item quantity="many">Отметить %1$d статей как прочитанные\?</item>
-</plurals>
-
+        <item quantity="one">Отметить %1$d статью как прочитанную\?</item>
+        <item quantity="few">Отметить %1$d статьи как прочитанные\?</item>
+        <item quantity="many">Отметить %1$d статей как прочитанные\?</item>
+    </plurals>
     <string name="prefs_confirm_headlines_catchup">Подтверждать отметку прочтения</string>
-    <string name="pref_headline_font_size">Размер шрифта заголовка</string>
+    <string name="pref_headline_font_size">Размер шрифта</string>
     <string name="download_articles_and_go_offline">Скачать статьи и перейти в автономный режим</string>
     <string name="tasker_save_and_close">Сохранить и закрыть</string>
     <string name="synchronize_read_articles_and_go_online">Синхронизировать прочитанные статьи и перейти в онлайн режим</string>
@@ -184,7 +180,7 @@
     <string name="prefs_enable_fab">Включить FAB</string>
     <string name="prefs_enable_fab_long">Показывать круглую кнопку во время чтения</string>
     <string name="prefs_open_fresh_on_startup">Открывать Свежие статьи при запуске</string>
-    <string name="prefs_headline_display_mode">Режим вывода заголовков</string>
+    <string name="prefs_headline_display_mode">Режим отображения</string>
     <string name="prefs_headline_display_mode_long">По умолчанию, без изображений, или компактный режим</string>
     <string name="headline_display_mode_default">По умолчанию</string>
     <string name="headline_display_mode_no_images">Без изображений</string>
@@ -195,7 +191,6 @@
     <string name="prefs_widget_show_fresh_summary">Показывать количество Свежих статей вместо непрочитанных</string>
     <string name="prefs_widget">Виджет</string>
     <string name="title_activity_video_player">Видео проигрыватель</string>
-
     <string name="action_settings">Настройки</string>
     <string name="video_player_share">Поделиться видео</string>
     <string name="headlines_row_top_changed">Найдены новые статьи, обновите канал для продолжения.</string>
@@ -210,7 +205,6 @@
     <string name="headline_undo_row_button">ОТМЕНА</string>
     <string name="headline_undo_row_prompt">Помечены как прочитанные</string>
     <string name="pref_widget_update_interval">Интервал обновления (в минутах)</string>
-
     <string name="widget_background_light">Светлый</string>
     <string name="widget_background_dark">Темный</string>
     <string name="widget_background_transparent">Прозрачный</string>
@@ -228,19 +222,17 @@
     <string name="pref_headlines_swipe_to_dismiss_long">Отключает контекстное меню заголовков</string>
     <string name="cat_labels">Метки</string>
     <string name="cat_uncategorized">Без категории</string>
-<string name="login_in_progress">Вход…</string>
+    <string name="login_in_progress">Вход…</string>
     <string name="transport_debugging">Журнал отправленных и полученных данных</string>
     <string name="notify_downloading_init">Начало загрузки…</string>
     <string name="notify_downloading_feeds">Скачиваю каналы…</string>
     <string name="api_too_low">Для этого действия требуется более новая версия Tiny Tiny RSS</string>
     <string name="author_formatted">%1$s</string>
-
     <plurals name="n_unread_articles">
-	<item quantity="one">Одна непрочитанная статья</item>
-	<item quantity="few">Нет непрочитанных статей</item>
-	<item quantity="many">%1$d непрочитанных статей</item>
-</plurals>
-
+        <item quantity="one">Одна непрочитанная статья</item>
+        <item quantity="few">Нет непрочитанных статей</item>
+        <item quantity="many">%1$d непрочитанных статей</item>
+    </plurals>
     <string name="context_confirm_catchup">Отметить все статьи в %1$s как прочитанные\?</string>
     <string name="accel_webview_summary">Отключите, если вы видите мерцание или визуальные глюки</string>
     <string name="accel_webview_title">Ускорение просмотра веб-страниц (3.0+)</string>
@@ -251,4 +243,14 @@
     <string name="prefs_build_timestamp_title">Построить временную метку</string>
     <string name="crash_dialog_text">К сожалению, Tiny Tiny RSS был остановлен. Отправить отчет о сбое на tt-rss.org\?</string>
     <string name="offline_no_articles">Нет загруженных статей</string>
-    </resources>
+    <string name="prefs_enable_image_downsampling_long">Просит серверную часть уменьшить изображения, если не по Wi-Fi. Требуется плагин (ttrss-api-resize).</string>
+    <string name="prefs_enable_image_downsampling">Автоматическое изменение размеров изображений</string>
+    <string name="prefs_inline_video_player">Экспериментальный. Долгое нажатие, чтобы открыть отдельный плеер</string>
+    <string name="prefs_headline_images_wifi_only_long">Переопределяет предыдущую настройку</string>
+    <string name="prefs_headline_images_wifi_only">Показывать изображения только по Wi-Fi</string>
+    <string name="headlines">Заголовки</string>
+    <string name="prefs_headline_request_size_long">Используйте более низкие значения на медленных соединениях</string>
+    <string name="prefs_headline_request_size">Сколько заголовков запрашивать</string>
+    <string name="prefs_always_open_uri_summary">Открывать статьи сразу в веб-браузере, вместо того чтобы переходить в подробный вид</string>
+    <string name="prefs_always_open_uri">Всегда открывать в браузере</string>
+</resources>
