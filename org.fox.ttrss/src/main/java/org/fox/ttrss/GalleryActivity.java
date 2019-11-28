@@ -226,7 +226,8 @@ public class GalleryActivity extends CommonActivity {
         m_prefs = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
