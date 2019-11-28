@@ -17,7 +17,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -48,6 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.browser.customtabs.CustomTabsCallback;
 import androidx.browser.customtabs.CustomTabsClient;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -315,21 +315,29 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 
 	protected void setAppTheme(SharedPreferences prefs) {
 		String theme = prefs.getString("theme", CommonActivity.THEME_DEFAULT);
-		
-		if (theme.equals(THEME_DARK)) {
-			setTheme(R.style.DarkTheme);
-		} else if (theme.equals(THEME_AMBER)) {
-			setTheme(R.style.AmberTheme);
+
+		Log.d(TAG, "setting theme to: " + theme);
+
+		if ("THEME_DARK".equals(theme)) {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+		} else if ("THEME_LIGHT".equals(theme)) {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 		} else {
-			setTheme(R.style.LightTheme);
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_TIME);
 		}
+
+		setTheme(R.style.AppTheme);
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		Log.d(TAG, "onSharedPreferenceChanged:" + key);
 
-		String[] filter = new String[] { "theme", "enable_cats", "headline_mode", "widget_update_interval",
+		if ("theme".equals(key)) {
+			setAppTheme(sharedPreferences);
+		}
+
+		String[] filter = new String[] { "enable_cats", "headline_mode", "widget_update_interval",
 				"headlines_swipe_to_dismiss", "headlines_mark_read_scroll", "headlines_request_size" };
 
 		m_needRestart = Arrays.asList(filter).indexOf(key) != -1;

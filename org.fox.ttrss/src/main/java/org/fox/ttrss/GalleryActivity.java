@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -225,7 +226,8 @@ public class GalleryActivity extends CommonActivity {
         m_prefs = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
 
-        setTheme(R.style.DarkTheme);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
 
@@ -296,7 +298,7 @@ public class GalleryActivity extends CommonActivity {
         MediaCheckTask mct = new MediaCheckTask() {
             @Override
             protected void onProgressUpdate(MediaProgressResult... result) {
-                m_items.add(result[0].item);
+                //m_items.add(result[0].item);
                 m_adapter.notifyDataSetChanged();
 
                 if (result[0].position < result[0].count) {
@@ -311,8 +313,8 @@ public class GalleryActivity extends CommonActivity {
 
             @Override
             protected void onPostExecute(List<GalleryEntry> result) {
-                //m_items.addAll(result);
-                //m_adapter.notifyDataSetChanged();
+                m_items.addAll(result);
+                m_adapter.notifyDataSetChanged();
             }
         };
 

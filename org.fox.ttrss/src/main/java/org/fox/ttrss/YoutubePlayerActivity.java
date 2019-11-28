@@ -13,6 +13,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import icepick.State;
 
@@ -28,7 +29,8 @@ public class YoutubePlayerActivity extends CommonActivity implements YouTubePlay
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        setTheme(R.style.DarkTheme);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_youtube_player);
