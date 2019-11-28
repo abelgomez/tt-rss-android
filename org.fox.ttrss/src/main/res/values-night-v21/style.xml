@@ -1,0 +1,12 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/window_background_dark</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+    </style>
+
+    <style name="DarkDialogTheme" parent="android:Theme.Material.Dialog">
+    </style>
+
+</resources>
