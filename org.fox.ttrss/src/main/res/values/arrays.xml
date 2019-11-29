@@ -1,12 +1,10 @@
 <resources>
     <string-array name="pref_theme_names">
-        <item>@string/theme_auto</item>
         <item>@string/theme_follow_device</item>
         <item>@string/theme_light</item>
         <item>@string/theme_dark</item>
     </string-array>
     <string-array name="pref_theme_values" translatable="false">
-        <item>THEME_AUTO</item>
         <item>THEME_FOLLOW_DEVICE</item>
         <item>THEME_LIGHT</item>
         <item>THEME_DARK</item>
@@ -54,6 +52,5 @@
         <item>30</item>
         <item>45</item>
     </string-array>
-    <string name="theme_auto">Auto (by time)</string>
     <string name="theme_follow_device">Same as device</string>
 </resources>

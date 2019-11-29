@@ -32,7 +32,7 @@
         android:key="category_look_and_feel"
         android:title="@string/look_and_feel" >
         <ListPreference
-            android:defaultValue="THEME_AUTO"
+            android:defaultValue="THEME_FOLLOW_DEVICE"
             android:entries="@array/pref_theme_names"
             android:entryValues="@array/pref_theme_values"
             android:key="theme"

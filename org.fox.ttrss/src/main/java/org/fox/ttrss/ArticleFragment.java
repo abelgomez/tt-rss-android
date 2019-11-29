@@ -469,8 +469,7 @@ public class ArticleFragment extends StateSavedFragment  {
             ws.setMediaPlaybackRequiresUserGesture(false);
         }
 
-        String theme = m_prefs.getString("theme", CommonActivity.THEME_DEFAULT);
-        if (CommonActivity.THEME_DARK.equals(theme) || CommonActivity.THEME_AMBER.equals(theme)) {
+        if (m_activity.isUiNightMode()) {
             m_web.setBackgroundColor(Color.BLACK);
         }
 

@@ -31,7 +31,6 @@ import android.widget.TextView;
 
 import com.shamanland.fab.ShowHideOnScroll;
 
-import org.fox.ttrss.CommonActivity;
 import org.fox.ttrss.R;
 import org.fox.ttrss.util.ImageCacheService;
 import org.fox.ttrss.util.NotifyingScrollView;
@@ -322,8 +321,7 @@ public class OfflineArticleFragment extends Fragment {
 			
 			if (m_web != null) {
 
-				String theme = m_prefs.getString("theme", CommonActivity.THEME_DEFAULT);
-				if (CommonActivity.THEME_DARK.equals(theme) || CommonActivity.THEME_AMBER.equals(theme)) {
+				if (m_activity.isUiNightMode()) {
 					m_web.setBackgroundColor(Color.BLACK);
 				}
 
