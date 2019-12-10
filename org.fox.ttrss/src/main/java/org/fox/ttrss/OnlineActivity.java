@@ -20,6 +20,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -275,6 +276,19 @@ public class OnlineActivity extends CommonActivity {
 	}
 
 	public void login(boolean refresh, OnLoginFinishedListener listener) {
+
+		if (BuildConfig.ENABLE_TRIAL && !BuildConfig.DEBUG) {
+			String testLabSetting = Settings.System.getString(getContentResolver(), "firebase.test.lab");
+
+			if ("true".equals(testLabSetting)) {
+				SharedPreferences.Editor editor = m_prefs.edit();
+				editor.putString("ttrss_url", "https://srv.tt-rss.org/tt-rss");
+				editor.putString("login", "demo");
+				editor.putString("password", "demo");
+				editor.apply();
+			}
+		}
+
 		if (m_prefs.getString("ttrss_url", "").trim().length() == 0) {
 
 			setLoadingStatus(R.string.login_need_configure);
