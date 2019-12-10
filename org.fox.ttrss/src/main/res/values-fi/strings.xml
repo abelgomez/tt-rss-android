@@ -1,8 +1,9 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="login_login">Kirjaudu sisään</string>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_login">Kirjaudu sisään</string>
     <string name="password">Salasana</string>
     <string name="default_url">http://example.domain/tt-rss/</string>
-    <string name="look_and_feel">Liittymä</string>
+    <string name="look_and_feel">Käyttöliittymä</string>
     <string name="pref_theme">Teema</string>
     <string name="ttrss_url">Tiny Tiny RSS URL</string>
     <string name="theme_light">Vaalea</string>
@@ -52,7 +53,7 @@
     <string name="logcat_refresh">Päivitä</string>
     <string name="logcat_copy">Kopioi leikepöydälle</string>
     <string name="cat_uncategorized">Luokittelematon</string>
-<string name="loading_message">Ladataan, odota…</string>
+    <string name="loading_message">Ladataan, odota…</string>
     <string name="catchup">Merkitse luetuiksi</string>
     <string name="headlines_mark_as_read">Merkitse luetuiksi</string>
     <string name="error_http_other_error">Virhe: muu HTTP-virhe (katso loki)</string>
@@ -67,4 +68,8 @@
     <string name="dialog_offline_sync_continue">Jatka</string>
     <string name="dialog_open_preferences">Asetukset</string>
     <string name="error_invalid_url">Virhe: virheellinen URL.</string>
-    </resources>
+    <string name="connection">Yhteys</string>
+    <string name="login_ready">Valmiina kirjautumaan.</string>
+    <string name="login_need_configure">Konfiguroi sovellus ensin.</string>
+    <string name="login_in_progress">Kirjaudutaan sisään…</string>
+</resources>
