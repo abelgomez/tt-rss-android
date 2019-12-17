@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Tiny Tiny RSS</string>
     <string name="accel_webview_title">Web Views加速(3.0+)</string>
@@ -43,7 +43,7 @@
     <string name="dialog_open_preferences">设置</string>
     <string name="download_articles_and_go_offline">下载文章并切换到离线模式</string>
     <string name="enable_cats">启用信息源分类</string>
-    <string name="error_api_disabled">错误：请在 tt-rss 的“偏好设置 - 通用”中启用外部API访问</string>
+    <string name="error_api_disabled">错误：在tt-rss设置中启用API访问</string>
     <string name="error_api_incorrect_usage">错误：错误的API使用方式</string>
     <string name="error_api_unknown">错误：未知的API错误（见日志）</string>
     <string name="error_api_unknown_method">错误：未知的API方法</string>
@@ -122,11 +122,11 @@
     <string name="open_with">用其他方式打开…</string>
     <string name="password">密码</string>
     <string name="place_shortcut">放置快捷方式</string>
-    <string name="pref_font_size">文章文本大小</string>
-    <string name="pref_headline_font_size">标题文字大小</string>
+    <string name="pref_font_size">字体大小</string>
+    <string name="pref_headline_font_size">文字大小</string>
     <string name="pref_headlines_mark_read_scroll">滚动时标记已读</string>
     <string name="pref_headlines_mark_read_scroll_long">滚动经过一篇文章时，它会被标记为已读</string>
-    <string name="pref_headlines_show_content">预览文章内容</string>
+    <string name="pref_headlines_show_content">预览内容</string>
     <string name="pref_headlines_show_content_long">在文章标题列表中展示内容</string>
     <string name="pref_theme">主题</string>
     <string name="preferences">设置</string>
@@ -136,7 +136,7 @@
     <string name="prefs_custom_tabs_summary">使用浏览器的自定义选项卡打开外部链接（更快，如果可用则使用）</string>
     <string name="prefs_enable_fab">启用浮动功能按钮</string>
     <string name="prefs_enable_fab_long">阅读时显示浮动功能按钮</string>
-    <string name="prefs_headline_display_mode">文章标题显示模式</string>
+    <string name="prefs_headline_display_mode">显示模式</string>
     <string name="prefs_headline_display_mode_long">默认/无图/紧凑模式</string>
     <string name="prefs_open_fresh_on_startup">启动时打开最新文章列表</string>
     <string name="prefs_opening_links">打开链接</string>
@@ -213,26 +213,22 @@
     <string name="browse_cats_like_feeds_summary">分类直接显示其所有信息源的文章</string>
     <string name="go_online">在线模式</string>
     <string name="dialog_ok">OK</string>
-<plurals name="article_comments">
-	<item quantity="other">%1$d 评论</item>
-</plurals>
-
+    <plurals name="article_comments">
+        <item quantity="other">%1$d 评论</item>
+    </plurals>
     <plurals name="trial_mode_prompt">
-	<item quantity="other">试用模式,剩余 %1$d 天.</item>
-</plurals>
-
+        <item quantity="other">试用模式,剩余 %1$d 天.</item>
+    </plurals>
     <plurals name="mark_num_headlines_as_read">
-	<item quantity="other">标记 %1$d 文章为已读\?</item>
-</plurals>
-
+        <item quantity="other">标记 %1$d 文章为已读\?</item>
+    </plurals>
     <plurals name="n_unread_articles">
-	<item quantity="other">%1$d 未读文章</item>
-</plurals>
-
+        <item quantity="other">%1$d 未读文章</item>
+    </plurals>
     <string name="logcat_refresh">刷新</string>
     <string name="logcat_copy">复制到剪贴板</string>
     <string name="logcat_title">查看日志</string>
-<string name="theme_amber">琥珀色</string>
+    <string name="theme_amber">琥珀色</string>
     <string name="cat_special">特别</string>
     <string name="feed_starred_articles">加星标文章</string>
     <string name="feed_published_articles">已发布文章</string>
@@ -240,4 +236,14 @@
     <string name="feed_recently_read">最近的阅读</string>
     <string name="cat_labels">标签</string>
     <string name="cat_uncategorized">未分类</string>
+    <string name="prefs_enable_image_downsampling_long">如果没有在Wi-Fi上，后端对图像进行采样。需要一个插件（ttrss-api-resize）。</string>
+    <string name="prefs_enable_image_downsampling">自动调整图像大小</string>
+    <string name="prefs_inline_video_player">实验性的。长按即可打开单独的播放器</string>
+    <string name="prefs_headline_images_wifi_only_long">覆盖以前的设置</string>
+    <string name="prefs_headline_images_wifi_only">仅在Wi-Fi时显示图像</string>
+    <string name="headlines">标题</string>
+    <string name="prefs_headline_request_size_long">在低宽带时上使用较低的值</string>
+    <string name="prefs_headline_request_size">请求多少标题</string>
+    <string name="prefs_always_open_uri_summary">直接在浏览器中打开文章，而不是进入详细信息视图</string>
+    <string name="prefs_always_open_uri">始终在浏览器中打开</string>
 </resources>
