@@ -134,8 +134,7 @@ public class OnlineActivity extends CommonActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		ApiCommon.disableConnectionReuseIfNecessary();
-		
+
 		// we use that before parent onCreate so let's init locally
 		m_prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
@@ -1005,7 +1004,7 @@ public class OnlineActivity extends CommonActivity {
 										}
 									};
 									
-									ApiRequest req = new ApiRequest(m_context);
+									ApiRequest req = new ApiRequest(OnlineActivity.this);
 									req.execute(map);
 									
 								}
@@ -1089,9 +1088,6 @@ public class OnlineActivity extends CommonActivity {
 	public void onResume() {
 		super.onResume();
 
-		ApiCommon.trustAllHosts(m_prefs.getBoolean("ssl_trust_any", false),
-				m_prefs.getBoolean("ssl_trust_any_host", false));				
-		
 		IntentFilter filter = new IntentFilter();
 		//filter.addAction(OfflineDownloadService.INTENT_ACTION_SUCCESS);
 		filter.addAction(OfflineUploadService.INTENT_ACTION_SUCCESS);
@@ -1483,7 +1479,7 @@ public class OnlineActivity extends CommonActivity {
 							
 						} else {
 
-							ApiRequest req = new ApiRequest(m_context) {
+							ApiRequest req = new ApiRequest(OnlineActivity.this) {
 								protected void onPostExecute(JsonElement result) {
 									setApiLevel(0);
 	
