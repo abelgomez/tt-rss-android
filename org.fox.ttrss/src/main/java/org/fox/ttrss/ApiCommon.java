@@ -2,6 +2,8 @@ package org.fox.ttrss;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
@@ -14,6 +16,7 @@ import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import okhttp3.Credentials;
@@ -116,6 +119,7 @@ public class ApiCommon {
 
             Request.Builder requestBuilder = new Request.Builder()
                     .url(apiUrl)
+                    .header("User-Agent", getUserAgent(context))
                     .post(RequestBody.create(TYPE_JSON, payload));
 
             String httpLogin = m_prefs.getString("http_login", "").trim();
@@ -224,5 +228,25 @@ public class ApiCommon {
         }
 
         return null;
+    }
+
+    private static String getUserAgent(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().
+                    getPackageInfo(context.getPackageName(), 0);
+
+            return String.format(Locale.ENGLISH,
+                    "Tiny Tiny RSS (Android) %1$s (%2$d) %3$s",
+                        packageInfo.versionName,
+                        packageInfo.versionCode,
+                        System.getProperty("http.agent"));
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+
+            return String.format(Locale.ENGLISH,
+                    "Tiny Tiny RSS (Android) Unknown %1$s",
+                    System.getProperty("http.agent"));
+        }
     }
 }
