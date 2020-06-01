@@ -39,7 +39,11 @@ public class OfflineDetailActivity extends OfflineActivity implements OfflineHea
 		
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_detail);
+		if (m_prefs.getBoolean("force_phone_layout", false)) {
+			setContentView(R.layout.activity_detail_phone);
+		} else {
+			setContentView(R.layout.activity_detail);
+		}
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

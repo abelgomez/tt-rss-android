@@ -107,6 +107,8 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
     private ListView m_list;
     private int m_listPreviousVisibleItem;
 
+	boolean m_forcePhoneLayout;
+
 	public void initialize(int feedId, boolean isCat, boolean compactMode) {
 		m_feedId = feedId;
 		m_feedIsCat = isCat;
@@ -355,6 +357,8 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		m_cursor = createCursor();
 		
 		m_list = view.findViewById(R.id.headlines_list);
+
+		m_forcePhoneLayout = m_prefs.getBoolean("force_phone_layout", false);
 
 		FloatingActionButton fab = view.findViewById(R.id.headlines_fab);
 		fab.setVisibility(View.GONE);
@@ -648,7 +652,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 					holder.textImage.setImageDrawable(textDrawable);
 
-					Glide.with(OfflineHeadlinesFragment.this)
+					Glide.with(getContext())
 							.load(afi.flavorImageUri)
 							.placeholder(textDrawable)
 							.bitmapTransform(new CropCircleTransformation(getActivity()))
@@ -1000,7 +1004,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 						try {
 
-							Glide.with(OfflineHeadlinesFragment.this)
+							Glide.with(getContext())
 									.load(afi.flavorImageUri)
 									//.dontTransform()
 									.diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -1320,7 +1324,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
             }
         }
 
-        if (!m_activity.isTablet()) {
+        if (m_forcePhoneLayout || !m_activity.isTablet()) {
             if (m_adapter.getCount() > 0) {
                 if (firstVisibleItem > m_listPreviousVisibleItem) {
                     m_activity.getSupportActionBar().hide();

@@ -58,7 +58,11 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_master);
+		if (m_prefs.getBoolean("force_phone_layout", false)) {
+			setContentView(R.layout.activity_master_phone);
+		} else {
+			setContentView(R.layout.activity_master);
+		}
 
 		setSmallScreen(findViewById(R.id.sw600dp_anchor) == null);
 
