@@ -1,5 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="login_in_progress">Aan het aanmelden…</string>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_in_progress">Aan het aanmelden…</string>
     <string name="login_need_configure">Stel aub eerst de applicatie in.</string>
     <string name="login_ready">Klaar om aan te melden.</string>
     <string name="login_login">Aanmelden</string>
@@ -53,7 +54,7 @@
     <string name="error_parse_error">Error: ontleden JSON misluikt</string>
     <string name="error_io_error">Fout: I/O misluikt (server uit\?)</string>
     <string name="error_other_error">Fout: onbekende fout (zie logboek)</string>
-    <string name="error_api_disabled">Fout: Zet de externe API-toegang aan in tt-rss Voorkeuren - Geavanceerd</string>
+    <string name="error_api_disabled">Fout: Zet de externe API-toegang aan in tt-rss-voorkeuren</string>
     <string name="error_api_unknown">Fout: onbekende API-fout (zie logboek)</string>
     <string name="error_api_incorrect_usage">Fout: onjuist API-gebruik</string>
     <string name="error_login_failed">Fout: gebruikersnaam of wachtwoord onjuist</string>
@@ -82,7 +83,7 @@
     <string name="article_set_labels">Labels instellen</string>
     <string name="search">Zoeken</string>
     <string name="cancel">Annuleren</string>
-    <string name="pref_font_size">Tekstgrootte artikel</string>
+    <string name="pref_font_size">Tekstgrootte</string>
     <string name="dialog_close">Sluiten</string>
     <string name="article_link_copy">Link naar klembord kopieëren</string>
     <string name="text_copied_to_clipboard">Tekst naar het klembord gekopieerd</string>
@@ -107,17 +108,14 @@
     <string name="ssl_trust_any_host_long">Controleer de server-hostnaam niet</string>
     <string name="ssl">SSL</string>
     <string name="error_ssl_hostname_rejected">Fout: SSL-hostnaam niet gecontroleerd</string>
-
     <plurals name="article_comments">
-	<item quantity="one">%1$d commentaar</item>
-	<item quantity="other">%1$d commentaren</item>
-</plurals>
-
+        <item quantity="one">%1$d commentaar</item>
+        <item quantity="other">%1$d commentaren</item>
+    </plurals>
     <plurals name="trial_mode_prompt">
-	<item quantity="one">Proefmodus, slecht 1 dag resterend.</item>
-	<item quantity="other">Proefmodus, %1$d dagen resterend.</item>
-</plurals>
-
+        <item quantity="one">Proefmodus, slecht 1 dag resterend.</item>
+        <item quantity="other">Proefmodus, %1$d dagen resterend.</item>
+    </plurals>
     <string name="trial_purchase">Ontsluit volledige versie</string>
     <string name="trial_expired">Proefversie verlopen</string>
     <string name="trial_expired_message">Om Tiny Tiny RSS te blijven gebruiken dien je de volledige versie te ontsluiten door de sleutel te kopen.</string>
@@ -126,7 +124,7 @@
     <string name="offline_articles_to_download">Aantal artikelen om te downloaden</string>
     <string name="offline_articles_to_download_long">Hoeveel artikelen downloaden voor offline-modus (nieuwste eerst)</string>
     <string name="pref_headlines_show_content_long">Toon inhoudvoorvertoning in lijst kopteksten</string>
-    <string name="pref_headlines_show_content">Voorvertoon artikelinhoud</string>
+    <string name="pref_headlines_show_content">Voorvertoon inhoud</string>
     <string name="api_too_low">Deze actie vereist een nieuwere versie van Tiny Tiny RSS</string>
     <string name="share_url_hint">Artikel-URL</string>
     <string name="share_content_hint">Artikelinhoud</string>
@@ -154,21 +152,17 @@
     <string name="article_img_view_caption">Bekijk bijschrift</string>
     <string name="pref_headlines_mark_read_scroll">"Markeer gelezen tijdens scrollen "</string>
     <string name="pref_headlines_mark_read_scroll_long">Kopteksten zullen als gelezen worden gemarkeerd tijdens het scrollen</string>
-
     <plurals name="mark_num_headlines_as_read">
-	<item quantity="one">Markeer %1$d artikel als gelezen\?</item>
-	<item quantity="other">Markeer %1$d artikelen als gelezen\?</item>
-</plurals>
-
+        <item quantity="one">Markeer %1$d artikel als gelezen\?</item>
+        <item quantity="other">Markeer %1$d artikelen als gelezen\?</item>
+    </plurals>
     <string name="prefs_confirm_headlines_catchup">Bevestig markeer als gelezen</string>
     <string name="author_formatted">%1$s</string>
-
     <plurals name="n_unread_articles">
-	<item quantity="one">Geen ongelezen artikelen</item>
-	<item quantity="other">Eén ongelezen artikel</item>
-</plurals>
-
-    <string name="pref_headline_font_size">Grootte koptekst</string>
+        <item quantity="one">Geen ongelezen artikelen</item>
+        <item quantity="other">Eén ongelezen artikel</item>
+    </plurals>
+    <string name="pref_headline_font_size">Grootte tekst</string>
     <string name="context_confirm_catchup">Markeer alle artikelen in %1$s als gelezen\?</string>
     <string name="accel_webview_summary">Uitzetten als je geflikker of visuele haperingen ziet</string>
     <string name="accel_webview_title">Versnel webviews (3.0+)</string>
@@ -198,7 +192,7 @@
     <string name="prefs_enable_fab">Zet FAB aan</string>
     <string name="prefs_enable_fab_long">Laat zwevende actieknop zien tijden lezen</string>
     <string name="prefs_open_fresh_on_startup">Open Nieuwe artikelen bij opstarten</string>
-    <string name="prefs_headline_display_mode">Koptekst weergavemodus</string>
+    <string name="prefs_headline_display_mode">Weergavemodus</string>
     <string name="prefs_headline_display_mode_long">Standaard, geen afbeeldingen, of compacte modus</string>
     <string name="headline_display_mode_default">Standaard</string>
     <string name="headline_display_mode_no_images">Geen afbeeldingen</string>
@@ -213,7 +207,6 @@
     <string name="prefs_widget_show_fresh_summary">In plaats van totaal ongelezen laat aantal Nieuwe artikelen zien</string>
     <string name="prefs_widget">Widget</string>
     <string name="title_activity_video_player">Videospeler</string>
-
     <string name="action_settings">Instellingen</string>
     <string name="video_player_share">Deel video</string>
     <string name="headlines_row_top_changed">Nieuwe artikelen gevonden, ververs feed om verder te gaan.</string>
@@ -230,7 +223,6 @@
     <string name="pref_headlines_swipe_to_dismiss">Swipe om te verwijderen</string>
     <string name="pref_headlines_swipe_to_dismiss_long">Schakel koptekst-contextmenu uit</string>
     <string name="pref_widget_update_interval">Ververs-interval (in minuten)</string>
-
     <string name="widget_background_light">Licht</string>
     <string name="widget_background_dark">Donker</string>
     <string name="widget_background_transparent">Transparant</string>
@@ -247,4 +239,14 @@
     <string name="logcat_title">Logoverzicht</string>
     <string name="cat_labels">Labels</string>
     <string name="cat_uncategorized">Niet gecategoriseerd</string>
+    <string name="prefs_enable_image_downsampling_long">Vraagt aan het backend om plaatjes te verkleinen als je niet op Wi-Fi bent. Heeft een plugin nodig (ttrss-api-resize).</string>
+    <string name="prefs_enable_image_downsampling">Plaatjes automatisch schalen</string>
+    <string name="prefs_inline_video_player">Experimenteel. Lang drukken om een separate speler te openen</string>
+    <string name="prefs_headline_images_wifi_only_long">Heeft voorrang boven vorige instelling</string>
+    <string name="prefs_headline_images_wifi_only">Laat plaatjes alleen zien via Wi-Fi</string>
+    <string name="headlines">Kopteksten</string>
+    <string name="prefs_headline_request_size_long">Gebruik lagere waardes bij trage connecties</string>
+    <string name="prefs_headline_request_size">Hoeveelheid kopteksten op te vragen</string>
+    <string name="prefs_always_open_uri_summary">Open artikelen direct in de browser, ipv naar de detailweergave te gaan</string>
+    <string name="prefs_always_open_uri">Altijd openen in browser</string>
 </resources>
