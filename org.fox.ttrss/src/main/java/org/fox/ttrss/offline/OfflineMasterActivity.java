@@ -47,8 +47,12 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 		setAppTheme(m_prefs);
 		
 		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.activity_master);
+
+		if (m_prefs.getBoolean("force_phone_layout", false)) {
+			setContentView(R.layout.activity_master_phone);
+		} else {
+			setContentView(R.layout.activity_master);
+		}
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

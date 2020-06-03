@@ -62,6 +62,12 @@
             android:defaultValue="true"
             android:key="open_fresh_on_startup"
             android:title="@string/prefs_open_fresh_on_startup" />
+
+        <org.fox.ttrss.util.LessBrokenSwitchPreference
+            android:defaultValue="false"
+            android:key="force_phone_layout"
+            android:summary="@string/force_phone_layout_summary"
+            android:title="@string/force_phone_layout" />
     </PreferenceCategory>
 
     <PreferenceCategory

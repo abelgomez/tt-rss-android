@@ -282,4 +282,6 @@
     <string name="prefs_always_downsample_images">Always resize images</string>
     <string name="prefs_always_downsample_images_long">Even on Wi-Fi</string>
     <string name="prefs_inline_video_player_title">Inline video player</string>
+    <string name="force_phone_layout_summary">On tablet devices</string>
+    <string name="force_phone_layout">Force phone layout</string>
 </resources>
