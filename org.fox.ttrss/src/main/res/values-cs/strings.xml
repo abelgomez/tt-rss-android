@@ -261,7 +261,7 @@
     <string name="feed_recently_read">Nedávno přečtené</string>
     <string name="cat_labels">Štítky</string>
     <string name="cat_uncategorized">Bez kategorie</string>
-    <string name="prefs_enable_image_downsampling_long">Požádá server, aby snížil rozlišení obrázků, pokud nejste na Wi-Fi. Vyžaduje doplněk (ttrss-api-resize).</string>
+    <string name="prefs_enable_image_downsampling_long">Požádá server, aby snížil rozlišení obrázků, pokud nejste na Wi-Fi. Vyžaduje doplněk (ttrss-api-resize)</string>
     <string name="prefs_enable_image_downsampling">Automaticky měnit velikost obrázků</string>
     <string name="prefs_inline_video_player">Experimentální. Podržení pro otevření odděleného přehrávače</string>
     <string name="prefs_headline_images_wifi_only_long">Přepíše předchozí nastavení</string>
@@ -271,4 +271,9 @@
     <string name="prefs_headline_request_size">Kolik nadpisů vyžadovat</string>
     <string name="prefs_always_open_uri_summary">Otevírat články přímo v internetovém prohlížeči namísto přechodu na podrobné zobrazení</string>
     <string name="prefs_always_open_uri">Vždy otevírat v prohlížeči</string>
+    <string name="force_phone_layout">Vynutit rozložení pro telefon</string>
+    <string name="force_phone_layout_summary">Na tabletech</string>
+    <string name="prefs_inline_video_player_title">Vložený přehrávač videa</string>
+    <string name="prefs_always_downsample_images_long">Dokonce i na Wi-Fi</string>
+    <string name="prefs_always_downsample_images">Vždy měnit velikost obrázků</string>
 </resources>
