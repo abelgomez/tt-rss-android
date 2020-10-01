@@ -466,7 +466,7 @@ public class ArticleFragment extends StateSavedFragment  {
                 ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
             }
 
-            ws.setMediaPlaybackRequiresUserGesture(false);
+            ws.setMediaPlaybackRequiresUserGesture(true);
         }
 
         if (m_activity.isUiNightMode()) {

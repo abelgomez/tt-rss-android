@@ -375,7 +375,7 @@ public class OfflineArticleFragment extends Fragment {
 					m_chromeClient = new FSVideoChromeClient(getView());
 					m_web.setWebChromeClient(m_chromeClient);
 
-					ws.setMediaPlaybackRequiresUserGesture(false);
+					ws.setMediaPlaybackRequiresUserGesture(true);
 				}
 
 				// we need to show "insecure" file:// urls
