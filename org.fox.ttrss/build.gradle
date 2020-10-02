@@ -64,7 +64,6 @@ dependencies {
     implementation 'com.otaliastudios:nestedscrollcoordinatorlayout:1.0.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.shamanland:fab:0.0.8'
     implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     implementation 'me.relex:circleindicator:1.2.2@aar'
     implementation 'com.viewpagerindicator:library:2.4.1'

@@ -29,8 +29,6 @@ import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
 
-import com.shamanland.fab.ShowHideOnScroll;
-
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.Attachment;
 
@@ -188,7 +186,7 @@ public class ArticleFragment extends StateSavedFragment  {
 
         if (scrollView != null && m_fab != null) {
             if (m_prefs.getBoolean("enable_article_fab", true)) {
-                scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
+                //scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
 
                 m_fab.setOnClickListener(new OnClickListener() {
                     @Override

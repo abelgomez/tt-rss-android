@@ -31,8 +31,6 @@ import android.widget.TextView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
-import com.shamanland.fab.ShowHideOnScroll;
-
 import org.fox.ttrss.R;
 import org.fox.ttrss.util.ImageCacheService;
 import org.jsoup.Jsoup;
@@ -212,7 +210,7 @@ public class OfflineArticleFragment extends Fragment {
 
             if (scrollView != null && m_fab != null) {
                 if (m_prefs.getBoolean("enable_article_fab", true)) {
-                    scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
+                    //scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
 
                     m_fab.setOnClickListener(new OnClickListener() {
                         @Override

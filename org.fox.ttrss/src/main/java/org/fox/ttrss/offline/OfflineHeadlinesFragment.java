@@ -57,7 +57,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.shamanland.fab.FloatingActionButton;
 
 import org.fox.ttrss.Application;
 import org.fox.ttrss.CommonActivity;
@@ -356,7 +355,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		
 		m_list = view.findViewById(R.id.headlines_list);
 
-		FloatingActionButton fab = view.findViewById(R.id.headlines_fab);
+		View fab = view.findViewById(R.id.headlines_fab);
 		fab.setVisibility(View.GONE);
 
         if (m_activity.isSmallScreen()) {

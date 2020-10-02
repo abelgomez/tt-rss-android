@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="?articleBackground">
 
-
     <FrameLayout
         android:id="@+id/article_fullscreen_video"
         android:visibility="invisible"
@@ -14,14 +13,24 @@
 
     <com.otaliastudios.nestedscrollcoordinatorlayout.NestedScrollCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/article_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="72dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_action_web_site"
+             />
 
         <com.google.android.material.appbar.AppBarLayout
             android:background="?articleHeader"
             android:elevation="0dp"
             app:elevation="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 app:layout_scrollFlags="scroll|enterAlways"
@@ -43,7 +52,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="My simple but hilariously and excessively long  headline"
                         android:textColor="?articleHeaderTextColor"
                         android:textSize="18sp" />
 
@@ -114,26 +122,25 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_gravity="top|center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?articleHeaderSeparator"/>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/article_scrollview"
             android:scrollbars="vertical|horizontal"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_behavior=".util.FabAwareScrollingViewBehavior"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="false" >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
-
-                <View
-                    android:layout_gravity="top|center_horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?articleHeaderSeparator"/>
 
                 <TextView
                     android:id="@+id/note"
@@ -143,7 +150,6 @@
                     android:background="?articleNoteBackground"
                     android:textColor="?articleNoteTextColor"
                     android:textSize="12sp"
-                    android:text="[Article note]"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
@@ -160,17 +166,6 @@
         </androidx.core.widget.NestedScrollView>
 
     </com.otaliastudios.nestedscrollcoordinatorlayout.NestedScrollCoordinatorLayout>
-
-    <com.shamanland.fab.FloatingActionButton
-        android:id="@+id/article_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="20dp"
-        app:floatingActionButtonColor="?colorAccent"
-        android:src="@drawable/ic_action_web_site"
-        />
 
     <TextView
         android:layout_width="match_parent"

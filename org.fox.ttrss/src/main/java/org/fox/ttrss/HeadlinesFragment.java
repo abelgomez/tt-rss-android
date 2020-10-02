@@ -68,10 +68,9 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
-import com.shamanland.fab.FloatingActionButton;
-import com.shamanland.fab.ShowHideOnScroll;
 
 import org.fox.ttrss.glide.ProgressTarget;
 import org.fox.ttrss.types.Article;
@@ -126,6 +125,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 	@State boolean m_compactLayoutMode = false;
     private RecyclerView m_list;
 	private LinearLayoutManager m_layoutManager;
+	private FloatingActionButton m_fab;
 
 	private MediaPlayer m_mediaPlayer;
 	private TextureView m_activeTexture;
@@ -342,7 +342,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 		m_list.setAdapter(m_adapter);
 
-		FloatingActionButton fab = view.findViewById(R.id.headlines_fab);
+		m_fab = view.findViewById(R.id.headlines_fab);
 
 		if (m_prefs.getBoolean("headlines_swipe_to_dismiss", true) && !m_prefs.getBoolean("headlines_mark_read_scroll", false) ) {
 
@@ -418,17 +418,14 @@ public class HeadlinesFragment extends StateSavedFragment {
 		}
 
 		if (! (getActivity() instanceof DetailActivity)) {
-
-			m_list.setOnTouchListener(new ShowHideOnScroll(fab));
-			fab.setOnClickListener(new OnClickListener() {
+			m_fab.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					refresh(false);
 				}
 			});
-
 		} else {
-			fab.setVisibility(View.GONE);
+			m_fab.hide();
 		}
 
         /*if (m_activity.isSmallScreen()) {
@@ -476,6 +473,14 @@ public class HeadlinesFragment extends StateSavedFragment {
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 
+				if (! (getActivity() instanceof DetailActivity)) {
+					if (dy > 0) {
+						m_fab.hide();
+					} else if (dy < 0) {
+						m_fab.show();
+					}
+				}
+
 				int firstVisibleItem = m_layoutManager.findFirstVisibleItemPosition();
 				int lastVisibleItem = m_layoutManager.findLastVisibleItemPosition();
 
@@ -505,7 +510,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 							refresh(true);
 						}
 					}, 100);
-
 				}
 
 			}

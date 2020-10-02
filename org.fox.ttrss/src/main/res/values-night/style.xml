@@ -29,7 +29,7 @@
         <item name="feedlistSelectedTextColor">@android:color/white</item>
         <item name="articleHeader">@android:color/transparent</item>
         <item name="articleHeaderTextColor">@android:color/white</item>
-        <item name="floatingActionButtonStyle">@style/FabTheme</item>
+        <!-- <item name="floatingActionButtonStyle">@style/FabTheme</item> -->
         <item name="articleTextColor">#e0e0e0</item>
         <item name="headlineFooterColor">?colorPrimary</item>
         <item name="articleHeaderSeparator">#303030</item>
