@@ -50,6 +50,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -81,16 +91,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import icepick.State;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -431,18 +431,16 @@ public class HeadlinesFragment extends StateSavedFragment {
 			fab.setVisibility(View.GONE);
 		}
 
-        if (m_activity.isSmallScreen()) {
+        /*if (m_activity.isSmallScreen()) {
             View layout = inflater.inflate(R.layout.headlines_heading_spacer, m_list, false);
             m_adapter.addHeaderView(layout);
 
             m_swipeLayout.setProgressViewOffset(false, 0,
                     m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material) +
                     m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_padding_end_material) + 15);
-        }
+        }*/
 
 		m_list.setOnScrollListener(new RecyclerView.OnScrollListener() {
-			boolean m_forcePhoneLayout = m_prefs.getBoolean("force_phone_layout", false);
-
 			@Override
 			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 				super.onScrollStateChanged(recyclerView, newState);
@@ -498,22 +496,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 						}
 					}
 				}
-
-				if ((m_forcePhoneLayout || !m_activity.isTablet()) && m_articles.size() > 0) {
-					m_amountScrolled += dy;
-					ActionBar bar = m_activity.getSupportActionBar();
-
-					if (dy > 0 && m_amountScrolled >= m_scrollToToggleBar) {
-						bar.hide();
-						m_amountScrolled = 0;
-					} else if (dy < 0 && m_amountScrolled <= -m_scrollToToggleBar) {
-						bar.show();
-						m_amountScrolled = 0;
-					}
-
-				}
-
-				//Log.d(TAG, "onScrolled: " + m_refreshInProgress + " " + m_lazyLoadDisabled + " " + lastVisibleItem + " " + m_articles.size());
 
 				if (!m_refreshInProgress && !m_lazyLoadDisabled && lastVisibleItem >= m_articles.size() - 5) {
 					m_refreshInProgress = true;

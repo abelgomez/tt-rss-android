@@ -26,14 +26,15 @@ import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
 
 import com.shamanland.fab.ShowHideOnScroll;
 
 import org.fox.ttrss.R;
 import org.fox.ttrss.util.ImageCacheService;
-import org.fox.ttrss.util.NotifyingScrollView;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -45,9 +46,6 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.fragment.app.Fragment;
 
 public class OfflineArticleFragment extends Fragment {
 	private final String TAG = this.getClass().getSimpleName();
@@ -209,26 +207,8 @@ public class OfflineArticleFragment extends Fragment {
 
             final String link = m_cursor.getString(m_cursor.getColumnIndex("link"));
 
-            NotifyingScrollView scrollView = view.findViewById(R.id.article_scrollview);
+            NestedScrollView scrollView = view.findViewById(R.id.article_scrollview);
             m_fab = view.findViewById(R.id.article_fab);
-
-            if (scrollView != null && m_activity.isSmallScreen()) {
-                view.findViewById(R.id.article_heading_spacer).setVisibility(View.VISIBLE);
-
-                scrollView.setOnScrollChangedListener(new NotifyingScrollView.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
-                        ActionBar ab = m_activity.getSupportActionBar();
-
-                        if (t >= oldt && t >= ab.getHeight()) {
-                            ab.hide();
-                        } else if (t <= ab.getHeight() || oldt - t >= 10) {
-                            ab.show();
-                        }
-
-                    }
-                });
-            }
 
             if (scrollView != null && m_fab != null) {
                 if (m_prefs.getBoolean("enable_article_fab", true)) {

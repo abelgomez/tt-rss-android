@@ -10,32 +10,23 @@
         android:id="@+id/article_fullscreen_video"
         android:visibility="invisible"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"></FrameLayout>
+        android:layout_height="fill_parent"/>
 
-    <org.fox.ttrss.util.NoChildFocusScrollView
-        android:id="@+id/article_scrollview"
-        android:scrollbars="vertical|horizontal"
+    <com.otaliastudios.nestedscrollcoordinatorlayout.NestedScrollCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="false" >
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:background="?articleHeader"
+            android:elevation="0dp"
+            app:elevation="0dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <!-- hack for hiding actionbar on small devices -->
-            <FrameLayout
-                android:id="@+id/article_heading_spacer"
-                android:visibility="gone"
-                android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            android:layout_height="wrap_content">
 
             <LinearLayout
+                app:layout_scrollFlags="scroll|enterAlways"
                 android:padding="16dp"
                 android:id="@+id/article_header"
-                android:background="?articleHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -87,14 +78,13 @@
                     android:layout_weight="1"
                     android:fontFamily="sans-serif-light"
                     android:paddingTop="8dp"
-                    android:text="24 comments"
                     android:textColor="?headlineSecondaryTextColor"
                     android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"                    
+                    android:layout_weight="1"
                     android:paddingTop="8dp">
 
                     <TextView
@@ -105,7 +95,6 @@
                         android:ellipsize="middle"
                         android:singleLine="true"
                         android:fontFamily="sans-serif-light"
-                        android:text="Example Feed"
                         android:textColor="?headlineSecondaryTextColor"
                         android:textSize="12sp" />
 
@@ -117,7 +106,6 @@
                         android:gravity="right"
                         android:layout_marginLeft="10dp"
                         android:fontFamily="sans-serif-light"
-                        android:text="Jan 01, 12:00"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="?headlineSecondaryTextColor"
                         android:textSize="12sp" />
@@ -126,35 +114,52 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_gravity="top|center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?articleHeaderSeparator"/>
+        </com.google.android.material.appbar.AppBarLayout>
 
-            <TextView
-                android:id="@+id/note"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?articleNoteBackground"
-                android:textColor="?articleNoteTextColor"
-                android:textSize="12sp"
-                android:text="[Article note]"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="8dp" />
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/article_scrollview"
+            android:scrollbars="vertical|horizontal"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="false" >
 
-            <org.fox.ttrss.util.LessBrokenWebView
-                android:layout_margin="16dp"
-                android:id="@+id/article_content"
-                android:scrollbars="none"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
 
-        </LinearLayout>
-    </org.fox.ttrss.util.NoChildFocusScrollView>
+                <View
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?articleHeaderSeparator"/>
+
+                <TextView
+                    android:id="@+id/note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?articleNoteBackground"
+                    android:textColor="?articleNoteTextColor"
+                    android:textSize="12sp"
+                    android:text="[Article note]"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp" />
+
+                <org.fox.ttrss.util.LessBrokenWebView
+                    android:layout_margin="16dp"
+                    android:id="@+id/article_content"
+                    android:scrollbars="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </com.otaliastudios.nestedscrollcoordinatorlayout.NestedScrollCoordinatorLayout>
 
     <com.shamanland.fab.FloatingActionButton
         android:id="@+id/article_fab"
@@ -170,7 +175,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="[status message]"
         android:id="@+id/article_status_message"
         android:gravity="center"
         android:visibility="gone" />

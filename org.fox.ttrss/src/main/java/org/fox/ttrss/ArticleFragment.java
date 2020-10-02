@@ -25,14 +25,14 @@ import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.core.widget.NestedScrollView;
 
 import com.shamanland.fab.ShowHideOnScroll;
 
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.Attachment;
-import org.fox.ttrss.util.NotifyingScrollView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,7 +40,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.appcompat.app.ActionBar;
 import icepick.State;
 
 public class ArticleFragment extends StateSavedFragment  {
@@ -184,26 +183,8 @@ public class ArticleFragment extends StateSavedFragment  {
             return view;
         } */
 
-        NotifyingScrollView scrollView = view.findViewById(R.id.article_scrollview);
+        NestedScrollView scrollView = view.findViewById(R.id.article_scrollview);
         m_fab = view.findViewById(R.id.article_fab);
-
-        if (scrollView != null && m_activity.isSmallScreen()) {
-            view.findViewById(R.id.article_heading_spacer).setVisibility(View.VISIBLE);
-
-            scrollView.setOnScrollChangedListener(new NotifyingScrollView.OnScrollChangedListener() {
-                @Override
-                public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
-                    ActionBar ab = m_activity.getSupportActionBar();
-
-                    if (t >= oldt && t >= ab.getHeight()) {
-                        ab.hide();
-                    } else if (t <= ab.getHeight() || oldt - t >= 10) {
-                        ab.show();
-                    }
-
-                }
-            });
-        }
 
         if (scrollView != null && m_fab != null) {
             if (m_prefs.getBoolean("enable_article_fab", true)) {

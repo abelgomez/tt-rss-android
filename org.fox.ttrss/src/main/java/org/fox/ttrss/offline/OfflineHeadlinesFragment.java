@@ -43,6 +43,13 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -70,12 +77,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class OfflineHeadlinesFragment extends Fragment implements OnItemClickListener, AbsListView.OnScrollListener {
@@ -105,9 +106,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
     private boolean m_compactLayoutMode = false;
     private ListView m_list;
-    private int m_listPreviousVisibleItem;
-
-	boolean m_forcePhoneLayout;
 
 	public void initialize(int feedId, boolean isCat, boolean compactMode) {
 		m_feedId = feedId;
@@ -357,8 +355,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		m_cursor = createCursor();
 		
 		m_list = view.findViewById(R.id.headlines_list);
-
-		m_forcePhoneLayout = m_prefs.getBoolean("force_phone_layout", false);
 
 		FloatingActionButton fab = view.findViewById(R.id.headlines_fab);
 		fab.setVisibility(View.GONE);
@@ -1322,20 +1318,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
                     m_readArticleIds.add(id);
                 }
             }
-        }
-
-        if (m_forcePhoneLayout || !m_activity.isTablet()) {
-            if (m_adapter.getCount() > 0) {
-                if (firstVisibleItem > m_listPreviousVisibleItem) {
-                    m_activity.getSupportActionBar().hide();
-                } else if (firstVisibleItem < m_listPreviousVisibleItem) {
-                    m_activity.getSupportActionBar().show();
-                }
-            } else {
-                m_activity.getSupportActionBar().show();
-            }
-
-            m_listPreviousVisibleItem = firstVisibleItem;
         }
     }
 
