@@ -43,13 +43,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -76,6 +69,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class OfflineHeadlinesFragment extends Fragment implements OnItemClickListener, AbsListView.OnScrollListener {
@@ -354,18 +353,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		m_cursor = createCursor();
 		
 		m_list = view.findViewById(R.id.headlines_list);
-
-		View fab = view.findViewById(R.id.headlines_fab);
-		fab.setVisibility(View.GONE);
-
-        if (m_activity.isSmallScreen()) {
-            View layout = inflater.inflate(R.layout.headlines_heading_spacer, m_list, false);
-            m_list.addHeaderView(layout);
-
-            m_swipeLayout.setProgressViewOffset(false, 0,
-                    m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material) +
-                            m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_padding_end_material));
-        }
 
         if (m_prefs.getBoolean("headlines_mark_read_scroll", false)) {
             WindowManager wm = (WindowManager) m_activity.getSystemService(Context.WINDOW_SERVICE);

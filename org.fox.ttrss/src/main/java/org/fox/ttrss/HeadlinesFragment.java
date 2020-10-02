@@ -50,16 +50,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -90,6 +80,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import icepick.State;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -110,8 +109,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 	private boolean m_refreshInProgress = false;
 	@State int m_firstId = 0;
 	@State boolean m_lazyLoadDisabled = false;
-	private int m_amountScrolled;
-	private int m_scrollToToggleBar;
 
 	private SharedPreferences m_prefs;
 
@@ -313,8 +310,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		m_maxImageSize = (int) (128 * metrics.density + 0.5);
 
-		m_scrollToToggleBar = m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
-
 		Log.d(TAG, "maxImageSize=" + m_maxImageSize);
 
 		View view = inflater.inflate(R.layout.fragment_headlines, container, false);
@@ -427,15 +422,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 		} else {
 			m_fab.hide();
 		}
-
-        /*if (m_activity.isSmallScreen()) {
-            View layout = inflater.inflate(R.layout.headlines_heading_spacer, m_list, false);
-            m_adapter.addHeaderView(layout);
-
-            m_swipeLayout.setProgressViewOffset(false, 0,
-                    m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material) +
-                    m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_padding_end_material) + 15);
-        }*/
 
 		m_list.setOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
