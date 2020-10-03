@@ -58,8 +58,11 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
 		
 		Application.getInstance().load(savedInstanceState);
 
-        if (isPortrait() && !isSmallScreen()) {
-            findViewById(R.id.headlines_fragment).setVisibility(View.GONE);
+        if (isPortrait()) {
+            View headlines = findViewById(R.id.headlines_fragment);
+
+            if (headlines != null)
+        		headlines.setVisibility(View.GONE);
         }
 
 		FloatingActionButton fab = findViewById(R.id.detail_fab);

@@ -84,8 +84,11 @@ public class OfflineDetailActivity extends OfflineActivity implements OfflineHea
 
 		setSmallScreen(findViewById(R.id.sw600dp_anchor) == null);
 
-		if (isPortrait() && !isSmallScreen()) {
-			findViewById(R.id.headlines_fragment).setVisibility(View.GONE);
+		if (isPortrait()) {
+			View headlines = findViewById(R.id.headlines_fragment);
+
+			if (headlines != null)
+				headlines.setVisibility(View.GONE);
 		}
 
 		if (savedInstanceState == null) {
