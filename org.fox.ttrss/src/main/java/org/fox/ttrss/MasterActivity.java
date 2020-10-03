@@ -551,8 +551,8 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 		onArticleSelected(article, true);		
 	}
 
-	public void catchupFeed(final Feed feed) {
-		super.catchupFeed(feed);
+	public void catchupFeed(final Feed feed, final String mode) {
+		super.catchupFeed(feed, mode);
 		refresh();
 	}
 

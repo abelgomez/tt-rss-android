@@ -318,35 +318,10 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 			return true;
 		case R.id.catchup_feed:
 			if (true) {
-				final Feed feed = getFeedAtPosition(info.position);
-				
+				Feed feed = getFeedAtPosition(info.position);
+
 				if (feed != null) {
-					if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								m_activity)
-								.setMessage(getString(R.string.context_confirm_catchup, feed.title))
-								.setPositiveButton(R.string.catchup,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-	
-												m_activity.catchupFeed(feed);											
-												
-											}
-										})
-								.setNegativeButton(R.string.dialog_cancel,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-		
-											}
-										});
-		
-						AlertDialog dlg = builder.create();
-						dlg.show();						
-					} else {
-						m_activity.catchupFeed(feed);
-					}
+					m_activity.catchupDialog(feed);
 				}
 			}
 			return true;

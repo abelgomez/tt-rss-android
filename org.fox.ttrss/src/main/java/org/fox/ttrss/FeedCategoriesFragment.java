@@ -2,10 +2,7 @@ package org.fox.ttrss;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
@@ -255,8 +252,10 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 			if (true) {
 				final FeedCategory cat = getCategoryAtPosition(info.position);
 				if (cat != null) {
-										
-					if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
+
+					m_activity.catchupDialog(new Feed(cat.id, cat.title, true));
+
+					/* if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
 						AlertDialog.Builder builder = new AlertDialog.Builder(
 								m_activity)
 								.setMessage(getString(R.string.context_confirm_catchup, cat.title))
@@ -265,7 +264,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 											public void onClick(DialogInterface dialog,
 													int which) {
 	
-												m_activity.catchupFeed(new Feed(cat.id, cat.title, true));											
+												m_activity.catchupFeed(new Feed(cat.id, cat.title, true), "all");
 												
 											}
 										})
@@ -281,7 +280,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 						dlg.show();						
 					} else {
 						m_activity.catchupFeed(new Feed(cat.id, cat.title, true));
-					}
+					} */
 
 				}
 			}

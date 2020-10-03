@@ -284,4 +284,10 @@
     <string name="prefs_inline_video_player_title">Inline video player</string>
     <string name="force_phone_layout_summary">On tablet devices</string>
     <string name="force_phone_layout">Force phone layout</string>
+
+    <string name="catchup_dialog_title">Mark %1$s as read?</string>
+    <string name="catchup_dialog_all_articles">All articles</string>
+    <string name="catchup_dialog_1day">Older than one day</string>
+    <string name="catchup_dialog_1week">Older than one week</string>
+    <string name="catchup_dialog_2week">Older than two weeks</string>
 </resources>
