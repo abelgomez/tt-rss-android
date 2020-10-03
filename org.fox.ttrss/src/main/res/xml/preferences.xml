@@ -233,11 +233,6 @@
             android:title="@string/logcat_title" />
 
         <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="true"
-            android:key="webview_hardware_accel"
-            android:summary="@string/accel_webview_summary"
-            android:title="@string/accel_webview_title" />
-        <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
             android:key="transport_debugging"
             android:title="@string/transport_debugging" />

@@ -52,7 +52,6 @@ public class ArticleFragment extends StateSavedFragment  {
     //protected View m_fab;
     protected int m_articleFontSize;
     protected int m_articleSmallFontSize;
-    protected boolean m_acceleratedWebview = true;
 
     public void initialize(Article article) {
 		m_article = article;
@@ -354,24 +353,7 @@ public class ArticleFragment extends StateSavedFragment  {
             }
         });
 
-        // prevent flicker in ics
-        if (!m_prefs.getBoolean("webview_hardware_accel", true)) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-                m_web.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                m_acceleratedWebview = false;
-            }
-        }
-
         m_web.setVisibility(View.VISIBLE);
-
-        // we no longer use async rendering because chrome 66 webview breaks on it sometimes
-
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                renderContent(savedInstanceState);
-            }
-        }, 250);*/
 
         renderContent(savedInstanceState);
 
@@ -485,7 +467,7 @@ public class ArticleFragment extends StateSavedFragment  {
                 //
             }
 
-            if (savedInstanceState == null || !m_acceleratedWebview) {
+            if (savedInstanceState == null) {
                 m_web.loadDataWithBaseURL(baseUrl, content.toString(), "text/html", "utf-8", null);
             } else {
                 WebBackForwardList rc = m_web.restoreState(savedInstanceState);
