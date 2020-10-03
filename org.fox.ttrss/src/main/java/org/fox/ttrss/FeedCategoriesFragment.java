@@ -251,37 +251,9 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 		case R.id.catchup_category:
 			if (true) {
 				final FeedCategory cat = getCategoryAtPosition(info.position);
+
 				if (cat != null) {
-
 					m_activity.catchupDialog(new Feed(cat.id, cat.title, true));
-
-					/* if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								m_activity)
-								.setMessage(getString(R.string.context_confirm_catchup, cat.title))
-								.setPositiveButton(R.string.catchup,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-	
-												m_activity.catchupFeed(new Feed(cat.id, cat.title, true), "all");
-												
-											}
-										})
-								.setNegativeButton(R.string.dialog_cancel,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-		
-											}
-										});
-		
-						AlertDialog dlg = builder.create();
-						dlg.show();						
-					} else {
-						m_activity.catchupFeed(new Feed(cat.id, cat.title, true));
-					} */
-
 				}
 			}
 			return true;

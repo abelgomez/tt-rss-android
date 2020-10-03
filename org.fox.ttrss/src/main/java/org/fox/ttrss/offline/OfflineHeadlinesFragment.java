@@ -201,34 +201,28 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 				return true;
 			case R.id.catchup_above:
 				if (true) {
-					if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							m_activity)
+							.setMessage(R.string.confirm_catchup_above)
+							.setPositiveButton(R.string.dialog_ok,
+									new Dialog.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+															int which) {
 
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								m_activity)
-								.setMessage(R.string.confirm_catchup_above)
-								.setPositiveButton(R.string.dialog_ok,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-																int which) {
+											catchupAbove(articleId);
 
-												catchupAbove(articleId);
+										}
+									})
+							.setNegativeButton(R.string.dialog_cancel,
+									new Dialog.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+															int which) {
 
-											}
-										})
-								.setNegativeButton(R.string.dialog_cancel,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-																int which) {
+										}
+									});
 
-											}
-										});
-
-						AlertDialog dlg = builder.create();
-						dlg.show();
-					} else {
-						catchupAbove(articleId);
-					}
-
+					AlertDialog dialog = builder.create();
+					dialog.show();
 				}
 				return true;
 			default:

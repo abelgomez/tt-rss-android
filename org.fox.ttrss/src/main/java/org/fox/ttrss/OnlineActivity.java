@@ -142,33 +142,6 @@ public class OnlineActivity extends CommonActivity {
 			AlertDialog dialog = builder.create();
 			dialog.show();
 		}
-
-				/* if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							m_activity)
-							.setMessage(getString(R.string.context_confirm_catchup, feed.title))
-							.setPositiveButton(R.string.catchup,
-									new Dialog.OnClickListener() {
-										public void onClick(DialogInterface dialog,
-												int which) {
-
-											m_activity.catchupFeed(feed);
-
-										}
-									})
-							.setNegativeButton(R.string.dialog_cancel,
-									new Dialog.OnClickListener() {
-										public void onClick(DialogInterface dialog,
-												int which) {
-
-										}
-									});
-
-					AlertDialog dlg = builder.create();
-					dlg.show();
-				} else {
-					m_activity.catchupFeed(feed);
-				} */
 	}
 
 	//protected PullToRefreshAttacher m_pullToRefreshAttacher;
@@ -717,39 +690,6 @@ public class OnlineActivity extends CommonActivity {
 				if (feed != null) {
 					catchupDialog(hf.getFeed());
 				}
-
-				/*int count = hf.getUnreadArticles().size();
-
-				boolean confirm = m_prefs.getBoolean("confirm_headlines_catchup", true);
-				
-				if (count > 0) {
-					if (confirm) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								OnlineActivity.this)
-								.setMessage(getResources().getQuantityString(R.plurals.mark_num_headlines_as_read, count, count))
-								.setPositiveButton(R.string.catchup,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-	
-												catchupVisibleArticles();											
-												
-											}
-										})
-								.setNegativeButton(R.string.dialog_cancel,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-		
-											}
-										});
-		
-						AlertDialog dlg = builder.create();
-						dlg.show();
-					} else {
-						catchupVisibleArticles();
-					}
-				} */
 			}
 			return true;
 		case R.id.headlines_view_mode:
@@ -931,33 +871,28 @@ public class OnlineActivity extends CommonActivity {
 		case R.id.catchup_above:
 			if (hf != null) {
 
-				if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						OnlineActivity.this)
+						.setMessage(R.string.confirm_catchup_above)
+						.setPositiveButton(R.string.dialog_ok,
+								new Dialog.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+														int which) {
 
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							OnlineActivity.this)
-							.setMessage(R.string.confirm_catchup_above)
-							.setPositiveButton(R.string.dialog_ok,
-									new Dialog.OnClickListener() {
-										public void onClick(DialogInterface dialog,
-															int which) {
+										catchupAbove(hf, ap);
 
-											catchupAbove(hf, ap);
+									}
+								})
+						.setNegativeButton(R.string.dialog_cancel,
+								new Dialog.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+														int which) {
 
-										}
-									})
-							.setNegativeButton(R.string.dialog_cancel,
-									new Dialog.OnClickListener() {
-										public void onClick(DialogInterface dialog,
-															int which) {
+									}
+								});
 
-										}
-									});
-
-					AlertDialog dlg = builder.create();
-					dlg.show();
-				} else {
-					catchupAbove(hf, ap);
-				}
+				AlertDialog dialog = builder.create();
+				dialog.show();
 
 			}
 			return true;
