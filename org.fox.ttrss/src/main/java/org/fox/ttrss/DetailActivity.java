@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
 import org.fox.ttrss.types.Feed;
@@ -59,6 +61,21 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
         if (isPortrait() && !isSmallScreen()) {
             findViewById(R.id.headlines_fragment).setVisibility(View.GONE);
         }
+
+		FloatingActionButton fab = findViewById(R.id.detail_fab);
+
+		if (fab != null && m_prefs.getBoolean("enable_article_fab", true)) {
+			fab.show();
+
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (m_activeArticle != null) {
+						openUri(Uri.parse(m_activeArticle.link));
+					}
+				}
+			});
+		}
 
         if (savedInstanceState == null) {
 			Intent i = getIntent();

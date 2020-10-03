@@ -58,7 +58,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
 
@@ -122,7 +121,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 	@State boolean m_compactLayoutMode = false;
     private RecyclerView m_list;
 	private LinearLayoutManager m_layoutManager;
-	private FloatingActionButton m_fab;
 
 	private MediaPlayer m_mediaPlayer;
 	private TextureView m_activeTexture;
@@ -337,8 +335,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 		m_list.setAdapter(m_adapter);
 
-		m_fab = view.findViewById(R.id.headlines_fab);
-
 		if (m_prefs.getBoolean("headlines_swipe_to_dismiss", true) && !m_prefs.getBoolean("headlines_mark_read_scroll", false) ) {
 
 			ItemTouchHelper swipeHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -412,17 +408,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 		}
 
-		if (! (getActivity() instanceof DetailActivity)) {
-			m_fab.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					refresh(false);
-				}
-			});
-		} else {
-			m_fab.hide();
-		}
-
 		m_list.setOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -458,14 +443,6 @@ public class HeadlinesFragment extends StateSavedFragment {
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
-
-				if (! (getActivity() instanceof DetailActivity)) {
-					if (dy > 0) {
-						m_fab.hide();
-					} else if (dy < 0) {
-						m_fab.show();
-					}
-				}
 
 				int firstVisibleItem = m_layoutManager.findFirstVisibleItemPosition();
 				int lastVisibleItem = m_layoutManager.findLastVisibleItemPosition();

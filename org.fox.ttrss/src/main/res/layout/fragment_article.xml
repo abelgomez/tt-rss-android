@@ -15,16 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/article_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginBottom="72dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_action_web_site"
-             />
-
         <com.google.android.material.appbar.AppBarLayout
             android:background="?articleHeader"
             android:elevation="0dp"
@@ -133,7 +123,7 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/article_scrollview"
             android:scrollbars="vertical|horizontal"
-            app:layout_behavior=".util.FabAwareScrollingViewBehavior"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

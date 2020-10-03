@@ -10,6 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/detail_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:visibility="gone"
+            android:src="@drawable/ic_action_web_site"
+            android:layout_margin="16dp" />
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -20,7 +29,7 @@
 
         <FrameLayout
             android:id="@+id/article_fragment"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_behavior=".util.DetailActivityScrollingViewBehavior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?articleBackground">

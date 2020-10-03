@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonElement;
 
 import org.fox.ttrss.types.Article;
@@ -204,6 +205,23 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 			if (m_drawerLayout != null && !m_feedIsSelected) {
 				m_drawerLayout.openDrawer(Gravity.START);
 			}
+		}
+
+		FloatingActionButton fab = findViewById(R.id.master_fab);
+
+        if (fab != null) {
+        	fab.show();
+
+        	fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+
+					if (hf != null && hf.isAdded()) {
+						hf.refresh(false);
+					}
+				}
+			});
 		}
 	}
 

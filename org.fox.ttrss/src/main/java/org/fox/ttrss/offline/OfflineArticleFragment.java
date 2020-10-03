@@ -28,9 +28,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-
 import org.fox.ttrss.R;
 import org.fox.ttrss.util.ImageCacheService;
 import org.jsoup.Jsoup;
@@ -39,11 +36,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.fragment.app.Fragment;
 
 public class OfflineArticleFragment extends Fragment {
 	private final String TAG = this.getClass().getSimpleName();
@@ -59,7 +57,7 @@ public class OfflineArticleFragment extends Fragment {
 	protected FrameLayout m_customViewContainer;
 	protected View m_contentView;
 	protected FSVideoChromeClient m_chromeClient;
-	protected View m_fab;
+	//protected View m_fab;
 	
 	public void initialize(int articleId) {
 		m_articleId = articleId;
@@ -90,7 +88,7 @@ public class OfflineArticleFragment extends Fragment {
 			m_customViewContainer.setVisibility(View.VISIBLE);
 			m_customViewContainer.addView(view);
 
-			if (m_fab != null) m_fab.setVisibility(View.GONE);
+			//if (m_fab != null) m_fab.setVisibility(View.GONE);
 
 			m_activity.showSidebar(false);
 
@@ -116,8 +114,8 @@ public class OfflineArticleFragment extends Fragment {
 			m_customViewContainer.removeView(m_customView);
 			m_callback.onCustomViewHidden();
 
-			if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
-				m_fab.setVisibility(View.VISIBLE);
+			/*if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
+				m_fab.setVisibility(View.VISIBLE);*/
 
 			m_customView = null;
 
@@ -204,33 +202,6 @@ public class OfflineArticleFragment extends Fragment {
 			m_customViewContainer = view.findViewById(R.id.article_fullscreen_video);
 
             final String link = m_cursor.getString(m_cursor.getColumnIndex("link"));
-
-            NestedScrollView scrollView = view.findViewById(R.id.article_scrollview);
-            m_fab = view.findViewById(R.id.article_fab);
-
-            if (scrollView != null && m_fab != null) {
-                if (m_prefs.getBoolean("enable_article_fab", true)) {
-                    //scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
-
-                    m_fab.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            try {
-                                URL url = new URL(link.trim());
-                                String uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(),
-                                        url.getPort(), url.getPath(), url.getQuery(), url.getRef()).toString();
-
-								m_activity.openUri(Uri.parse(uri));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                m_activity.toast(R.string.error_other_error);
-                            }
-                        }
-                    });
-                } else {
-                    m_fab.setVisibility(View.GONE);
-                }
-            }
 
 			int articleFontSize = Integer.parseInt(m_prefs.getString("article_font_size_sp", "16"));
 			int articleSmallFontSize = Math.max(10, Math.min(18, articleFontSize - 2));

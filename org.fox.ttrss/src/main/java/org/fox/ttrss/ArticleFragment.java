@@ -27,8 +27,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.widget.NestedScrollView;
-
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.Attachment;
 
@@ -51,7 +49,7 @@ public class ArticleFragment extends StateSavedFragment  {
     protected FrameLayout m_customViewContainer;
     protected View m_contentView;
     protected FSVideoChromeClient m_chromeClient;
-    protected View m_fab;
+    //protected View m_fab;
     protected int m_articleFontSize;
     protected int m_articleSmallFontSize;
     protected boolean m_acceleratedWebview = true;
@@ -85,7 +83,7 @@ public class ArticleFragment extends StateSavedFragment  {
             m_customViewContainer.setVisibility(View.VISIBLE);
             m_customViewContainer.addView(view);
 
-            if (m_fab != null) m_fab.setVisibility(View.GONE);
+            //if (m_fab != null) m_fab.setVisibility(View.GONE);
 
             m_activity.showSidebar(false);
 
@@ -111,8 +109,8 @@ public class ArticleFragment extends StateSavedFragment  {
             m_customViewContainer.removeView(m_customView);
             m_callback.onCustomViewHidden();
 
-            if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
-                m_fab.setVisibility(View.VISIBLE);
+            /*if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
+                m_fab.setVisibility(View.VISIBLE);*/
 
             m_customView = null;
 
@@ -180,29 +178,6 @@ public class ArticleFragment extends StateSavedFragment  {
 
             return view;
         } */
-
-        NestedScrollView scrollView = view.findViewById(R.id.article_scrollview);
-        m_fab = view.findViewById(R.id.article_fab);
-
-        if (scrollView != null && m_fab != null) {
-            if (m_prefs.getBoolean("enable_article_fab", true)) {
-                //scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
-
-                m_fab.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            m_activity.openUri(Uri.parse(m_article.link));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            m_activity.toast(R.string.error_other_error);
-                        }
-                    }
-                });
-            } else {
-                m_fab.setVisibility(View.GONE);
-            }
-        }
 
         m_articleFontSize = Integer.parseInt(m_prefs.getString("article_font_size_sp", "16"));
         m_articleSmallFontSize = Math.max(10, Math.min(18, m_articleFontSize - 2));
