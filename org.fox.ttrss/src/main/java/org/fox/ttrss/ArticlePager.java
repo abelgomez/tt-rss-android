@@ -20,7 +20,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonElement;
-import com.viewpagerindicator.UnderlinePageIndicator;
 
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
@@ -139,27 +138,19 @@ public class ArticlePager extends StateSavedFragment {
 
 		pager.setAdapter(m_adapter);
 
-        UnderlinePageIndicator indicator = view.findViewById(R.id.article_pager_indicator);
-        indicator.setViewPager(pager);
-
 		pager.setCurrentItem(position);
-
-		indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
+		pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
-			public void onPageScrollStateChanged(int arg0) {
-			}
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
 			}
 
 			@Override
 			public void onPageSelected(int position) {
-                Log.d(TAG, "onPageSelected: " + position);
+				Log.d(TAG, "onPageSelected: " + position);
 
 				final Article article = m_articles.get(position);
-				
+
 				if (article != null) {
 					m_article = article;
 
@@ -171,7 +162,7 @@ public class ArticlePager extends StateSavedFragment {
 					}, 250);
 
 					//Log.d(TAG, "Page #" + position + "/" + m_adapter.getCount());
-					
+
 					if (!m_refreshInProgress && !m_lazyLoadDisabled && (m_activity.isSmallScreen() || m_activity.isPortrait()) && position >= m_adapter.getCount() - 5) {
 						Log.d(TAG, "loading more articles...");
 
@@ -184,8 +175,13 @@ public class ArticlePager extends StateSavedFragment {
 					}
 				}
 			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
+			}
 		});
-	
+
 		return view;
 	}
 	

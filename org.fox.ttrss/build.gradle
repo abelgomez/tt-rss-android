@@ -66,7 +66,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     implementation 'me.relex:circleindicator:1.2.2@aar'
-    implementation 'com.viewpagerindicator:library:2.4.1'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'frankiesardo:icepick:3.2.0'
