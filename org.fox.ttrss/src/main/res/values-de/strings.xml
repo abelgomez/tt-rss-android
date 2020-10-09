@@ -262,14 +262,24 @@
     <string name="feed_recently_read">Kürzlich gelesen</string>
     <string name="cat_labels">Etiketten</string>
     <string name="cat_uncategorized">Unkategorisiert</string>
-    <string name="prefs_enable_image_downsampling_long">Fordert das Backend auf, Bilder zu verkleinern, wenn keine WLAN -Verbindung besteht. Benötigt ein Plugin (ttrss-api-resize).</string>
+    <string name="prefs_enable_image_downsampling_long">Fordert das Backend auf, Bilder zu verkleinern, wenn keine WLAN -Verbindung besteht. Benötigt ein Plugin (ttrss-api-resize)</string>
     <string name="prefs_enable_image_downsampling">Bilder automatisch verkleinern</string>
     <string name="prefs_inline_video_player">Experimentell. Lange Antippen zum Öffnen eines separaten Players</string>
     <string name="prefs_headline_images_wifi_only_long">Überschreibt die vorherige Einstellung</string>
     <string name="prefs_headline_images_wifi_only">Bilder nur über WLAN anzeigen</string>
-    <string name="headlines">Artikel</string>
+    <string name="headlines">Überschriften</string>
     <string name="prefs_headline_request_size_long">Verwenden Sie bei langsamen Verbindungen niedrigere Werte</string>
     <string name="prefs_headline_request_size">Anzahl der anzufordernden Artikel</string>
     <string name="prefs_always_open_uri_summary">Öffnen Sie Artikel direkt in Ihrem Webbrowser, anstatt zur Detailansicht zu gehen</string>
     <string name="prefs_always_open_uri">Immer im Browser öffnen</string>
+    <string name="catchup_dialog_2week">Älter als zwei Wochen</string>
+    <string name="catchup_dialog_1week">Älter als eine Woche</string>
+    <string name="catchup_dialog_1day">Älter als ein Tag</string>
+    <string name="catchup_dialog_all_articles">Alle Artikel</string>
+    <string name="catchup_dialog_title">%1$s als gelesen markieren\?</string>
+    <string name="force_phone_layout">Telefon-Layout erzwingen</string>
+    <string name="force_phone_layout_summary">Auf Tablet-Geräten</string>
+    <string name="prefs_inline_video_player_title">Eingebetteter Video-Player</string>
+    <string name="prefs_always_downsample_images_long">Auch bei WLAN-Verbindung</string>
+    <string name="prefs_always_downsample_images">Bildgrößen immer anpassen</string>
 </resources>
