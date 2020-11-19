@@ -236,7 +236,7 @@
     <string name="feed_recently_read">最近的阅读</string>
     <string name="cat_labels">标签</string>
     <string name="cat_uncategorized">未分类</string>
-    <string name="prefs_enable_image_downsampling_long">如果没有在Wi-Fi上，后端对图像进行采样。需要一个插件（ttrss-api-resize）。</string>
+    <string name="prefs_enable_image_downsampling_long">如果没有连Wi-Fi，后端对图像进行压缩。需要插件（ttrss-api-resize）。</string>
     <string name="prefs_enable_image_downsampling">自动调整图像大小</string>
     <string name="prefs_inline_video_player">实验性的。长按即可打开单独的播放器</string>
     <string name="prefs_headline_images_wifi_only_long">覆盖以前的设置</string>
@@ -246,4 +246,14 @@
     <string name="prefs_headline_request_size">请求多少标题</string>
     <string name="prefs_always_open_uri_summary">直接在浏览器中打开文章，而不是进入详细信息视图</string>
     <string name="prefs_always_open_uri">始终在浏览器中打开</string>
+    <string name="catchup_dialog_2week">超过两周</string>
+    <string name="catchup_dialog_1week">超过一周</string>
+    <string name="catchup_dialog_1day">超过一天</string>
+    <string name="catchup_dialog_all_articles">所有文章</string>
+    <string name="catchup_dialog_title">将 %1$s 标记为已读？</string>
+    <string name="force_phone_layout">强制手机布局</string>
+    <string name="force_phone_layout_summary">在平板上</string>
+    <string name="prefs_inline_video_player_title">内置视频播放器</string>
+    <string name="prefs_always_downsample_images_long">即使连接 Wi-Fi</string>
+    <string name="prefs_always_downsample_images">始终调整图像大小</string>
 </resources>
