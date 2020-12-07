@@ -50,6 +50,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
@@ -79,15 +89,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import icepick.State;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -1589,13 +1590,13 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 		private void adjustVideoKindView(ArticleViewHolder holder, Article article) {
 			if (article.flavorImage != null) {
-				if ("iframe".equals(article.flavorImage.tagName().toLowerCase())) {
+				if (article.flavor_kind == Article.FLAVOR_KIND_YOUTUBE || "iframe".equals(article.flavorImage.tagName().toLowerCase())) {
 					holder.flavorVideoKindView.setImageResource(R.drawable.ic_youtube_play);
 					holder.flavorVideoKindView.setVisibility(View.VISIBLE);
-				} else if ("video".equals(article.flavorImage.tagName().toLowerCase())) {
+				} else if (article.flavor_kind == Article.FLAVOR_KIND_VIDEO || "video".equals(article.flavorImage.tagName().toLowerCase())) {
 					holder.flavorVideoKindView.setImageResource(R.drawable.ic_play_circle);
 					holder.flavorVideoKindView.setVisibility(View.VISIBLE);
-				} else if (article.mediaList.size() > 1) {
+				} else if (article.flavor_kind == Article.FLAVOR_KIND_ALBUM ||article.mediaList.size() > 1) {
 					holder.flavorVideoKindView.setImageResource(R.drawable.ic_image_album);
 					holder.flavorVideoKindView.setVisibility(View.VISIBLE);
 				} else {
