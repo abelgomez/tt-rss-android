@@ -267,7 +267,7 @@
     <string name="catchup_dialog_1week">Più vecchi di una settimana</string>
     <string name="catchup_dialog_1day">Più vecchi di un giorno</string>
     <string name="catchup_dialog_all_articles">Tutti gli articoli</string>
-    <string name="catchup_dialog_title">Contrassegnare %1$ s come letto\?</string>
+    <string name="catchup_dialog_title">Contrassegnare %1$s come letto\?</string>
     <string name="force_phone_layout">Forza il layout del telefono</string>
     <string name="force_phone_layout_summary">Su dispositivi tablet</string>
     <string name="prefs_inline_video_player_title">Lettore video in linea</string>
