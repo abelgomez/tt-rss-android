@@ -444,7 +444,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 							}
 
 						} else {
-							toast("Failed to load image for sharing");
+							toast(getString(R.string.img_share_failed_to_load));
 						}
 					}
 				});

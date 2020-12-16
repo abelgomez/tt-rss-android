@@ -292,4 +292,5 @@
     <string name="catchup_dialog_2week">Older than two weeks</string>
     <string name="img_share_url">Share URL</string>
     <string name="img_share_image">Share image</string>
+    <string name="img_share_failed_to_load">Failed to load image for sharing</string>
 </resources>
