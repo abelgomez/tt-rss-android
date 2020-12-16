@@ -21,13 +21,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
+
 import org.fox.ttrss.CommonActivity;
 import org.fox.ttrss.OnlineActivity;
 import org.fox.ttrss.PreferencesActivity;
 import org.fox.ttrss.R;
-
-import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.Toolbar;
 
 public class OfflineActivity extends CommonActivity {
 	private final String TAG = this.getClass().getSimpleName();
@@ -118,6 +118,11 @@ public class OfflineActivity extends CommonActivity {
 			}			
 			return true;
 		case R.id.article_img_share:
+			if (getLastContentImageHitTestUrl() != null) {
+				shareImageFromUri(getLastContentImageHitTestUrl());
+			}
+			return true;
+		case R.id.article_img_share_url:
 			if (getLastContentImageHitTestUrl() != null) {
 				shareText(getLastContentImageHitTestUrl());
 			}

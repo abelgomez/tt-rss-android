@@ -130,7 +130,7 @@ public class ArticleFragment extends StateSavedFragment  {
 
 				menu.setHeaderTitle(result.getExtra());
 				getActivity().getMenuInflater().inflate(R.menu.content_gallery_entry, menu);
-				
+
 				/* FIXME I have no idea how to do this correctly ;( */
 				
 				m_activity.setLastContentImageHitTestUrl(result.getExtra());

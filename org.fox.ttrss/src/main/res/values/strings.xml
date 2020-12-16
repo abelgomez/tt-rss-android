@@ -290,4 +290,6 @@
     <string name="catchup_dialog_1day">Older than one day</string>
     <string name="catchup_dialog_1week">Older than one week</string>
     <string name="catchup_dialog_2week">Older than two weeks</string>
+    <string name="img_share_url">Share URL</string>
+    <string name="img_share_image">Share image</string>
 </resources>

@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.ViewCompat;
+
 import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -16,8 +19,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.ViewCompat;
 import icepick.State;
 
 public class GalleryImageFragment extends GalleryBaseFragment {
@@ -50,7 +51,7 @@ public class GalleryImageFragment extends GalleryBaseFragment {
 
         final GlideDrawableImageViewTarget glideImage = new GlideDrawableImageViewTarget(imgView);
 
-        Glide.with(this)
+        Glide.with(getContext())
                 .load(m_url)
                 //.dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

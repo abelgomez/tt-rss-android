@@ -13,7 +13,12 @@
         android:id="@+id/article_img_share"
         android:icon="@drawable/ic_share"
         app:showAsAction=""
-        android:title="@string/article_media_share"/>
+        android:title="@string/img_share_image"/>
+    <item
+        android:id="@+id/article_img_share_url"
+        android:icon="@drawable/ic_share"
+        app:showAsAction=""
+        android:title="@string/img_share_url"/>
     <item
         android:id="@+id/article_img_view_caption"
         app:showAsAction=""

@@ -31,6 +31,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -49,9 +52,6 @@ import org.fox.ttrss.util.ImageCacheService;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
-
-import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.Toolbar;
 
 public class OnlineActivity extends CommonActivity {
 	private final String TAG = this.getClass().getSimpleName();
@@ -526,6 +526,11 @@ public class OnlineActivity extends CommonActivity {
 			}			
 			return true;
 		case R.id.article_img_share:
+			if (getLastContentImageHitTestUrl() != null) {
+				shareImageFromUri(getLastContentImageHitTestUrl());
+			}
+			return true;
+		case R.id.article_img_share_url:
 			if (getLastContentImageHitTestUrl() != null) {
 				shareText(getLastContentImageHitTestUrl());
 			}

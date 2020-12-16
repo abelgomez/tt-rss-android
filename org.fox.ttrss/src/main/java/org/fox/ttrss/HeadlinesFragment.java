@@ -1165,6 +1165,9 @@ public class HeadlinesFragment extends StateSavedFragment {
 												m_activity.copyToClipboard(mediaUri.toString());
 												return true;
 											case R.id.article_img_share:
+												m_activity.shareImageFromUri(mediaUri.toString());
+												return true;
+											case R.id.article_img_share_url:
 												m_activity.shareText(mediaUri.toString());
 												return true;
 											case R.id.article_img_view_caption:
