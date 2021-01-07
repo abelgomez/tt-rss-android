@@ -282,4 +282,7 @@
     <string name="prefs_inline_video_player_title">Eingebetteter Video-Player</string>
     <string name="prefs_always_downsample_images_long">Auch bei WLAN-Verbindung</string>
     <string name="prefs_always_downsample_images">Bildgrößen immer anpassen</string>
+    <string name="img_share_url">URL teilen</string>
+    <string name="img_share_image">Bild teilen</string>
+    <string name="img_share_failed_to_load">Zu teilendes Bild konnte nicht geladen werden</string>
 </resources>

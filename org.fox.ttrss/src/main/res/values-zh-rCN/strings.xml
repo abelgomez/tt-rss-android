@@ -17,7 +17,7 @@
     <string name="attachment_copy">复制URL</string>
     <string name="attachment_view">查看</string>
     <string name="attachments_prompt">选择附件</string>
-    <string name="author_formatted">作者：%1$s</string>
+    <string name="author_formatted">%1$s</string>
     <string name="browse_cats_like_feeds">视分类为信息源</string>
     <string name="cancel">取消</string>
     <string name="catchup">标记为已读</string>
@@ -236,7 +236,7 @@
     <string name="feed_recently_read">最近的阅读</string>
     <string name="cat_labels">标签</string>
     <string name="cat_uncategorized">未分类</string>
-    <string name="prefs_enable_image_downsampling_long">如果没有连Wi-Fi，后端对图像进行压缩。需要插件（ttrss-api-resize）。</string>
+    <string name="prefs_enable_image_downsampling_long">如果没有连Wi-Fi，后端对图像进行压缩。需要插件（ttrss-api-resize）</string>
     <string name="prefs_enable_image_downsampling">自动调整图像大小</string>
     <string name="prefs_inline_video_player">实验性的。长按即可打开单独的播放器</string>
     <string name="prefs_headline_images_wifi_only_long">覆盖以前的设置</string>
@@ -256,4 +256,7 @@
     <string name="prefs_inline_video_player_title">内置视频播放器</string>
     <string name="prefs_always_downsample_images_long">即使连接 Wi-Fi</string>
     <string name="prefs_always_downsample_images">始终调整图像大小</string>
+    <string name="img_share_failed_to_load">无法加载分享的图片</string>
+    <string name="img_share_image">分享图片</string>
+    <string name="img_share_url">分享链接</string>
 </resources>
