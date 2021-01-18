@@ -31,9 +31,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.Toolbar;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -52,6 +49,9 @@ import org.fox.ttrss.util.ImageCacheService;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
 
 public class OnlineActivity extends CommonActivity {
 	private final String TAG = this.getClass().getSimpleName();
@@ -103,7 +103,7 @@ public class OnlineActivity extends CommonActivity {
 										String[] catchupModes = { "all", "1day", "1week", "2week" };
 										String mode = catchupModes[position];
 
-										catchupFeed(feed, mode);
+										catchupFeed(feed, mode, true);
 									}
 								}
 							})
@@ -127,7 +127,7 @@ public class OnlineActivity extends CommonActivity {
 								public void onClick(DialogInterface dialog,
 													int which) {
 
-									catchupFeed(feed, "all");
+									catchupFeed(feed, "all", true);
 
 								}
 							})
@@ -1323,13 +1323,14 @@ public class OnlineActivity extends CommonActivity {
 		
 		return super.onKeyUp(keyCode, event);		
 	}
-	
-	public void catchupFeed(final Feed feed, final String mode) {
+
+	public void catchupFeed(final Feed feed, final String mode, final boolean refreshAfter) {
 		Log.d(TAG, "catchupFeed=" + feed + "; mode=" + mode);
 
 		ApiRequest req = new ApiRequest(getApplicationContext()) {
 			protected void onPostExecute(JsonElement result) {
-				// refresh?
+				if (refreshAfter)
+					refresh();
 			}
 		};
 
