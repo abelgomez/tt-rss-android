@@ -46,7 +46,7 @@ public class SubscribeActivity extends CommonShareActivity {
 	private static final int REQ_CATS = 1;
 	private static final int REQ_POST = 2;
 	
-	class CatTitleComparator implements Comparator<FeedCategory> {
+	static class CatTitleComparator implements Comparator<FeedCategory> {
 
 		@Override
 		public int compare(FeedCategory a, FeedCategory b) {
@@ -333,7 +333,7 @@ public class SubscribeActivity extends CommonShareActivity {
 		}	
 	}
 
-	private class CatListAdapter extends ArrayAdapter<String> {
+	private static class CatListAdapter extends ArrayAdapter<String> {
 		private List<FeedCategory> m_items;
 		
 		public CatListAdapter(Context context, int resource,
@@ -362,7 +362,7 @@ public class SubscribeActivity extends CommonShareActivity {
 		}
 	}
 
-	private class FeedListAdapter extends ArrayAdapter<String> {
+	private static class FeedListAdapter extends ArrayAdapter<String> {
 		private List<Map.Entry<String, JsonElement>> m_items;
 
 		public FeedListAdapter(Context context, int resource, List<Map.Entry<String, JsonElement>> items) {

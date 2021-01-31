@@ -146,7 +146,7 @@ public class OnlineActivity extends CommonActivity {
 
 	//protected PullToRefreshAttacher m_pullToRefreshAttacher;
 
-	protected abstract class OnLoginFinishedListener {
+	protected static abstract class OnLoginFinishedListener {
 		public abstract void OnLoginSuccess();
 		public abstract void OnLoginFailed();
 	}
