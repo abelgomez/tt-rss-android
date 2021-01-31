@@ -47,7 +47,7 @@ public class GalleryActivity extends CommonActivity {
     private ViewPager m_pager;
     private ProgressBar m_checkProgress;
 
-    private class ArticleImagesPagerAdapter extends FragmentStatePagerAdapter {
+    private static class ArticleImagesPagerAdapter extends FragmentStatePagerAdapter {
         private List<GalleryEntry> m_items;
 
         public ArticleImagesPagerAdapter(FragmentManager fm, List<GalleryEntry> items) {
@@ -90,7 +90,7 @@ public class GalleryActivity extends CommonActivity {
         }
     }
 
-    private class MediaProgressResult {
+    private static class MediaProgressResult {
         GalleryEntry item;
         int position;
         int count;

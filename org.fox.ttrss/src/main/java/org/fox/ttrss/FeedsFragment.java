@@ -195,7 +195,7 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 	}
 
 	@SuppressLint("DefaultLocale")
-	class FeedUnreadComparator implements Comparator<Feed> {
+	static class FeedUnreadComparator implements Comparator<Feed> {
 
 		@Override
 		public int compare(Feed a, Feed b) {
@@ -209,7 +209,7 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 	
 
 	@SuppressLint("DefaultLocale")
-	class FeedTitleComparator implements Comparator<Feed> {
+	static class FeedTitleComparator implements Comparator<Feed> {
 
 		@Override
 		public int compare(Feed a, Feed b) {
@@ -228,7 +228,7 @@ public class FeedsFragment extends BaseFeedlistFragment implements OnItemClickLi
 	}
 
 	@SuppressLint("DefaultLocale")
-	class FeedOrderComparator implements Comparator<Feed> {
+	static class FeedOrderComparator implements Comparator<Feed> {
 
 		@Override
 		public int compare(Feed a, Feed b) {

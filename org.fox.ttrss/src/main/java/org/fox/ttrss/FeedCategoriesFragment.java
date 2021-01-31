@@ -175,7 +175,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 	}
 
 	@SuppressLint("DefaultLocale")
-	class CatUnreadComparator implements Comparator<FeedCategory> {
+	static class CatUnreadComparator implements Comparator<FeedCategory> {
 		@Override
 		public int compare(FeedCategory a, FeedCategory b) {
 			if (a.unread != b.unread)
@@ -187,7 +187,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 	
 
 	@SuppressLint("DefaultLocale")
-	class CatTitleComparator implements Comparator<FeedCategory> {
+	static class CatTitleComparator implements Comparator<FeedCategory> {
 
 		@Override
 		public int compare(FeedCategory a, FeedCategory b) {
@@ -200,7 +200,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 	}
 
 	@SuppressLint("DefaultLocale")
-	class CatOrderComparator implements Comparator<FeedCategory> {
+	static class CatOrderComparator implements Comparator<FeedCategory> {
 
 		@Override
 		public int compare(FeedCategory a, FeedCategory b) {
