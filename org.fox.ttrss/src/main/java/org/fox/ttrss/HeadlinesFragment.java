@@ -88,6 +88,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import icepick.State;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
@@ -1411,13 +1412,16 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 				Date d = new Date((long)article.updated * 1000);
 				Date now = new Date();
+				long half_a_year_ago = now.getTime()/1000L - 182*24*60*60;
 
 				DateFormat df;
 
 				if (now.getYear() == d.getYear() && now.getMonth() == d.getMonth() && now.getDay() == d.getDay()) {
 					df = new SimpleDateFormat("HH:mm");
-				} else {
+				} else if (article.updated > half_a_year_ago) {
 					df = new SimpleDateFormat("MMM dd");
+				} else {
+					df = new SimpleDateFormat("MMM yyyy");
 				}
 
 				df.setTimeZone(TimeZone.getDefault());
