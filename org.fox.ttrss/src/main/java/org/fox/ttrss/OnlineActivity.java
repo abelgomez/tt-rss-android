@@ -798,7 +798,7 @@ public class OnlineActivity extends CommonActivity {
 			}
 			return true; */
 		case R.id.toggle_marked:
-			if (ap != null & ap.getSelectedArticle() != null) {
+			if (ap != null && ap.getSelectedArticle() != null) {
 				Article a = ap.getSelectedArticle();
 				a.marked = !a.marked;
 				saveArticleMarked(a);
@@ -806,7 +806,7 @@ public class OnlineActivity extends CommonActivity {
 			}
 			return true;
 			case R.id.toggle_unread:
-				if (ap != null & ap.getSelectedArticle() != null) {
+				if (ap != null && ap.getSelectedArticle() != null) {
 					Article a = ap.getSelectedArticle();
 					a.unread = !a.unread;
 					saveArticleUnread(a);
