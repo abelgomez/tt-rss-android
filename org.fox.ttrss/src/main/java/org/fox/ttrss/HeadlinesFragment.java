@@ -43,6 +43,7 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -704,6 +705,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 		public TextView titleView;
 		public TextView feedTitleView;
 		public ImageView markedView;
+		public ImageView scoreView;
 		public ImageView publishedView;
 		public TextView excerptView;
 		public ImageView flavorImageView;
@@ -747,6 +749,7 @@ public class HeadlinesFragment extends StateSavedFragment {
 
 			feedTitleView = v.findViewById(R.id.feed_title);
 			markedView = v.findViewById(R.id.marked);
+			scoreView = v.findViewById(R.id.score);
 			publishedView = v.findViewById(R.id.published);
 			excerptView = v.findViewById(R.id.excerpt);
 			flavorImageView = v.findViewById(R.id.flavor_image);
@@ -1034,6 +1037,72 @@ public class HeadlinesFragment extends StateSavedFragment {
 				});
 			}
 
+			if (holder.scoreView != null) {
+				TypedValue tv = new TypedValue();
+				int scoreAttr = R.attr.ic_action_trending_flat;
+
+				if (article.score > 0)
+					scoreAttr = R.attr.ic_action_trending_up;
+				else if (article.score < 0)
+					scoreAttr = R.attr.ic_action_trending_down;
+
+				m_activity.getTheme().resolveAttribute(scoreAttr, tv, true);
+
+				holder.scoreView.setImageResource(tv.resourceId);
+
+				if (article.score > Article.SCORE_HIGH)
+					holder.scoreView.setColorFilter(titleHighScoreUnreadColor);
+				else
+					holder.scoreView.setColorFilter(null);
+
+				if (m_activity.getApiLevel() >= 16) {
+					holder.scoreView.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							final EditText edit = new EditText(getActivity());
+							edit.setText(String.valueOf(article.score));
+
+							AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+									.setTitle(R.string.score_for_this_article)
+									.setPositiveButton(R.string.set_score,
+											new DialogInterface.OnClickListener() {
+
+												@Override
+												public void onClick(DialogInterface dialog,
+																	int which) {
+
+													try {
+														int newScore = Integer.parseInt(edit.getText().toString());
+
+														article.score = newScore;
+
+														m_activity.saveArticleScore(article);
+
+														m_adapter.notifyItemChanged(m_list.getChildPosition(holder.view));
+													} catch (NumberFormatException e) {
+														m_activity.toast(R.string.score_invalid);
+														e.printStackTrace();
+													}
+												}
+											})
+									.setNegativeButton(getString(R.string.cancel),
+											new DialogInterface.OnClickListener() {
+
+												@Override
+												public void onClick(DialogInterface dialog,
+																	int which) {
+
+													//
+
+												}
+											}).setView(edit);
+
+							Dialog dialog = builder.create();
+							dialog.show();
+						}
+					});
+				}
+			}
 
 			if (holder.publishedView != null) {
 				TypedValue tv = new TypedValue();
@@ -1662,9 +1731,9 @@ public class HeadlinesFragment extends StateSavedFragment {
 				// store original color
 				origTitleColors[viewType] = Integer.valueOf(tv.getCurrentTextColor());
 
-			if (score < -500) {
+			if (score < Article.SCORE_LOW) {
 				tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-			} else if (score > 500) {
+			} else if (score > Article.SCORE_HIGH) {
 				tv.setTextColor(titleHighScoreUnreadColor);
 				tv.setPaintFlags(tv.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
 			} else {

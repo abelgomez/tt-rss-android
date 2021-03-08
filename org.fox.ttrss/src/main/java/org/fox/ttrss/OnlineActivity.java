@@ -1208,6 +1208,27 @@ public class OnlineActivity extends CommonActivity {
 		req.execute(map);
 	}
 
+	public void saveArticleScore(final Article article) {
+		ApiRequest req = new ApiRequest(getApplicationContext()) {
+			protected void onPostExecute(JsonElement result) {
+				//toast(article.marked ? R.string.notify_article_marked : R.string.notify_article_unmarked);
+				invalidateOptionsMenu();
+			}
+		};
+
+		HashMap<String, String> map = new HashMap<String, String>() {
+			{
+				put("sid", getSessionId());
+				put("op", "updateArticle");
+				put("article_ids", String.valueOf(article.id));
+				put("data", String.valueOf(article.score));
+				put("field", "4");
+			}
+		};
+
+		req.execute(map);
+	}
+
 	public void saveArticleMarked(final Article article) {
 		ApiRequest req = new ApiRequest(getApplicationContext()) {
 			protected void onPostExecute(JsonElement result) {

@@ -235,6 +235,11 @@ public class OfflineArticleFragment extends Fragment {
 
 			}
 
+			ImageView score = view.findViewById(R.id.score);
+
+			if (score != null) {
+				score.setVisibility(View.GONE);
+			}
 
 			ImageView attachments = view.findViewById(R.id.attachments);
 

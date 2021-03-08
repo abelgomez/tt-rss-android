@@ -293,4 +293,8 @@
     <string name="img_share_url">Share URL</string>
     <string name="img_share_image">Share image</string>
     <string name="img_share_failed_to_load">Failed to load image for sharing</string>
+    <string name="update_categories">Update categories</string>
+    <string name="score_for_this_article">Score for this article</string>
+    <string name="set_score">Set score</string>
+    <string name="score_invalid">Invalid score</string>
 </resources>

@@ -2,7 +2,11 @@ package org.fox.ttrss;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -23,6 +27,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -210,6 +215,70 @@ public class ArticleFragment extends StateSavedFragment  {
 
         }
 
+        final ImageView scoreView = view.findViewById(R.id.score);
+
+        if (scoreView != null) {
+            setScoreImage(scoreView, m_article.score);
+
+            Resources.Theme theme = m_activity.getTheme();
+            TypedValue tv = new TypedValue();
+            theme.resolveAttribute(R.attr.headlineTitleHighScoreUnreadTextColor, tv, true);
+            int titleHighScoreUnreadColor = tv.data;
+
+            if (m_article.score > Article.SCORE_HIGH)
+                scoreView.setColorFilter(titleHighScoreUnreadColor);
+            else
+                scoreView.setColorFilter(null);
+
+            if (m_activity.getApiLevel() >= 16) {
+                scoreView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final EditText edit = new EditText(getActivity());
+                        edit.setText(String.valueOf(m_article.score));
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.score_for_this_article)
+                                .setPositiveButton(R.string.set_score,
+                                        new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+
+                                                try {
+                                                    int newScore = Integer.parseInt(edit.getText().toString());
+
+                                                    m_article.score = newScore;
+
+                                                    m_activity.saveArticleScore(m_article);
+
+                                                    setScoreImage(scoreView, newScore);
+                                                } catch (NumberFormatException e) {
+                                                    m_activity.toast(R.string.score_invalid);
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        })
+                                .setNegativeButton(getString(R.string.cancel),
+                                        new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+
+                                                //
+
+                                            }
+                                        }).setView(edit);
+
+                        Dialog dialog = builder.create();
+                        dialog.show();
+                    }
+                });
+            }
+        }
+
         ImageView attachments = view.findViewById(R.id.attachments);
 
         if (attachments != null) {
@@ -359,6 +428,20 @@ public class ArticleFragment extends StateSavedFragment  {
 
         return view;
 	}
+
+    private void setScoreImage(ImageView scoreView, int score) {
+        TypedValue tv = new TypedValue();
+        int scoreAttr = R.attr.ic_action_trending_flat;
+
+        if (m_article.score > 0)
+            scoreAttr = R.attr.ic_action_trending_up;
+        else if (m_article.score < 0)
+            scoreAttr = R.attr.ic_action_trending_down;
+
+        m_activity.getTheme().resolveAttribute(scoreAttr, tv, true);
+
+        scoreView.setImageResource(tv.resourceId);
+    }
 
     protected void renderContent(Bundle savedInstanceState) {
         if (!isAdded() || m_web == null) return;

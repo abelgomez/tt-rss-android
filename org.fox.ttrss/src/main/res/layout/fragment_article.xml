@@ -46,6 +46,17 @@
                         android:textSize="18sp" />
 
                     <ImageView
+                        android:id="@+id/score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_weight="0"
+                        android:background="@drawable/ripple"
+                        android:clickable="true"
+                        android:layout_marginLeft="8dp"
+                        android:src="?ic_action_trending_flat"
+                        android:layout_gravity="center_vertical|right" />
+
+                    <ImageView
                         android:id="@+id/attachments"
                         android:background="@drawable/ripple"
                         android:layout_width="wrap_content"

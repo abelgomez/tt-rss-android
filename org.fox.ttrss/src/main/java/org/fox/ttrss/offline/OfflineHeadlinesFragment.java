@@ -505,6 +505,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		public View flavorImageOverflow;
 		public View headlineHeader;
 		public ImageView attachmentsView;
+		public ImageView scoreView;
 
 		public ArticleViewHolder(View v) {
 
@@ -549,6 +550,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			headlineHeader = v.findViewById(R.id.headline_header);
 			flavorImageOverflow = v.findViewById(R.id.gallery_overflow);
 			attachmentsView = v.findViewById(R.id.attachments);
+			scoreView = v.findViewById(R.id.score);
 		}
 	}
 
@@ -792,6 +794,10 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 			if (holder.attachmentsView != null) {
 				holder.attachmentsView.setVisibility(View.GONE);
+			}
+
+			if (holder.scoreView != null) {
+				holder.scoreView.setVisibility(View.GONE);
 			}
 
 			if (holder.markedView != null) {

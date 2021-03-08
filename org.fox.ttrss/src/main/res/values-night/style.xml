@@ -57,6 +57,9 @@
         <item name="ic_dots_vertical_circle">@drawable/ic_dots_vertical_circle</item>
         <item name="ic_attachment">@drawable/ic_attachment</item>
         <item name="ic_attachment_vert">@drawable/ic_attachment_vert</item>
+        <item name="ic_action_trending_up">@drawable/ic_action_trending_up</item>
+        <item name="ic_action_trending_flat">@drawable/ic_action_trending_flat</item>
+        <item name="ic_action_trending_down">@drawable/ic_action_trending_down</item>
 
         <item name="drawer_header">@drawable/drawer_header_dark</item>
     </style>

@@ -53,4 +53,7 @@
     <attr name="drawer_header" format="reference" />
     <attr name="ic_restore" format="reference" />
     <attr name="ic_inbox" format="reference" />
+    <attr name="ic_action_trending_up" format="reference" />
+    <attr name="ic_action_trending_flat" format="reference" />
+    <attr name="ic_action_trending_down" format="reference" />
 </resources>
