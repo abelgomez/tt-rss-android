@@ -158,9 +158,9 @@
     <string name="prefs_confirm_headlines_catchup">Potvrdit označení jako přečtené</string>
     <string name="article_img_open">Otevřít obrázek</string>
     <plurals name="n_unread_articles">
-        <item quantity="one">Jeden nepřečtený článek</item>
-        <item quantity="few">%1$d nepřečtených článků</item>
-        <item quantity="other">Žádné nepřečtené články</item>
+        <item quantity="one">Žádné nepřečtené články</item>
+        <item quantity="few">Jeden nepřečtený článek</item>
+        <item quantity="other">%1$d nepřečtených článků</item>
     </plurals>
     <string name="pref_headline_font_size">Velikost textu</string>
     <string name="pref_headlines_mark_read_scroll_long">Nadpisy budou při posunu přes ně označeny jako přečtené</string>
