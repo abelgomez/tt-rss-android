@@ -31,6 +31,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -256,11 +258,20 @@ public class OnlineActivity extends CommonActivity {
 			switchOfflineSuccess();			
 		} else {
 			checkTrial(false);
+			checkUpdates();
 			
 			m_headlinesActionModeCallback = new HeadlinesActionModeCallback();
 		}
 	}
 
+	protected void checkUpdates() {
+		if (BuildConfig.DEBUG || BuildConfig.ENABLE_UPDATER) {
+			new AppUpdater(this)
+					.setUpdateFrom(UpdateFrom.JSON)
+					.setUpdateJSON(String.format("https://srv.tt-rss.org/fdroid/updates/%1$s.json", this.getPackageName()))
+					.start();
+		}
+	}
 
 	protected void switchOffline() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this)

@@ -8,6 +8,7 @@ android {
         applicationId "org.fox.ttrss"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
         buildConfigField "boolean", "ENABLE_TRIAL", "true"
+        buildConfigField "boolean", "ENABLE_UPDATER", "false"
         minSdkVersion 16
         targetSdkVersion 29
     }
@@ -37,11 +38,12 @@ android {
 
         fdroid {
             minifyEnabled  false
-				versionNameSuffix "-fdroid"
+            versionNameSuffix "-fdroid"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-				buildConfigField "boolean", "ENABLE_TRIAL", "false"
-				signingConfig signingConfigs.fdroid
-				matchingFallbacks = ['release']
+            buildConfigField "boolean", "ENABLE_TRIAL", "false"
+            buildConfigField "boolean", "ENABLE_UPDATER", "true"
+            signingConfig signingConfigs.fdroid
+            matchingFallbacks = ['release']
         }
     }
 }
@@ -73,4 +75,5 @@ dependencies {
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
     implementation 'com.github.livefront:bridge:v1.1.1'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.github.javiersantos:AppUpdater:2.7'
 }
