@@ -1323,8 +1323,36 @@ public class OnlineActivity extends CommonActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {		
+		ArticlePager ap = (ArticlePager) getSupportFragmentManager().findFragmentByTag(FRAG_ARTICLE);
+		HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_DPAD_LEFT:
+			if (ap != null && ap.isAdded()) {
+				ap.selectArticle(false);
+				return true;
+			}
+			break;
+		case KeyEvent.KEYCODE_DPAD_RIGHT:
+			if (ap != null && ap.isAdded()) {
+				ap.selectArticle(true);
+				return true;
+			}
+			break;
+		case KeyEvent.KEYCODE_ESCAPE:
+			moveTaskToBack(true);
+			return true;
+		case KeyEvent.KEYCODE_U:
+			if (ap != null && ap.getSelectedArticle() != null) {
+				Article a = ap.getSelectedArticle();
+				a.unread = !a.unread;
+				saveArticleUnread(a);
+				if (hf != null) hf.notifyUpdated();
+			}
+			return true;
+		}
+
 		if (m_prefs.getBoolean("use_volume_keys", false)) {
-			ArticlePager ap = (ArticlePager) getSupportFragmentManager().findFragmentByTag(FRAG_ARTICLE);
 			
 			if (ap != null && ap.isAdded()) {			
 				switch (keyCode) {
