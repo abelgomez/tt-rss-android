@@ -263,4 +263,7 @@
     <string name="prefs_inline_video_player_title">Вбудований програвач відео</string>
     <string name="prefs_always_downsample_images_long">Навіть при Wi-Fi</string>
     <string name="prefs_always_downsample_images">Завжди припасовувати картинки</string>
+    <string name="img_share_url">Поширити URL</string>
+    <string name="img_share_image">Поширити картинку</string>
+    <string name="img_share_failed_to_load">Не вдалося завантажити картинку для поширення</string>
 </resources>

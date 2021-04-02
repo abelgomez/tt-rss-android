@@ -158,8 +158,8 @@
     <string name="prefs_confirm_headlines_catchup">Potvrdit označení jako přečtené</string>
     <string name="article_img_open">Otevřít obrázek</string>
     <plurals name="n_unread_articles">
-        <item quantity="one">%1$d nepřečtený článek</item>
-        <item quantity="few">%1$d nepřečtené články</item>
+        <item quantity="one">Žádné nepřečtené články</item>
+        <item quantity="few">Jeden nepřečtený článek</item>
         <item quantity="other">%1$d nepřečtených článků</item>
     </plurals>
     <string name="pref_headline_font_size">Velikost textu</string>
@@ -276,4 +276,12 @@
     <string name="prefs_inline_video_player_title">Vložený přehrávač videa</string>
     <string name="prefs_always_downsample_images_long">Dokonce i na Wi-Fi</string>
     <string name="prefs_always_downsample_images">Vždy měnit velikost obrázků</string>
+    <string name="catchup_dialog_title">Označit %1$s jako přečtené\?</string>
+    <string name="catchup_dialog_all_articles">Všechny články</string>
+    <string name="catchup_dialog_2week">Starší než dva týdny</string>
+    <string name="img_share_url">Sdílet URL</string>
+    <string name="img_share_image">Sdílet obrázek</string>
+    <string name="img_share_failed_to_load">Nepodařilo se načíst obrázek pro sdílení</string>
+    <string name="catchup_dialog_1day">Starší než jeden den</string>
+    <string name="catchup_dialog_1week">Starší než jeden týden</string>
 </resources>
