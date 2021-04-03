@@ -1342,6 +1342,15 @@ public class OnlineActivity extends CommonActivity {
 		case KeyEvent.KEYCODE_ESCAPE:
 			moveTaskToBack(true);
 			return true;
+		case KeyEvent.KEYCODE_O:
+			if (ap != null && ap.getSelectedArticle() != null) {
+				openUri(Uri.parse(ap.getSelectedArticle().link));
+				return true;
+			}
+			break;
+		case KeyEvent.KEYCODE_R:
+			refresh();
+			return true;
 		case KeyEvent.KEYCODE_U:
 			if (ap != null && ap.getSelectedArticle() != null) {
 				Article a = ap.getSelectedArticle();
