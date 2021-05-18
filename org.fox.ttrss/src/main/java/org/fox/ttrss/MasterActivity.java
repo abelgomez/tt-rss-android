@@ -26,6 +26,8 @@ import org.fox.ttrss.types.FeedCategory;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.stream.Stream;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -369,29 +371,37 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 
             String sortMode = getSortMode();
 
-            int selectedIndex = 0;
+            LinkedHashMap<String, String> sortTypes = new LinkedHashMap<String, String>();
 
-            if (sortMode.equals("feed_dates")) {
+            sortTypes.put("", getString(R.string.headlines_sort_default));
+			sortTypes.put("feed_dates", getString(R.string.headlines_sort_newest_first));
+			sortTypes.put("date_reverse", getString(R.string.headlines_sort_oldest_first));
+			sortTypes.put("title", getString(R.string.headlines_sort_title));
+
+			sortTypes.putAll(Application.getInstance().m_customSortTypes);
+
+
+            /*if (sortMode.equals("feed_dates")) {
                 selectedIndex = 1;
             } else if (sortMode.equals("date_reverse")) {
                 selectedIndex = 2;
             } else if (sortMode.equals("title")) {
                 selectedIndex = 3;
-            }
+            }*/
+
+            int selectedIndex = 0;
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.headlines_sort_articles_title))
                     .setSingleChoiceItems(
-                            new String[] {
-                                    getString(R.string.headlines_sort_default),
-                                    getString(R.string.headlines_sort_newest_first),
-                                    getString(R.string.headlines_sort_oldest_first),
-                                    getString(R.string.headlines_sort_title)
-                            },
+							(CharSequence[])sortTypes.keySet().toArray(),
                             selectedIndex, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog,
                                                     int which) {
+
+                                	Log.d(TAG, "sort selected index:" + which);
+
                                     switch (which) {
                                         case 0:
                                             setSortMode("default");

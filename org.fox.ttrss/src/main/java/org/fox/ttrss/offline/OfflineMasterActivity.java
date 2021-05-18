@@ -25,6 +25,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.HashMap;
+
 public class OfflineMasterActivity extends OfflineActivity implements OfflineHeadlinesEventListener {
 	private final String TAG = this.getClass().getSimpleName();
 

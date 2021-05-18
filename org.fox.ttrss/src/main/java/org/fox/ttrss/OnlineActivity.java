@@ -1,5 +1,6 @@
 package org.fox.ttrss;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -51,6 +53,7 @@ import org.fox.ttrss.util.ImageCacheService;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
@@ -1192,7 +1195,12 @@ public class OnlineActivity extends CommonActivity {
 	public int getApiLevel() {
 		return Application.getInstance().m_apiLevel;
 	}
-	
+
+	private void setCustomSortTypes(Map<String, String> customSortTypes) {
+		Application.getInstance().m_customSortTypes.clear();
+		Application.getInstance().m_customSortTypes.putAll(customSortTypes);
+	}
+
 	protected void setApiLevel(int apiLevel) {
 		Application.getInstance().m_apiLevel = apiLevel;
 	}
@@ -1575,6 +1583,7 @@ public class OnlineActivity extends CommonActivity {
 		}
 
 		@SuppressWarnings("unchecked")
+		@SuppressLint("StaticFieldLeak")
 		protected void onPostExecute(JsonElement result) {
 			if (result != null) {
 				try {
@@ -1590,6 +1599,20 @@ public class OnlineActivity extends CommonActivity {
 						if (apiLevel != null) {
 							setApiLevel(apiLevel.getAsInt());
 							Log.d(TAG, "Received API level: " + getApiLevel());
+
+							// get custom sort from configuration object
+							if (getApiLevel() >= 17) {
+
+								// daemon_is_running, icons_dir, etc...
+								JsonObject config = content.get("config").getAsJsonObject();
+
+								Type hashType = new TypeToken<Map<String, String>>(){}.getType();
+								Map<String, String> customSortTypes = new Gson().fromJson(config.get("custom_sort_types"), hashType);
+
+								setCustomSortTypes(customSortTypes);
+
+								Log.d(TAG, "test");
+							}
 							
 							if (m_listener != null) {
 								m_listener.OnLoginSuccess();
@@ -1671,7 +1694,7 @@ public class OnlineActivity extends CommonActivity {
 
 	}
 
-    public String getSortMode() {
+	public String getSortMode() {
         return m_prefs.getString("headlines_sort_mode", "default");
     }
 
