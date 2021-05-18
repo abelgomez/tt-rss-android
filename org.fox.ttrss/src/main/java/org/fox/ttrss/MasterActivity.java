@@ -27,7 +27,6 @@ import org.fox.ttrss.types.FeedCategory;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.stream.Stream;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -369,53 +368,43 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
         case R.id.headlines_toggle_sort_order:
             Dialog dialog = new Dialog(this);
 
-            String sortMode = getSortMode();
+            LinkedHashMap<String, String> sortModes = getSortModes();
 
-            LinkedHashMap<String, String> sortTypes = new LinkedHashMap<String, String>();
+			CharSequence[] sortTitles = sortModes.values().toArray(new CharSequence[0]);
+			final CharSequence[] sortNames = sortModes.keySet().toArray(new CharSequence[0]);
 
-            sortTypes.put("", getString(R.string.headlines_sort_default));
-			sortTypes.put("feed_dates", getString(R.string.headlines_sort_newest_first));
-			sortTypes.put("date_reverse", getString(R.string.headlines_sort_oldest_first));
-			sortTypes.put("title", getString(R.string.headlines_sort_title));
+			String currentMode = getSortMode();
 
-			sortTypes.putAll(Application.getInstance().m_customSortTypes);
+			int i = 0;
+			int selectedIndex = 0;
 
+			for (CharSequence tmp : sortNames) {
+				if (tmp.equals(currentMode)) {
+					selectedIndex = i;
+					break;
+				}
 
-            /*if (sortMode.equals("feed_dates")) {
-                selectedIndex = 1;
-            } else if (sortMode.equals("date_reverse")) {
-                selectedIndex = 2;
-            } else if (sortMode.equals("title")) {
-                selectedIndex = 3;
-            }*/
-
-            int selectedIndex = 0;
+				++i;
+			}
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.headlines_sort_articles_title))
                     .setSingleChoiceItems(
-							(CharSequence[])sortTypes.keySet().toArray(),
+							sortTitles,
                             selectedIndex, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog,
                                                     int which) {
 
-                                	Log.d(TAG, "sort selected index:" + which);
+                                	try {
+//										Log.d(TAG, "sort selected index:" + which + ": " + sortNames[which]);
 
-                                    switch (which) {
-                                        case 0:
-                                            setSortMode("default");
-                                            break;
-                                        case 1:
-                                            setSortMode("feed_dates");
-                                            break;
-                                        case 2:
-                                            setSortMode("date_reverse");
-                                            break;
-                                        case 3:
-                                            setSortMode("title");
-                                            break;
-                                    }
+										setSortMode((String)sortNames[which]);
+
+									} catch (IndexOutOfBoundsException e) {
+                                		e.printStackTrace();
+									}
+
                                     dialog.cancel();
 
                                     refresh();

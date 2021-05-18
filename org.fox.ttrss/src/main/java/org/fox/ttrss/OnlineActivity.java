@@ -35,7 +35,6 @@ import android.widget.TextView;
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -52,6 +51,7 @@ import org.fox.ttrss.util.ImageCacheService;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1196,11 +1196,6 @@ public class OnlineActivity extends CommonActivity {
 		return Application.getInstance().m_apiLevel;
 	}
 
-	private void setCustomSortTypes(Map<String, String> customSortTypes) {
-		Application.getInstance().m_customSortTypes.clear();
-		Application.getInstance().m_customSortTypes.putAll(customSortTypes);
-	}
-
 	protected void setApiLevel(int apiLevel) {
 		Application.getInstance().m_apiLevel = apiLevel;
 	}
@@ -1609,7 +1604,7 @@ public class OnlineActivity extends CommonActivity {
 								Type hashType = new TypeToken<Map<String, String>>(){}.getType();
 								Map<String, String> customSortTypes = new Gson().fromJson(config.get("custom_sort_types"), hashType);
 
-								setCustomSortTypes(customSortTypes);
+								setCustomSortModes(customSortTypes);
 
 								Log.d(TAG, "test");
 							}
@@ -1694,6 +1689,19 @@ public class OnlineActivity extends CommonActivity {
 
 	}
 
+	public LinkedHashMap<String, String> getSortModes() {
+		LinkedHashMap<String, String> tmp = new LinkedHashMap<String, String>();
+
+		tmp.put("default", getString(R.string.headlines_sort_default));
+		tmp.put("feed_dates", getString(R.string.headlines_sort_newest_first));
+		tmp.put("date_reverse", getString(R.string.headlines_sort_oldest_first));
+		tmp.put("title", getString(R.string.headlines_sort_title));
+
+		tmp.putAll(Application.getInstance().m_customSortModes);
+
+		return tmp;
+	}
+
 	public String getSortMode() {
         return m_prefs.getString("headlines_sort_mode", "default");
     }
@@ -1703,6 +1711,11 @@ public class OnlineActivity extends CommonActivity {
         editor.putString("headlines_sort_mode", sortMode);
 		editor.apply();
     }
+
+	private synchronized void setCustomSortModes(Map<String, String> modes) {
+		Application.getInstance().m_customSortModes.clear();
+		Application.getInstance().m_customSortModes.putAll(modes);
+	}
 
     public void setViewMode(String viewMode) {
 		SharedPreferences.Editor editor = m_prefs.edit();

@@ -1,7 +1,6 @@
 package org.fox.ttrss;
 
 import android.os.Bundle;
-import android.util.ArraySet;
 
 import com.livefront.bridge.Bridge;
 import com.livefront.bridge.SavedStateHandler;
@@ -12,7 +11,7 @@ import org.fox.ttrss.types.ArticleList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import icepick.Icepick;
 
@@ -25,7 +24,7 @@ public class Application extends android.app.Application {
 	public int m_selectedArticleId;
 	public String m_sessionId;
 	public int m_apiLevel;
-	public HashMap<String, String> m_customSortTypes = new HashMap<>();
+	public LinkedHashMap<String, String> m_customSortModes = new LinkedHashMap<String, String>();
 
 	public static Application getInstance(){
 		return m_singleton;
@@ -56,7 +55,7 @@ public class Application extends android.app.Application {
 		out.putString("gs:sessionId", m_sessionId);
 		out.putInt("gs:apiLevel", m_apiLevel);
 		out.putInt("gs:selectedArticleId", m_selectedArticleId);
-		out.putSerializable("gs:customSortTypes", m_customSortTypes);
+		out.putSerializable("gs:customSortTypes", m_customSortModes);
 	}
 	
 	public void load(Bundle in) {
@@ -64,7 +63,12 @@ public class Application extends android.app.Application {
 			m_sessionId = in.getString("gs:sessionId");
 			m_apiLevel = in.getInt("gs:apiLevel");
 			m_selectedArticleId = in.getInt("gs:selectedArticleId");
-			m_customSortTypes = (HashMap<String, String>) in.getSerializable("gs:customSortTypes");
+
+			try {
+				m_customSortModes = (LinkedHashMap<String, String>) in.getSerializable("gs:customSortTypes");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 				
 	}
