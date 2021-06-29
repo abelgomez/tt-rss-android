@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="login_in_progress">正在登入……</string>
+    <string name="login">登入</string>
+    <string name="debugging">除錯</string>
+    <string name="default_url">http://example.domain/tt-rss/</string>
+    <string name="preferences">設定</string>
+    <string name="http_authentication">HTTP 驗證</string>
+    <string name="loading_message">載入中，請稍後……</string>
+    <string name="category_browse_feeds">瀏覽摘要</string>
+    <string name="pref_theme">主題</string>
+    <string name="look_and_feel">介面</string>
+    <string name="theme_dark">暗色系</string>
+    <string name="theme_light">亮色系</string>
+    <string name="password">密碼</string>
+    <string name="login_login">登入</string>
+</resources>
