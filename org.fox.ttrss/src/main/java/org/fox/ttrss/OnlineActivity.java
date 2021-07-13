@@ -1178,17 +1178,21 @@ public class OnlineActivity extends CommonActivity {
 
 		initMenu();
 		
-		List<PackageInfo> pkgs = getPackageManager()
-				.getInstalledPackages(0);
+		if (BuildConfig.ENABLE_TRIAL && !BuildConfig.DEBUG) {
+			List<PackageInfo> pkgs = getPackageManager()
+					.getInstalledPackages(0);
 
-		for (PackageInfo p : pkgs) {
-			if ("org.fox.ttrss.key".equals(p.packageName)) {
-				Log.d(TAG, "license apk found");
-				menu.findItem(R.id.donate).setVisible(false);
-				break;
+			for (PackageInfo p : pkgs) {
+				if ("org.fox.ttrss.key".equals(p.packageName)) {
+					Log.d(TAG, "license apk found");
+					menu.findItem(R.id.donate).setVisible(false);
+					break;
+				}
 			}
+		} else {
+			menu.findItem(R.id.donate).setVisible(false);
 		}
-		
+
 		return true;
 	}
 
