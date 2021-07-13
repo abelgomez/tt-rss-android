@@ -261,7 +261,7 @@
     <string name="feed_archived_articles">Archivierte Artikel</string>
     <string name="feed_recently_read">Kürzlich gelesen</string>
     <string name="cat_labels">Etiketten</string>
-    <string name="cat_uncategorized">Unkategorisiert</string>
+    <string name="cat_uncategorized">Ohne Kategorie</string>
     <string name="prefs_enable_image_downsampling_long">Fordert das Backend auf, Bilder zu verkleinern, wenn keine WLAN -Verbindung besteht. Benötigt ein Plugin (ttrss-api-resize)</string>
     <string name="prefs_enable_image_downsampling">Bilder automatisch verkleinern</string>
     <string name="prefs_inline_video_player">Experimentell. Lange Antippen zum Öffnen eines separaten Players</string>
