@@ -17,6 +17,13 @@ public class Article implements Parcelable {
 	public static final int TYPE_LOADMORE = -1;
 	public static final int TYPE_AMR_FOOTER = -2;
 
+	public static final int FLAVOR_KIND_ALBUM = 1;
+	public static final int FLAVOR_KIND_VIDEO = 2;
+	public static final int FLAVOR_KIND_YOUTUBE = 3;
+
+	public static final int SCORE_LOW = -500;
+	public static final int SCORE_HIGH = 500;
+
 	public int id;
 	public boolean unread; 
 	public boolean marked; 
@@ -41,6 +48,7 @@ public class Article implements Parcelable {
     public boolean selected;
     public String flavor_image;
     public String flavor_stream;
+    public int flavor_kind;
 
 	/* not serialized */
 	transient public Document articleDoc;

@@ -32,7 +32,7 @@
         android:key="category_look_and_feel"
         android:title="@string/look_and_feel" >
         <ListPreference
-            android:defaultValue="THEME_LIGHT"
+            android:defaultValue="THEME_FOLLOW_DEVICE"
             android:entries="@array/pref_theme_names"
             android:entryValues="@array/pref_theme_values"
             android:key="theme"
@@ -62,6 +62,12 @@
             android:defaultValue="true"
             android:key="open_fresh_on_startup"
             android:title="@string/prefs_open_fresh_on_startup" />
+
+        <org.fox.ttrss.util.LessBrokenSwitchPreference
+            android:defaultValue="false"
+            android:key="force_phone_layout"
+            android:summary="@string/force_phone_layout_summary"
+            android:title="@string/force_phone_layout" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -156,14 +162,6 @@
             android:key="use_volume_keys"
             android:summary="@string/use_volume_keys_long"
             android:title="@string/use_volume_keys" />
-        <!-- <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="false"
-            android:key="full_screen_mode"
-            android:title="@string/prefs_fullscreen_mode" /> -->
-        <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="true"
-            android:key="confirm_headlines_catchup"
-            android:title="@string/prefs_confirm_headlines_catchup" />
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="true"
             android:key="enable_article_fab"
@@ -234,11 +232,6 @@
             android:key="show_logcat"
             android:title="@string/logcat_title" />
 
-        <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="true"
-            android:key="webview_hardware_accel"
-            android:summary="@string/accel_webview_summary"
-            android:title="@string/accel_webview_title" />
         <org.fox.ttrss.util.LessBrokenSwitchPreference
             android:defaultValue="false"
             android:key="transport_debugging"

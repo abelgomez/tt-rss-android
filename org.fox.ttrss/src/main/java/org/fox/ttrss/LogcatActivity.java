@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import icepick.State;
@@ -25,7 +26,8 @@ public class LogcatActivity extends CommonActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        setTheme(R.style.DarkTheme);
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
 

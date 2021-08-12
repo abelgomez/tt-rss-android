@@ -1,0 +1,66 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="AppTheme.Base">
+        <item name="windowActionModeOverlay">true</item>
+
+        <!-- <item name="statusBarHintColor">?colorPrimary</item> -->
+        <item name="unreadCounterColor">#909090</item>
+        <item name="feedlistTextColor">@android:color/white</item>
+        <item name="headlineUnreadTextColor">@android:color/white</item>
+        <item name="headlineSelectedTextColor">@android:color/white</item>
+        <item name="headlineExcerptTextColor">#bebebe</item>
+        <item name="headlineSecondaryTextColor">#909090</item>
+        <item name="headlineTitleHighScoreUnreadTextColor">#00FF00</item>
+        <item name="headlineSelectedExcerptTextColor">#bebebe</item>
+        <item name="headlineSelectedSecondaryTextColor">?headlineSelectedExcerptTextColor</item>
+        <item name="headlineSelectedBackground">#1c1c1c</item>
+        <item name="headlineHeaderBackground">#99000000</item>
+        <item name="headlineUnreadBackground">#101010</item>
+        <item name="linkColor">#2d92c8</item>
+        <item name="loadingBackground">@android:color/black</item>
+        <item name="articleNoteTextColor">#bebebe</item>
+        <item name="articleNoteBackground">#303030</item>
+        <item name="parentBtnBackground">#101010</item>
+        <item name="ttrssHorizontalDivider">@android:drawable/divider_horizontal_dark</item>
+        <item name="feedlistBackground">#1c1d1e</item>
+        <item name="headlinesBackground">#1c1d1e</item>
+        <item name="articleBackground">@android:color/black</item>
+        <item name="feedsSelectedBackground">#1c1c1c</item>
+        <item name="feedlistSelectedTextColor">@android:color/white</item>
+        <item name="articleHeader">@android:color/transparent</item>
+        <item name="articleHeaderTextColor">@android:color/white</item>
+        <!-- <item name="floatingActionButtonStyle">@style/FabTheme</item> -->
+        <item name="articleTextColor">#e0e0e0</item>
+        <item name="headlineFooterColor">?colorPrimary</item>
+        <item name="articleHeaderSeparator">#303030</item>
+
+        <item name="colorPrimary">#1e6286</item>
+        <item name="colorPrimaryDark">#18506e</item>
+        <item name="colorAccent">#D84315</item>
+
+        <item name="ic_rss_box">@drawable/ic_rss_box</item>
+        <item name="ic_checkbox_marked">@drawable/ic_checkbox_marked</item>
+        <item name="ic_star">@drawable/ic_star</item>
+        <item name="ic_star_outline">@drawable/ic_star_outline</item>
+        <item name="ic_share">@drawable/ic_share</item>
+        <item name="ic_inbox">@drawable/ic_inbox</item>
+        <item name="ic_go_back">@drawable/ic_go_back</item>
+        <item name="ic_settings">@drawable/ic_settings</item>
+        <item name="ic_filter_variant">@drawable/ic_filter_variant</item>
+        <item name="ic_cloud_download">@drawable/ic_cloud_download</item>
+        <item name="ic_cloud_upload">@drawable/ic_cloud_upload</item>
+        <item name="ic_archive">@drawable/ic_archive</item>
+        <item name="ic_fresh">@drawable/ic_fresh</item>
+        <item name="ic_restore">@drawable/ic_restore</item>
+        <item name="ic_folder_outline">@drawable/ic_folder_outline</item>
+        <item name="ic_dots_vertical">@drawable/ic_dots_vertical</item>
+        <item name="ic_dots_vertical_circle">@drawable/ic_dots_vertical_circle</item>
+        <item name="ic_attachment">@drawable/ic_attachment</item>
+        <item name="ic_attachment_vert">@drawable/ic_attachment_vert</item>
+        <item name="ic_action_trending_up">@drawable/ic_action_trending_up</item>
+        <item name="ic_action_trending_flat">@drawable/ic_action_trending_flat</item>
+        <item name="ic_action_trending_down">@drawable/ic_action_trending_down</item>
+
+        <item name="drawer_header">@drawable/drawer_header_dark</item>
+    </style>
+</resources>

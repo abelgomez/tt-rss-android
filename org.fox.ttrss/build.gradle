@@ -8,6 +8,7 @@ android {
         applicationId "org.fox.ttrss"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
         buildConfigField "boolean", "ENABLE_TRIAL", "true"
+        buildConfigField "boolean", "ENABLE_UPDATER", "false"
         minSdkVersion 16
         targetSdkVersion 29
     }
@@ -47,11 +48,12 @@ android {
 
         fdroid {
             minifyEnabled  false
-				versionNameSuffix "-fdroid"
+            versionNameSuffix "-fdroid"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-				buildConfigField "boolean", "ENABLE_TRIAL", "false"
-				signingConfig signingConfigs.fdroid
-				matchingFallbacks = ['release']
+            buildConfigField "boolean", "ENABLE_TRIAL", "false"
+            buildConfigField "boolean", "ENABLE_UPDATER", "true"
+            signingConfig signingConfigs.fdroid
+            matchingFallbacks = ['release']
         }
     }
 }
@@ -66,16 +68,16 @@ dependencies {
     implementation 'com.bogdwellers:pinchtozoom:0.1'
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     implementation 'jp.wasabeef:glide-transformations:2.0.2'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'com.otaliastudios:nestedscrollcoordinatorlayout:1.0.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.shamanland:fab:0.0.8'
     implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     implementation 'me.relex:circleindicator:1.2.2@aar'
-    implementation 'com.viewpagerindicator:library:2.4.1'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'frankiesardo:icepick:3.2.0'
@@ -83,4 +85,5 @@ dependencies {
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
     implementation 'com.github.livefront:bridge:v1.1.1'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.github.javiersantos:AppUpdater:2.7'
 }

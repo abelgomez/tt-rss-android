@@ -25,6 +25,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.HashMap;
+
 public class OfflineMasterActivity extends OfflineActivity implements OfflineHeadlinesEventListener {
 	private final String TAG = this.getClass().getSimpleName();
 
@@ -47,8 +49,12 @@ public class OfflineMasterActivity extends OfflineActivity implements OfflineHea
 		setAppTheme(m_prefs);
 		
 		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.activity_master);
+
+		if (m_prefs.getBoolean("force_phone_layout", false)) {
+			setContentView(R.layout.activity_master_phone);
+		} else {
+			setContentView(R.layout.activity_master);
+		}
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="login_in_progress">Accesso…</string>
     <string name="app_name">Tiny Tiny RSS</string>
     <string name="login_need_configure">Si prega di configurare l\'app prima.</string>
@@ -94,7 +93,7 @@
     <string name="article_set_labels">Imposta etichetta</string>
     <string name="search">Cerca</string>
     <string name="cancel">Annulla</string>
-    <string name="pref_font_size">Dimensione testo articolo</string>
+    <string name="pref_font_size">Dimensione testo</string>
     <string name="dialog_close">Chiudi</string>
     <string name="article_link_copy">Copia il link negli appunti</string>
     <string name="text_copied_to_clipboard">Testo copiato negli appunti</string>
@@ -119,17 +118,14 @@
     <string name="ssl_trust_any_host_long">Non verificare l\'hostname del server</string>
     <string name="ssl">SSL</string>
     <string name="error_ssl_hostname_rejected">Errore: SSL dell\'hostname non verificato</string>
-
     <plurals name="article_comments">
         <item quantity="one">%1$d commento</item>
         <item quantity="other">%1$d commenti</item>
     </plurals>
-
     <plurals name="trial_mode_prompt">
         <item quantity="one">Modalità demo, solo %1$d rimasto.</item>
         <item quantity="other">Modalità demo, %1$d giorni rimasti.</item>
     </plurals>
-
     <string name="trial_purchase">Sblocca la versione completa</string>
     <string name="trial_expired">Demo esaurita</string>
     <string name="trial_expired_message">Per continuare ad usare Tiny Tiny RSS per Android puoi sbloccare la versione completa acquistando l\'app chiave.</string>
@@ -169,21 +165,17 @@
     <string name="article_img_view_caption">Visualizza didascalia</string>
     <string name="pref_headlines_mark_read_scroll">Segna come letto quando si scorre</string>
     <string name="pref_headlines_mark_read_scroll_long">Gli articoli verranno segnati come letti quando si scorre oltre di essi</string>
-
     <plurals name="mark_num_headlines_as_read">
         <item quantity="one">Segna %1$d articolo come letto?</item>
         <item quantity="other">Segna %1$d articoli come letti?</item>
     </plurals>
-
     <string name="prefs_confirm_headlines_catchup">Confermi la segnatura degli articoli come letti</string>
     <string name="author_formatted">di %1$s</string>
-
     <plurals name="n_unread_articles">
-	<item quantity="one">Nessun articolo non letto</item>
-	<item quantity="other">%1$d articoli non letti</item>
-</plurals>
-
-    <string name="pref_headline_font_size">Dimensione testo titoli</string>
+        <item quantity="one">Nessun articolo non letto</item>
+        <item quantity="other">%1$d articoli non letti</item>
+    </plurals>
+    <string name="pref_headline_font_size">Dimensione testo</string>
     <string name="context_confirm_catchup">Segna tutti gli articoli di %1$s come letti?</string>
     <string name="accel_webview_summary">Disabilita se vedi sfarfallamenti o artefatti visuali</string>
     <string name="accel_webview_title">Accelerazione vista web (3.0+)</string>
@@ -209,7 +201,7 @@
     <string name="prefs_enable_fab">Abilita FAB</string>
     <string name="prefs_enable_fab_long">Mostra il bottone di azione sovrapposto durante la lettura</string>
     <string name="prefs_open_fresh_on_startup">Apri i nuovi articoli all\'avvio</string>
-    <string name="prefs_headline_display_mode">Modalità visualizzazione titoli</string>
+    <string name="prefs_headline_display_mode">Modalità visualizzazione</string>
     <string name="prefs_headline_display_mode_long">Default, senza immagini o modalità compatta</string>
     <string name="headline_display_mode_default">Default</string>
     <string name="headline_display_mode_no_images">Senza immagini</string>
@@ -224,12 +216,10 @@
     <string name="prefs_widget_show_fresh_summary">Invece del totale degli articoli non letti, mostra il numero di nuovi articoli</string>
     <string name="prefs_widget">Widget</string>
     <string name="title_activity_video_player">Riproduttore Video</string>
-
     <string name="hello_world">Ciao Mondo!</string>
     <string name="action_settings">Preferenze</string>
     <string name="video_player_share">Condividi il video</string>
     <string name="video_player_open">Apri il video</string>
-
     <string name="flavor_image_prompt">(più immagini…)</string>
     <string name="headlines_row_top_changed">Nuovi articoli trovati, ricarica il notiziario per visualizzarli.</string>
     <string name="prefs_custom_tabs_summary">Apri i link esterni con una Chrome custom tabs (più veloce, usato se disponibile)</string>
@@ -240,7 +230,7 @@
     <string name="open_with_app">Apri con app</string>
     <string name="prefs_opening_links">Apertura link</string>
     <string name="open_with">Apri con…</string>
-<string name="offline_switch_failed">Preparazione modalità offline non riuscita</string>
+    <string name="offline_switch_failed">Preparazione modalità offline non riuscita</string>
     <string name="offline_media_cache_enabled">Cache elementi media</string>
     <string name="offline_media_cache_enabled_summary">Scarica gli elementi media sulla card SD. Questo potrebbe aumentare significativamente il tempo per attivare la modalità offline</string>
     <string name="notify_downloading_media">Scaricando elementi media…</string>
@@ -252,7 +242,6 @@
     <string name="pref_headlines_swipe_to_dismiss">Scorri per eliminare</string>
     <string name="pref_headlines_swipe_to_dismiss_long">Disabilita il menù contestuale per i titoli</string>
     <string name="pref_widget_update_interval">Intervallo di aggiornamento (in minuti)</string>
-
     <string name="widget_background_light">Chiaro</string>
     <string name="widget_background_dark">Scuro</string>
     <string name="widget_background_transparent">Trasparente</string>
@@ -267,11 +256,31 @@
     <string name="logcat_refresh">Aggiorna</string>
     <string name="logcat_copy">Copia negli appunti</string>
     <string name="logcat_title">Visualizzatore log</string>
-<string name="cat_special">Speciali</string>
+    <string name="cat_special">Speciali</string>
     <string name="feed_starred_articles">Articoli con stella</string>
     <string name="feed_published_articles">Articoli pubblicati</string>
     <string name="feed_archived_articles">Articoli archiviati</string>
     <string name="feed_recently_read">Letti di recente</string>
     <string name="cat_labels">Etichette</string>
     <string name="cat_uncategorized">Senza categoria</string>
+    <string name="catchup_dialog_2week">Più vecchi di due settimane</string>
+    <string name="catchup_dialog_1week">Più vecchi di una settimana</string>
+    <string name="catchup_dialog_1day">Più vecchi di un giorno</string>
+    <string name="catchup_dialog_all_articles">Tutti gli articoli</string>
+    <string name="catchup_dialog_title">Contrassegnare %1$s come letto\?</string>
+    <string name="force_phone_layout">Forza il layout del telefono</string>
+    <string name="force_phone_layout_summary">Su dispositivi tablet</string>
+    <string name="prefs_inline_video_player_title">Lettore video in linea</string>
+    <string name="prefs_always_downsample_images_long">Anche su Wi-Fi</string>
+    <string name="prefs_always_downsample_images">Ridimensiona sempre le immagini</string>
+    <string name="prefs_enable_image_downsampling_long">Chiede al backend di eseguire il downsampling delle immagini se non su Wi-Fi. Ha bisogno di un plugin (ttrss-api-resize)</string>
+    <string name="prefs_enable_image_downsampling">Ridimensiona automaticamente le immagini</string>
+    <string name="prefs_inline_video_player">Sperimentale. Tocca a lungo per aprire un lettore separato</string>
+    <string name="prefs_headline_images_wifi_only_long">Sostituisce le impostazioni precedenti</string>
+    <string name="prefs_headline_images_wifi_only">Mostra immagini solo con Wi-Fi</string>
+    <string name="headlines">Titoli</string>
+    <string name="prefs_headline_request_size_long">Usa valori ridotti con connessioni lente</string>
+    <string name="prefs_headline_request_size">Quanti titoli richiedere</string>
+    <string name="prefs_always_open_uri_summary">Apri gli articoli direttamente nel browser, invece di visualizzare il dettaglio</string>
+    <string name="prefs_always_open_uri">Apri sempre nel browser</string>
 </resources>

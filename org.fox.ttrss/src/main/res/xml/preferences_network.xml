@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <PreferenceCategory android:title="@string/ssl" >
-        <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="false"
-            android:key="ssl_trust_any"
-            android:summary="@string/ssl_trust_any_long"
-            android:title="@string/ssl_trust_any" />
-        <org.fox.ttrss.util.LessBrokenSwitchPreference
-            android:defaultValue="false"
-            android:key="ssl_trust_any_host"
-            android:summary="@string/ssl_trust_any_host_long"
-            android:title="@string/ssl_trust_any_host" />
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/http_authentication" >
         <EditTextPreference
             android:key="http_login"

@@ -15,9 +15,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -32,7 +33,20 @@ import android.view.Display;
 import android.view.View;
 import android.widget.CheckBox;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.browser.customtabs.CustomTabsCallback;
+import androidx.browser.customtabs.CustomTabsClient;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsServiceConnection;
+import androidx.browser.customtabs.CustomTabsSession;
+import androidx.core.app.JobIntentService;
+import androidx.core.content.FileProvider;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.snackbar.Snackbar;
 import com.livefront.bridge.Bridge;
 
@@ -43,17 +57,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.browser.customtabs.CustomTabsCallback;
-import androidx.browser.customtabs.CustomTabsClient;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.browser.customtabs.CustomTabsServiceConnection;
-import androidx.browser.customtabs.CustomTabsSession;
-import androidx.core.app.JobIntentService;
 import icepick.State;
 
 public class CommonActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -65,11 +74,7 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 	public final static String FRAG_CATS = "cats";
 	public final static String FRAG_DIALOG = "dialog";
 
-	public final static String THEME_DARK = "THEME_DARK";
-	public final static String THEME_LIGHT = "THEME_LIGHT";
-	//public final static String THEME_SEPIA = "THEME_SEPIA";
-    public final static String THEME_AMBER = "THEME_AMBER";
-	public final static String THEME_DEFAULT = CommonActivity.THEME_LIGHT;
+	public final static String THEME_DEFAULT = "THEME_FOLLOW_DEVICE";
 
 	public final static String NOTIFICATION_CHANNEL_NORMAL = "channel_normal";
 	public final static String NOTIFICATION_CHANNEL_PRIORITY = "channel_priority";
@@ -313,24 +318,43 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 				.show();
 	}
 
+	public boolean isUiNightMode() {
+		try {
+			int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+			return Configuration.UI_MODE_NIGHT_YES == nightModeFlags;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	protected void setAppTheme(SharedPreferences prefs) {
 		String theme = prefs.getString("theme", CommonActivity.THEME_DEFAULT);
-		
-		if (theme.equals(THEME_DARK)) {
-			setTheme(R.style.DarkTheme);
-		} else if (theme.equals(THEME_AMBER)) {
-			setTheme(R.style.AmberTheme);
+
+		Log.d(TAG, "setting theme to: " + theme);
+
+		if ("THEME_DARK".equals(theme)) {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+		} else if ("THEME_LIGHT".equals(theme)) {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 		} else {
-			setTheme(R.style.LightTheme);
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 		}
+
+		setTheme(R.style.AppTheme);
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		Log.d(TAG, "onSharedPreferenceChanged:" + key);
 
-		String[] filter = new String[] { "theme", "enable_cats", "headline_mode", "widget_update_interval",
-				"headlines_swipe_to_dismiss", "headlines_mark_read_scroll", "headlines_request_size" };
+		if ("theme".equals(key)) {
+			setAppTheme(sharedPreferences);
+		}
+
+		String[] filter = new String[] { "enable_cats", "headline_mode", "widget_update_interval",
+				"headlines_swipe_to_dismiss", "headlines_mark_read_scroll", "headlines_request_size",
+				"force_phone_layout" };
 
 		m_needRestart = Arrays.asList(filter).indexOf(key) != -1;
 	}
@@ -378,6 +402,52 @@ public class CommonActivity extends AppCompatActivity implements SharedPreferenc
 
 	protected void shareText(String text, String subject) {
 		startActivity(Intent.createChooser(getShareIntent(text, subject), text));
+	}
+
+	protected void shareImageFromUri(String url) {
+		Glide.with(this)
+				.load(url)
+				.asBitmap()
+				.skipMemoryCache(false)
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.into(new SimpleTarget<Bitmap>() {
+					@Override
+					public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+						Log.d(TAG, "image resource ready: " + resource);
+
+						if (resource != null) {
+							File shareFolder = new File(getCacheDir(), "shared");
+
+							try {
+								shareFolder.mkdirs();
+
+								File file = new File(shareFolder, "shared.png");
+
+								FileOutputStream stream = new FileOutputStream(file);
+								resource.compress(Bitmap.CompressFormat.PNG, 90, stream);
+								stream.flush();
+								stream.close();
+
+								Uri shareUri = FileProvider.getUriForFile(CommonActivity.this,
+										"org.fox.ttrss.SharedFileProvider", file);
+
+								Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+								intent.putExtra(Intent.EXTRA_STREAM, shareUri);
+								intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+								intent.setType("image/png");
+
+								startActivity(intent);
+
+							} catch (Exception e) {
+								e.printStackTrace();
+								toast(e.getMessage());
+							}
+
+						} else {
+							toast(getString(R.string.img_share_failed_to_load));
+						}
+					}
+				});
 	}
 
 	private void openUriWithCustomTab(Uri uri) {

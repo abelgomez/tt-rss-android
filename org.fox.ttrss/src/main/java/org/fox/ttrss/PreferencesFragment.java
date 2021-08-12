@@ -1,6 +1,5 @@
 package org.fox.ttrss;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -42,12 +41,14 @@ public class PreferencesFragment extends PreferenceFragment {
             }
         });
 
+        CommonActivity activity = (CommonActivity) getActivity();
+
+        findPreference("force_phone_layout").setEnabled(activity.isTablet());
+
         try {
             String version;
             int versionCode;
             String buildTimestamp;
-
-            Activity activity = getActivity();
 
             PackageInfo packageInfo = activity.getPackageManager().
                     getPackageInfo(activity.getPackageName(), 0);

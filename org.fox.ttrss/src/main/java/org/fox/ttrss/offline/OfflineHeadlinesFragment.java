@@ -50,7 +50,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.shamanland.fab.FloatingActionButton;
 
 import org.fox.ttrss.Application;
 import org.fox.ttrss.CommonActivity;
@@ -105,7 +104,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
     private boolean m_compactLayoutMode = false;
     private ListView m_list;
-    private int m_listPreviousVisibleItem;
 
 	public void initialize(int feedId, boolean isCat, boolean compactMode) {
 		m_feedId = feedId;
@@ -203,34 +201,28 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 				return true;
 			case R.id.catchup_above:
 				if (true) {
-					if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							m_activity)
+							.setMessage(R.string.confirm_catchup_above)
+							.setPositiveButton(R.string.dialog_ok,
+									new Dialog.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+															int which) {
 
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								m_activity)
-								.setMessage(R.string.confirm_catchup_above)
-								.setPositiveButton(R.string.dialog_ok,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-																int which) {
+											catchupAbove(articleId);
 
-												catchupAbove(articleId);
+										}
+									})
+							.setNegativeButton(R.string.dialog_cancel,
+									new Dialog.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+															int which) {
 
-											}
-										})
-								.setNegativeButton(R.string.dialog_cancel,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-																int which) {
+										}
+									});
 
-											}
-										});
-
-						AlertDialog dlg = builder.create();
-						dlg.show();
-					} else {
-						catchupAbove(articleId);
-					}
-
+					AlertDialog dialog = builder.create();
+					dialog.show();
 				}
 				return true;
 			default:
@@ -355,18 +347,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		m_cursor = createCursor();
 		
 		m_list = view.findViewById(R.id.headlines_list);
-
-		FloatingActionButton fab = view.findViewById(R.id.headlines_fab);
-		fab.setVisibility(View.GONE);
-
-        if (m_activity.isSmallScreen()) {
-            View layout = inflater.inflate(R.layout.headlines_heading_spacer, m_list, false);
-            m_list.addHeaderView(layout);
-
-            m_swipeLayout.setProgressViewOffset(false, 0,
-                    m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material) +
-                            m_activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_padding_end_material));
-        }
 
         if (m_prefs.getBoolean("headlines_mark_read_scroll", false)) {
             WindowManager wm = (WindowManager) m_activity.getSystemService(Context.WINDOW_SERVICE);
@@ -525,6 +505,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 		public View flavorImageOverflow;
 		public View headlineHeader;
 		public ImageView attachmentsView;
+		public ImageView scoreView;
 
 		public ArticleViewHolder(View v) {
 
@@ -569,6 +550,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 			headlineHeader = v.findViewById(R.id.headline_header);
 			flavorImageOverflow = v.findViewById(R.id.gallery_overflow);
 			attachmentsView = v.findViewById(R.id.attachments);
+			scoreView = v.findViewById(R.id.score);
 		}
 	}
 
@@ -648,7 +630,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 					holder.textImage.setImageDrawable(textDrawable);
 
-					Glide.with(OfflineHeadlinesFragment.this)
+					Glide.with(getContext())
 							.load(afi.flavorImageUri)
 							.placeholder(textDrawable)
 							.bitmapTransform(new CropCircleTransformation(getActivity()))
@@ -812,6 +794,10 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 			if (holder.attachmentsView != null) {
 				holder.attachmentsView.setVisibility(View.GONE);
+			}
+
+			if (holder.scoreView != null) {
+				holder.scoreView.setVisibility(View.GONE);
 			}
 
 			if (holder.markedView != null) {
@@ -1000,7 +986,7 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
 
 						try {
 
-							Glide.with(OfflineHeadlinesFragment.this)
+							Glide.with(getContext())
 									.load(afi.flavorImageUri)
 									//.dontTransform()
 									.diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -1318,20 +1304,6 @@ public class OfflineHeadlinesFragment extends Fragment implements OnItemClickLis
                     m_readArticleIds.add(id);
                 }
             }
-        }
-
-        if (!m_activity.isTablet()) {
-            if (m_adapter.getCount() > 0) {
-                if (firstVisibleItem > m_listPreviousVisibleItem) {
-                    m_activity.getSupportActionBar().hide();
-                } else if (firstVisibleItem < m_listPreviousVisibleItem) {
-                    m_activity.getSupportActionBar().show();
-                }
-            } else {
-                m_activity.getSupportActionBar().show();
-            }
-
-            m_listPreviousVisibleItem = firstVisibleItem;
         }
     }
 

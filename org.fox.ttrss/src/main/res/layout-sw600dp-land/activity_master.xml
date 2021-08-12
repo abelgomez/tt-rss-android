@@ -2,6 +2,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <include layout="@layout/toolbar" android:id="@+id/toolbar" />
@@ -29,16 +30,30 @@
             android:background="?feedlistBackground" >
         </FrameLayout>
 
-        <FrameLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="0dp"
             android:layout_weight="0.75"
-            android:id="@+id/headlines_fragment"
-            android:background="?headlinesBackground"
             android:elevation="4dp"
+            android:background="?headlinesBackground"
             android:layout_height="match_parent">
-        </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:id="@+id/headlines_fragment"
+                app:layout_behavior=".util.FabAwareScrollingViewBehavior"
+                android:layout_height="match_parent"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/master_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:visibility="gone"
+                android:src="@drawable/ic_refresh"
+                android:layout_margin="16dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>
-
 
 </RelativeLayout>

@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/headlines_row"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:ignore="HardcodedText">
+    android:layout_height="wrap_content">
 
     <TableLayout
         android:layout_width="fill_parent"
@@ -86,11 +85,10 @@
                             android:background="@drawable/ripple"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_span="2"
                             android:gravity="center_vertical"
                             android:paddingBottom="8dp"
                             android:singleLine="false"
-                            android:text="Sample entry title"
+                            tools:text="Sample entry title"
                             android:textColor="?headlineExcerptTextColor"
                             android:textSize="18sp"
                             android:textStyle="normal"
@@ -113,7 +111,7 @@
                                 android:fontFamily="sans-serif-light"
                                 android:gravity="center_vertical"
                                 android:singleLine="true"
-                                android:text="Example Feed AAA AAA AAAAAA AAAA AAAAA AA A A AA AA"
+                                tools:text="Example Feed AAA AAA AAAAAA AAAA AAAAA AA A A AA AA"
                                 android:textColor="?headlineSecondaryTextColor"
                                 android:textSize="12sp" />
 
@@ -126,7 +124,7 @@
                                 android:fontFamily="sans-serif-light"
                                 android:gravity="right|center_vertical"
                                 android:singleLine="true"
-                                android:text="Jan 01, 12:00, 1970"
+                                tools:text="Jan 01, 12:00, 1970"
                                 android:textColor="?headlineSecondaryTextColor"
                                 android:textSize="12sp" />
 
@@ -165,7 +163,8 @@
                     android:layout_gravity="bottom|right"
                     android:elevation="4dp"
                     android:tint="?colorAccent"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    tools:targetApi="lollipop" />
 
             </FrameLayout>
         </TableRow>
@@ -183,7 +182,7 @@
                 android:lineSpacingExtra="2sp"
                 android:maxLines="5"
                 android:padding="16dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 android:textColor="?headlineExcerptTextColor"
                 android:textSize="13sp" />
         </TableRow>
@@ -217,10 +216,21 @@
                     android:fontFamily="sans-serif-light"
                     android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:text="by Author"
+                    tools:text="by Author"
                     android:textColor="?headlineSecondaryTextColor"
                     android:textSize="12sp"
                     android:textStyle="italic" />
+
+                <ImageView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/ripple"
+                    android:clickable="true"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:src="?ic_action_trending_flat" />
 
                 <ImageView
                     android:id="@+id/attachments"

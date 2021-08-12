@@ -21,13 +21,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
+
 import org.fox.ttrss.CommonActivity;
 import org.fox.ttrss.OnlineActivity;
 import org.fox.ttrss.PreferencesActivity;
 import org.fox.ttrss.R;
-
-import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.Toolbar;
 
 public class OfflineActivity extends CommonActivity {
 	private final String TAG = this.getClass().getSimpleName();
@@ -118,6 +118,11 @@ public class OfflineActivity extends CommonActivity {
 			}			
 			return true;
 		case R.id.article_img_share:
+			if (getLastContentImageHitTestUrl() != null) {
+				shareImageFromUri(getLastContentImageHitTestUrl());
+			}
+			return true;
+		case R.id.article_img_share_url:
 			if (getLastContentImageHitTestUrl() != null) {
 				shareText(getLastContentImageHitTestUrl());
 			}
@@ -393,37 +398,30 @@ public class OfflineActivity extends CommonActivity {
 				final boolean isCat = ohf.getFeedIsCat();
 				
 				int count = getUnreadArticleCount(feedId, isCat);
-				boolean confirm = m_prefs.getBoolean("confirm_headlines_catchup", true);
-				
+
 				if (count > 0) {
-					if (confirm) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								OfflineActivity.this)
-								.setMessage(getResources().getQuantityString(R.plurals.mark_num_headlines_as_read, count, count))
-								.setPositiveButton(R.string.catchup,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-	
-												catchupFeed(feedId, isCat);											
-												
-											}
-										})
-								.setNegativeButton(R.string.dialog_cancel,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-		
-											}
-										});
-		
-						AlertDialog dlg = builder.create();
-						dlg.show();					
-					
-						
-					} else {
-						catchupFeed(feedId, isCat);
-					}				
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							OfflineActivity.this)
+							.setMessage(getResources().getQuantityString(R.plurals.mark_num_headlines_as_read, count, count))
+							.setPositiveButton(R.string.catchup,
+									new Dialog.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+												int which) {
+
+											catchupFeed(feedId, isCat);
+
+										}
+									})
+							.setNegativeButton(R.string.dialog_cancel,
+									new Dialog.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+												int which) {
+
+										}
+									});
+
+					AlertDialog dlg = builder.create();
+					dlg.show();
 				}
 			}
 			return true;
@@ -514,33 +512,28 @@ public class OfflineActivity extends CommonActivity {
 			return true;
 		case R.id.catchup_above:
 			if (oap != null) {
-				if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						OfflineActivity.this)
+						.setMessage(R.string.confirm_catchup_above)
+						.setPositiveButton(R.string.dialog_ok,
+								new Dialog.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+														int which) {
 
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							OfflineActivity.this)
-							.setMessage(R.string.confirm_catchup_above)
-							.setPositiveButton(R.string.dialog_ok,
-									new Dialog.OnClickListener() {
-										public void onClick(DialogInterface dialog,
-															int which) {
+										catchupAbove(oap);
 
-											catchupAbove(oap);
+									}
+								})
+						.setNegativeButton(R.string.dialog_cancel,
+								new Dialog.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+														int which) {
 
-										}
-									})
-							.setNegativeButton(R.string.dialog_cancel,
-									new Dialog.OnClickListener() {
-										public void onClick(DialogInterface dialog,
-															int which) {
+									}
+								});
 
-										}
-									});
-
-					AlertDialog dlg = builder.create();
-					dlg.show();
-				} else {
-					catchupAbove(oap);
-				}
+				AlertDialog dlg = builder.create();
+				dlg.show();
 			}
 			return true;
 		default:

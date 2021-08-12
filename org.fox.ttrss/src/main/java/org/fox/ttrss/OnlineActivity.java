@@ -1,5 +1,6 @@
-package org.fox.ttrss;
+﻿package org.fox.ttrss;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,6 +21,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -27,8 +29,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -46,7 +51,9 @@ import org.fox.ttrss.util.ImageCacheService;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
@@ -67,9 +74,84 @@ public class OnlineActivity extends CommonActivity {
 	private String m_lastImageHitTestUrl;
 	private ConnectivityManager m_cmgr;
 
+	public void catchupDialog(final Feed feed) {
+
+		if (getApiLevel() >= 15) {
+
+			int selectedIndex = 0;
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this)
+					.setTitle(getString(R.string.catchup_dialog_title, feed.title))
+					.setSingleChoiceItems(
+							new String[] {
+									getString(R.string.catchup_dialog_all_articles),
+									getString(R.string.catchup_dialog_1day),
+									getString(R.string.catchup_dialog_1week),
+									getString(R.string.catchup_dialog_2week)
+							},
+							selectedIndex, new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+													int which) {
+								}
+							})
+					.setPositiveButton(R.string.catchup,
+							new OnClickListener() {
+								public void onClick(DialogInterface dialog,
+													int which) {
+
+									ListView list = ((AlertDialog)dialog).getListView();
+
+									if (list.getCheckedItemCount() > 0) {
+										int position = list.getCheckedItemPosition();
+
+										String[] catchupModes = { "all", "1day", "1week", "2week" };
+										String mode = catchupModes[position];
+
+										catchupFeed(feed, mode, true);
+									}
+								}
+							})
+					.setNegativeButton(R.string.dialog_cancel,
+							new Dialog.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+													int which) {
+
+								}
+							});
+
+			Dialog dialog = builder.create();
+			dialog.show();
+
+		} else {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					this)
+					.setMessage(getString(R.string.catchup_dialog_title, feed.title))
+					.setPositiveButton(R.string.catchup,
+							new Dialog.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+													int which) {
+
+									catchupFeed(feed, "all", true);
+
+								}
+							})
+					.setNegativeButton(R.string.dialog_cancel,
+							new Dialog.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+													int which) {
+
+								}
+							});
+
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+	}
+
 	//protected PullToRefreshAttacher m_pullToRefreshAttacher;
 
-	protected abstract class OnLoginFinishedListener {
+	protected static abstract class OnLoginFinishedListener {
 		public abstract void OnLoginSuccess();
 		public abstract void OnLoginFailed();
 	}
@@ -133,8 +215,7 @@ public class OnlineActivity extends CommonActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		ApiCommon.disableConnectionReuseIfNecessary();
-		
+
 		// we use that before parent onCreate so let's init locally
 		m_prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
@@ -179,12 +260,22 @@ public class OnlineActivity extends CommonActivity {
 		if (isOffline) {
 			switchOfflineSuccess();			
 		} else {
-			//checkTrial(false);
-			
+			/*
+			checkTrial(false);
+			checkUpdates();
+			*/
 			m_headlinesActionModeCallback = new HeadlinesActionModeCallback();
 		}
 	}
 
+	protected void checkUpdates() {
+		if (BuildConfig.DEBUG || BuildConfig.ENABLE_UPDATER) {
+			new AppUpdater(this)
+					.setUpdateFrom(UpdateFrom.JSON)
+					.setUpdateJSON(String.format("https://srv.tt-rss.org/fdroid/updates/%1$s.json", this.getPackageName()))
+					.start();
+		}
+	}
 
 	protected void switchOffline() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -275,6 +366,19 @@ public class OnlineActivity extends CommonActivity {
 	}
 
 	public void login(boolean refresh, OnLoginFinishedListener listener) {
+
+		if (BuildConfig.ENABLE_TRIAL && !BuildConfig.DEBUG) {
+			String testLabSetting = Settings.System.getString(getContentResolver(), "firebase.test.lab");
+
+			if ("true".equals(testLabSetting)) {
+				SharedPreferences.Editor editor = m_prefs.edit();
+				editor.putString("ttrss_url", "https://srv.tt-rss.org/tt-rss");
+				editor.putString("login", "demo");
+				editor.putString("password", "demo");
+				editor.apply();
+			}
+		}
+
 		if (m_prefs.getString("ttrss_url", "").trim().length() == 0) {
 
 			setLoadingStatus(R.string.login_need_configure);
@@ -439,6 +543,11 @@ public class OnlineActivity extends CommonActivity {
 			return true;
 		case R.id.article_img_share:
 			if (getLastContentImageHitTestUrl() != null) {
+				shareImageFromUri(getLastContentImageHitTestUrl());
+			}
+			return true;
+		case R.id.article_img_share_url:
+			if (getLastContentImageHitTestUrl() != null) {
 				shareText(getLastContentImageHitTestUrl());
 			}
 			return true;
@@ -598,38 +707,11 @@ public class OnlineActivity extends CommonActivity {
 			return true;
 		case R.id.headlines_mark_as_read:
 			if (hf != null) {
-				
-				int count = hf.getUnreadArticles().size();
-				
-				boolean confirm = m_prefs.getBoolean("confirm_headlines_catchup", true);
-				
-				if (count > 0) {
-					if (confirm) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								OnlineActivity.this)
-								.setMessage(getResources().getQuantityString(R.plurals.mark_num_headlines_as_read, count, count))
-								.setPositiveButton(R.string.catchup,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-	
-												catchupVisibleArticles();											
-												
-											}
-										})
-								.setNegativeButton(R.string.dialog_cancel,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-		
-											}
-										});
-		
-						AlertDialog dlg = builder.create();
-						dlg.show();
-					} else {
-						catchupVisibleArticles();
-					}
+
+				Feed feed = hf.getFeed();
+
+				if (feed != null) {
+					catchupDialog(hf.getFeed());
 				}
 			}
 			return true;
@@ -734,7 +816,7 @@ public class OnlineActivity extends CommonActivity {
 			}
 			return true; */
 		case R.id.toggle_marked:
-			if (ap != null & ap.getSelectedArticle() != null) {
+			if (ap != null && ap.getSelectedArticle() != null) {
 				Article a = ap.getSelectedArticle();
 				a.marked = !a.marked;
 				saveArticleMarked(a);
@@ -742,7 +824,7 @@ public class OnlineActivity extends CommonActivity {
 			}
 			return true;
 			case R.id.toggle_unread:
-				if (ap != null & ap.getSelectedArticle() != null) {
+				if (ap != null && ap.getSelectedArticle() != null) {
 					Article a = ap.getSelectedArticle();
 					a.unread = !a.unread;
 					saveArticleUnread(a);
@@ -812,33 +894,28 @@ public class OnlineActivity extends CommonActivity {
 		case R.id.catchup_above:
 			if (hf != null) {
 
-				if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						OnlineActivity.this)
+						.setMessage(R.string.confirm_catchup_above)
+						.setPositiveButton(R.string.dialog_ok,
+								new Dialog.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+														int which) {
 
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							OnlineActivity.this)
-							.setMessage(R.string.confirm_catchup_above)
-							.setPositiveButton(R.string.dialog_ok,
-									new Dialog.OnClickListener() {
-										public void onClick(DialogInterface dialog,
-															int which) {
+										catchupAbove(hf, ap);
 
-											catchupAbove(hf, ap);
+									}
+								})
+						.setNegativeButton(R.string.dialog_cancel,
+								new Dialog.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+														int which) {
 
-										}
-									})
-							.setNegativeButton(R.string.dialog_cancel,
-									new Dialog.OnClickListener() {
-										public void onClick(DialogInterface dialog,
-															int which) {
+									}
+								});
 
-										}
-									});
-
-					AlertDialog dlg = builder.create();
-					dlg.show();
-				} else {
-					catchupAbove(hf, ap);
-				}
+				AlertDialog dialog = builder.create();
+				dialog.show();
 
 			}
 			return true;
@@ -887,7 +964,7 @@ public class OnlineActivity extends CommonActivity {
         }
 	}
 
-	protected void catchupVisibleArticles() {
+	/* protected void catchupVisibleArticles() {
 		final HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
 		
 		if (hf != null) {
@@ -918,7 +995,7 @@ public class OnlineActivity extends CommonActivity {
 			};
 			req.execute(map);
 		}
-	}
+	} */
 
 	public void editArticleNote(final Article article) {
 		String note = "";
@@ -994,7 +1071,7 @@ public class OnlineActivity extends CommonActivity {
 										}
 									};
 									
-									ApiRequest req = new ApiRequest(m_context);
+									ApiRequest req = new ApiRequest(OnlineActivity.this);
 									req.execute(map);
 									
 								}
@@ -1078,9 +1155,6 @@ public class OnlineActivity extends CommonActivity {
 	public void onResume() {
 		super.onResume();
 
-		ApiCommon.trustAllHosts(m_prefs.getBoolean("ssl_trust_any", false),
-				m_prefs.getBoolean("ssl_trust_any_host", false));				
-		
 		IntentFilter filter = new IntentFilter();
 		//filter.addAction(OfflineDownloadService.INTENT_ACTION_SUCCESS);
 		filter.addAction(OfflineUploadService.INTENT_ACTION_SUCCESS);
@@ -1107,27 +1181,29 @@ public class OnlineActivity extends CommonActivity {
 		m_menu = menu;
 
 		initMenu();
-		
-		List<PackageInfo> pkgs = getPackageManager()
-				.getInstalledPackages(0);
-
 		/*
-		for (PackageInfo p : pkgs) {
-			if ("org.fox.ttrss.key".equals(p.packageName)) {
-				Log.d(TAG, "license apk found");
-				menu.findItem(R.id.donate).setVisible(false);
-				break;
+		if (BuildConfig.ENABLE_TRIAL && !BuildConfig.DEBUG) {
+			List<PackageInfo> pkgs = getPackageManager()
+					.getInstalledPackages(0);
+
+			for (PackageInfo p : pkgs) {
+				if ("org.fox.ttrss.key".equals(p.packageName)) {
+					Log.d(TAG, "license apk found");
+					menu.findItem(R.id.donate).setVisible(false);
+					break;
+				}
 			}
+		} else {
+			menu.findItem(R.id.donate).setVisible(false);
 		}
 		*/
-		
 		return true;
 	}
 
 	public int getApiLevel() {
 		return Application.getInstance().m_apiLevel;
 	}
-	
+
 	protected void setApiLevel(int apiLevel) {
 		Application.getInstance().m_apiLevel = apiLevel;
 	}
@@ -1148,6 +1224,27 @@ public class OnlineActivity extends CommonActivity {
 				put("article_ids", String.valueOf(article.id));
 				put("mode", article.unread ? "1" : "0");
 				put("field", "2");
+			}
+		};
+
+		req.execute(map);
+	}
+
+	public void saveArticleScore(final Article article) {
+		ApiRequest req = new ApiRequest(getApplicationContext()) {
+			protected void onPostExecute(JsonElement result) {
+				//toast(article.marked ? R.string.notify_article_marked : R.string.notify_article_unmarked);
+				invalidateOptionsMenu();
+			}
+		};
+
+		HashMap<String, String> map = new HashMap<String, String>() {
+			{
+				put("sid", getSessionId());
+				put("op", "updateArticle");
+				put("article_ids", String.valueOf(article.id));
+				put("data", String.valueOf(article.score));
+				put("field", "4");
 			}
 		};
 
@@ -1237,8 +1334,45 @@ public class OnlineActivity extends CommonActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {		
+		ArticlePager ap = (ArticlePager) getSupportFragmentManager().findFragmentByTag(FRAG_ARTICLE);
+		HeadlinesFragment hf = (HeadlinesFragment) getSupportFragmentManager().findFragmentByTag(FRAG_HEADLINES);
+
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_DPAD_LEFT:
+			if (ap != null && ap.isAdded()) {
+				ap.selectArticle(false);
+				return true;
+			}
+			break;
+		case KeyEvent.KEYCODE_DPAD_RIGHT:
+			if (ap != null && ap.isAdded()) {
+				ap.selectArticle(true);
+				return true;
+			}
+			break;
+		case KeyEvent.KEYCODE_ESCAPE:
+			moveTaskToBack(true);
+			return true;
+		case KeyEvent.KEYCODE_O:
+			if (ap != null && ap.getSelectedArticle() != null) {
+				openUri(Uri.parse(ap.getSelectedArticle().link));
+				return true;
+			}
+			break;
+		case KeyEvent.KEYCODE_R:
+			refresh();
+			return true;
+		case KeyEvent.KEYCODE_U:
+			if (ap != null && ap.getSelectedArticle() != null) {
+				Article a = ap.getSelectedArticle();
+				a.unread = !a.unread;
+				saveArticleUnread(a);
+				if (hf != null) hf.notifyUpdated();
+			}
+			return true;
+		}
+
 		if (m_prefs.getBoolean("use_volume_keys", false)) {
-			ArticlePager ap = (ArticlePager) getSupportFragmentManager().findFragmentByTag(FRAG_ARTICLE);
 			
 			if (ap != null && ap.isAdded()) {			
 				switch (keyCode) {
@@ -1269,13 +1403,14 @@ public class OnlineActivity extends CommonActivity {
 		
 		return super.onKeyUp(keyCode, event);		
 	}
-	
-	public void catchupFeed(final Feed feed) {
-		Log.d(TAG, "catchupFeed=" + feed);
+
+	public void catchupFeed(final Feed feed, final String mode, final boolean refreshAfter) {
+		Log.d(TAG, "catchupFeed=" + feed + "; mode=" + mode);
 
 		ApiRequest req = new ApiRequest(getApplicationContext()) {
 			protected void onPostExecute(JsonElement result) {
-				// refresh?
+				if (refreshAfter)
+					refresh();
 			}
 		};
 
@@ -1285,6 +1420,7 @@ public class OnlineActivity extends CommonActivity {
 				put("sid", getSessionId());
 				put("op", "catchupFeed");
 				put("feed_id", String.valueOf(feed.id));
+				put("mode", mode);
 				if (feed.is_cat)
 					put("is_cat", "1");
 			}
@@ -1450,6 +1586,7 @@ public class OnlineActivity extends CommonActivity {
 		}
 
 		@SuppressWarnings("unchecked")
+		@SuppressLint("StaticFieldLeak")
 		protected void onPostExecute(JsonElement result) {
 			if (result != null) {
 				try {
@@ -1465,6 +1602,20 @@ public class OnlineActivity extends CommonActivity {
 						if (apiLevel != null) {
 							setApiLevel(apiLevel.getAsInt());
 							Log.d(TAG, "Received API level: " + getApiLevel());
+
+							// get custom sort from configuration object
+							if (getApiLevel() >= 17) {
+
+								// daemon_is_running, icons_dir, etc...
+								JsonObject config = content.get("config").getAsJsonObject();
+
+								Type hashType = new TypeToken<Map<String, String>>(){}.getType();
+								Map<String, String> customSortTypes = new Gson().fromJson(config.get("custom_sort_types"), hashType);
+
+								setCustomSortModes(customSortTypes);
+
+								Log.d(TAG, "test");
+							}
 							
 							if (m_listener != null) {
 								m_listener.OnLoginSuccess();
@@ -1474,7 +1625,7 @@ public class OnlineActivity extends CommonActivity {
 							
 						} else {
 
-							ApiRequest req = new ApiRequest(m_context) {
+							ApiRequest req = new ApiRequest(OnlineActivity.this) {
 								protected void onPostExecute(JsonElement result) {
 									setApiLevel(0);
 	
@@ -1546,7 +1697,20 @@ public class OnlineActivity extends CommonActivity {
 
 	}
 
-    public String getSortMode() {
+	public LinkedHashMap<String, String> getSortModes() {
+		LinkedHashMap<String, String> tmp = new LinkedHashMap<String, String>();
+
+		tmp.put("default", getString(R.string.headlines_sort_default));
+		tmp.put("feed_dates", getString(R.string.headlines_sort_newest_first));
+		tmp.put("date_reverse", getString(R.string.headlines_sort_oldest_first));
+		tmp.put("title", getString(R.string.headlines_sort_title));
+
+		tmp.putAll(Application.getInstance().m_customSortModes);
+
+		return tmp;
+	}
+
+	public String getSortMode() {
         return m_prefs.getString("headlines_sort_mode", "default");
     }
 
@@ -1555,6 +1719,11 @@ public class OnlineActivity extends CommonActivity {
         editor.putString("headlines_sort_mode", sortMode);
 		editor.apply();
     }
+
+	private synchronized void setCustomSortModes(Map<String, String> modes) {
+		Application.getInstance().m_customSortModes.clear();
+		Application.getInstance().m_customSortModes.putAll(modes);
+	}
 
     public void setViewMode(String viewMode) {
 		SharedPreferences.Editor editor = m_prefs.edit();

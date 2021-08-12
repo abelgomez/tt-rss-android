@@ -1,0 +1,59 @@
+    <androidx.drawerlayout.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:fitsSystemWindows="true"
+        android:id="@+id/headlines_drawer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/master_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:visibility="gone"
+                android:src="@drawable/ic_refresh"
+                android:layout_margin="16dp" />
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/toolbar" android:id="@+id/toolbar" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <FrameLayout
+                android:id="@+id/headlines_fragment"
+                app:layout_behavior=".util.FabAwareScrollingViewBehavior"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?headlinesBackground" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <org.fox.ttrss.util.ScrimInsetsFrameLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/scrimInsetsFrameLayout"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/white"
+            android:elevation="10dp"
+            android:fitsSystemWindows="true"
+            app:insetForeground="#4000">
+
+        <FrameLayout
+            android:id="@+id/feeds_fragment"
+            android:layout_width="match_parent"
+            android:background="?feedlistBackground"
+            android:layout_height="match_parent" >
+        </FrameLayout>
+
+        </org.fox.ttrss.util.ScrimInsetsFrameLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>

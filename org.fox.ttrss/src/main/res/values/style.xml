@@ -1,11 +1,12 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="LightTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.DayNight">
         <item name="android:windowNoTitle">true</item>
-
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="LightTheme" parent="LightTheme.Base">
+    <style name="AppTheme" parent="AppTheme.Base">
         <item name="windowActionModeOverlay">true</item>
 
         <!-- <item name="statusBarHintColor">?colorPrimary</item> -->
@@ -35,7 +36,7 @@
         <item name="articleHeader">@android:color/transparent</item>
         <item name="articleHeaderTextColor">@android:color/black</item>
         <item name="articleTextColor">@android:color/black</item>
-        <item name="floatingActionButtonStyle">@style/FabTheme</item>
+        <!-- <item name="floatingActionButtonStyle">@style/FabTheme</item> -->
         <item name="headlineFooterColor">?colorPrimary</item>
         <item name="articleHeaderSeparator">#cccccc</item>
 
@@ -62,10 +63,14 @@
         <item name="ic_dots_vertical_circle">@drawable/ic_dots_vertical_circle_dark</item>
         <item name="ic_attachment">@drawable/ic_attachment_dark</item>
         <item name="ic_attachment_vert">@drawable/ic_attachment_vert_dark</item>
+        <item name="ic_action_trending_up">@drawable/ic_action_trending_up_dark</item>
+        <item name="ic_action_trending_flat">@drawable/ic_action_trending_flat_dark</item>
+        <item name="ic_action_trending_down">@drawable/ic_action_trending_down_dark</item>
 
         <item name="drawer_header">@drawable/drawer_header</item>
     </style>
 
+    <!--
     <style name="DarkTheme.Base" parent="Theme.AppCompat.NoActionBar">
 
     </style>
@@ -78,10 +83,10 @@
     </style>
 
     <style name="DarkTheme" parent="DarkTheme.Base">
-        <item name="windowActionModeOverlay">true</item>
+        <item name="windowActionModeOverlay">true</item> -->
 
         <!-- <item name="statusBarHintColor">?colorPrimary</item> -->
-        <item name="unreadCounterColor">#909090</item>
+        <!-- <item name="unreadCounterColor">#909090</item>
         <item name="feedlistTextColor">@android:color/white</item>
         <item name="headlineUnreadTextColor">@android:color/white</item>
         <item name="headlineSelectedTextColor">@android:color/white</item>
@@ -136,12 +141,12 @@
         <item name="ic_attachment_vert">@drawable/ic_attachment_vert</item>
 
         <item name="drawer_header">@drawable/drawer_header_dark</item>
-    </style>
+    </style> -->
 
     <style name="DarkDialogTheme" parent="android:Theme"></style>
 
-    <style name="FabTheme" parent="FloatingActionButton">
+    <!-- <style name="FabTheme" parent="FloatingActionButton">
         <item name="floatingActionButtonColor">?colorPrimaryDark</item>
-    </style>
+    </style> -->
 
 </resources>

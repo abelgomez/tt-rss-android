@@ -55,12 +55,12 @@
     <string name="error_parse_error">Помилка: не вдалося розібрати JSON</string>
     <string name="error_io_error">Помилка: крах введення/виведення (сервер не працює\?)</string>
     <string name="error_other_error">Помилка: невідома помилка (дивіться журнал)</string>
-    <string name="error_api_disabled">Помилка: Увімкніть доступ зовнішнього API в налаштуваннях tt-rss - Дозволити доступ через API</string>
+    <string name="error_api_disabled">Помилка: Увімкніть доступ API в налаштуваннях tt-rss</string>
     <string name="error_api_unknown">Помилка: невідома помилка API (дивіться журнал)</string>
     <string name="error_api_incorrect_usage">Помилка: некоректне використання API</string>
     <string name="error_login_failed">Помилка: неправильне ім’я чи пароль</string>
     <string name="error_invalid_api_url">Помилка: неправильне посилання на API</string>
-    <string name="go_offline">"Автономний режим "</string>
+    <string name="go_offline">Автономний режим</string>
     <string name="go_online">Режим \"У мережі\"</string>
     <string name="offline_switch_failed">Помилка підготовки до автономного режиму</string>
     <string name="dialog_offline_prompt">Вхід не вдався, але ви маєте збережені автономні дані. Хочете перейти до автономного режиму\?</string>
@@ -97,7 +97,7 @@
     <string name="dialog_offline_sync_continue">Продовжити</string>
     <string name="article_set_note">Поширити з нотаткою</string>
     <string name="dialog_open_preferences">Налаштування</string>
-    <string name="dialog_need_configure_prompt">"Заповніть інформацію про свій  tt-rss сервер: адреса, ім’я та пароль."</string>
+    <string name="dialog_need_configure_prompt">Заповніть інформацію про свій tt-rss сервер: адреса, ім’я та пароль.</string>
     <string name="error_network_unavailable">Помилка: мережа відсутня</string>
     <string name="category_browse_headlines">Переглянути заголовки</string>
     <string name="use_volume_keys">Використовувати кнопки гучності</string>
@@ -194,7 +194,7 @@
     <string name="feed_recently_read">Нещодавно прочитані</string>
     <string name="feed_all_articles">Всі статті</string>
     <string name="prefs_enable_fab">Увімкнути FAB</string>
-    <string name="prefs_enable_fab_long">"Показувати кнопку-коло при читанні "</string>
+    <string name="prefs_enable_fab_long">Показувати кнопку-коло при читанні</string>
     <string name="prefs_open_fresh_on_startup">Показувати Свіжі статті при запуску</string>
     <string name="prefs_headline_display_mode">Режим показу</string>
     <string name="prefs_headline_display_mode_long">Типовий, без картинок, чи компактний режим</string>
@@ -206,9 +206,9 @@
     <string name="prefs_version_title">Версія</string>
     <string name="prefs_build_timestamp">%1$s</string>
     <string name="prefs_build_timestamp_title">Дата збірки</string>
-    <string name="crash_dialog_text">"На жаль, Tiny Tiny RSS  перестав працювати. Відправити звіт про збій до  tt-rss.org\?"</string>
+    <string name="crash_dialog_text">На жаль, Tiny Tiny RSS перестав працювати. Відправити звіт про збій до tt-rss.org\?</string>
     <string name="prefs_widget_show_fresh">Показувати Свіжі статті</string>
-    <string name="prefs_widget_show_fresh_summary">"Показувати кількість свіжих статей, а не загальну "</string>
+    <string name="prefs_widget_show_fresh_summary">Показувати кількість Свіжих статей, а не загальну</string>
     <string name="prefs_widget">Віджет</string>
     <string name="title_activity_video_player">Відео програвач</string>
     <string name="action_settings">Налаштування</string>
@@ -243,7 +243,7 @@
     <string name="logcat_title">Перегляд журналу</string>
     <string name="cat_labels">Мітки</string>
     <string name="cat_uncategorized">Без категорії</string>
-    <string name="prefs_enable_image_downsampling_long">Просити сервер зменшувати зображення коли не у Wi-Fi. Потрібен плагін (ttrss-api-resize).</string>
+    <string name="prefs_enable_image_downsampling_long">Просити сервер зменшувати зображення коли не у Wi-Fi. Потрібен плагін (ttrss-api-resize)</string>
     <string name="prefs_enable_image_downsampling">Авторозмір зображень</string>
     <string name="prefs_inline_video_player">Експериментально. Довге натиснення для відкриття у зовнішньому плеєрі</string>
     <string name="prefs_headline_images_wifi_only_long">Перевизначає попередні налаштування</string>
@@ -253,4 +253,17 @@
     <string name="prefs_headline_request_size">Скільки заголовків запитувати</string>
     <string name="prefs_always_open_uri_summary">Відкривати статті у вашому веб браузері, не відкриваючи перегляд деталей</string>
     <string name="prefs_always_open_uri">Завжди відкривати у браузері</string>
+    <string name="catchup_dialog_2week">Старіше двох тижнів</string>
+    <string name="catchup_dialog_1week">Старіше тижня</string>
+    <string name="catchup_dialog_1day">Старіші за один день</string>
+    <string name="catchup_dialog_all_articles">Всі статті</string>
+    <string name="catchup_dialog_title">Позначити %1$s прочитаною\?</string>
+    <string name="force_phone_layout">Примусово вигляд як для телефонів</string>
+    <string name="force_phone_layout_summary">На планшетах</string>
+    <string name="prefs_inline_video_player_title">Вбудований програвач відео</string>
+    <string name="prefs_always_downsample_images_long">Навіть при Wi-Fi</string>
+    <string name="prefs_always_downsample_images">Завжди припасовувати картинки</string>
+    <string name="img_share_url">Поширити URL</string>
+    <string name="img_share_image">Поширити картинку</string>
+    <string name="img_share_failed_to_load">Не вдалося завантажити картинку для поширення</string>
 </resources>

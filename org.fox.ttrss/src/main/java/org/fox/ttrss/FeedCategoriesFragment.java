@@ -2,10 +2,7 @@ package org.fox.ttrss;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
@@ -178,7 +175,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 	}
 
 	@SuppressLint("DefaultLocale")
-	class CatUnreadComparator implements Comparator<FeedCategory> {
+	static class CatUnreadComparator implements Comparator<FeedCategory> {
 		@Override
 		public int compare(FeedCategory a, FeedCategory b) {
 			if (a.unread != b.unread)
@@ -190,7 +187,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 	
 
 	@SuppressLint("DefaultLocale")
-	class CatTitleComparator implements Comparator<FeedCategory> {
+	static class CatTitleComparator implements Comparator<FeedCategory> {
 
 		@Override
 		public int compare(FeedCategory a, FeedCategory b) {
@@ -203,7 +200,7 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 	}
 
 	@SuppressLint("DefaultLocale")
-	class CatOrderComparator implements Comparator<FeedCategory> {
+	static class CatOrderComparator implements Comparator<FeedCategory> {
 
 		@Override
 		public int compare(FeedCategory a, FeedCategory b) {
@@ -254,35 +251,9 @@ public class FeedCategoriesFragment extends BaseFeedlistFragment implements OnIt
 		case R.id.catchup_category:
 			if (true) {
 				final FeedCategory cat = getCategoryAtPosition(info.position);
-				if (cat != null) {
-										
-					if (m_prefs.getBoolean("confirm_headlines_catchup", true)) {
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								m_activity)
-								.setMessage(getString(R.string.context_confirm_catchup, cat.title))
-								.setPositiveButton(R.string.catchup,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-	
-												m_activity.catchupFeed(new Feed(cat.id, cat.title, true));											
-												
-											}
-										})
-								.setNegativeButton(R.string.dialog_cancel,
-										new Dialog.OnClickListener() {
-											public void onClick(DialogInterface dialog,
-													int which) {
-		
-											}
-										});
-		
-						AlertDialog dlg = builder.create();
-						dlg.show();						
-					} else {
-						m_activity.catchupFeed(new Feed(cat.id, cat.title, true));
-					}
 
+				if (cat != null) {
+					m_activity.catchupDialog(new Feed(cat.id, cat.title, true));
 				}
 			}
 			return true;

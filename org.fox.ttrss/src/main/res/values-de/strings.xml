@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="login_in_progress">Anmelden…</string>
     <string name="app_name">Tiny Tiny RSS</string>
     <string name="login_need_configure">Bitte erst Einstellungen überprüfen.</string>
@@ -65,7 +64,7 @@
     <string name="error_parse_error">Fehler: JSON parsen fehlgeschlagen</string>
     <string name="error_io_error">Fehler: E/A Fehler (Server nicht erreichbar?)</string>
     <string name="error_other_error">Fehler: Unbekannter Fehler (siehe Log)</string>
-    <string name="error_api_disabled">Fehler: Bitte API-Zugang in tt-rss unter Einstellungen - Erweitert aktivieren</string>
+    <string name="error_api_disabled">Fehler: API-Zugriff in tt-rss Einstellungen aktivieren</string>
     <string name="error_api_unknown">Fehler: unbekannter API Fehler (siehe Log)</string>
     <string name="error_api_incorrect_usage">Fehler: Fehlerhafte Benutzung der API</string>
     <string name="error_login_failed">Fehler: Benutzername und Passwort falsch</string>
@@ -119,17 +118,14 @@
     <string name="ssl_trust_any_host_long">Server-Hostname nicht überprüfen</string>
     <string name="ssl">SSL</string>
     <string name="error_ssl_hostname_rejected">Fehler: SSL-Hostname nicht korrekt</string>
-
     <plurals name="article_comments">
         <item quantity="one">%1$d Kommentar</item>
         <item quantity="other">%1$d Kommentare</item>
     </plurals>
-
     <plurals name="trial_mode_prompt">
         <item quantity="one">Testversion, nur noch ein Tag übrig.</item>
         <item quantity="other">Testversion, %1$d Tage übrig.</item>
     </plurals>
-
     <string name="trial_purchase">Vollversion freischalten</string>
     <string name="trial_expired">Testzeitraum abgelaufen</string>
     <string name="trial_expired_message">Um Tiny Tiny RSS weiterhin nutzen zu können kaufen Sie bitte den Schlüssel.</string>
@@ -169,22 +165,18 @@
     <string name="article_img_view_caption">Bildunterschrift zeigen</string>
     <string name="pref_headlines_mark_read_scroll">Beim Scrollen als gelesen markieren</string>
     <string name="pref_headlines_mark_read_scroll_long">Überschriften werden beim Vorbeiscrollen als gelesen markiert</string>
-
     <plurals name="mark_num_headlines_as_read">
-	<item quantity="one">%1$d Artikel als gelesen markieren\?</item>
-	<item quantity="other">%1$d Artikel als gelesen markieren\?</item>
-</plurals>
-
+        <item quantity="one">%1$d Artikel als gelesen markieren\?</item>
+        <item quantity="other">%1$d Artikel als gelesen markieren\?</item>
+    </plurals>
     <string name="prefs_confirm_headlines_catchup">Nachfrage bei "als gelesen markieren"</string>
-    <string name="author_formatted">von %1$s</string>
-
+    <string name="author_formatted">%1$s</string>
     <plurals name="n_unread_articles">
         <item quantity="zero">Keine ungelesenen Artikel</item>
         <item quantity="one">Ein ungelesener Artikel</item>
         <item quantity="other">%1$d ungelesene Artikel</item>
     </plurals>
-
-    <string name="pref_headline_font_size">Schriftgröße der Überschriften</string>
+    <string name="pref_headline_font_size">Schriftgröße</string>
     <string name="context_confirm_catchup">Alle Artikel in %1$s als gelesen markieren?</string>
     <string name="accel_webview_summary">Deaktivieren, falls es zu Flackern oder anderen sichtbaren Störungen kommt</string>
     <string name="accel_webview_title">Webansicht beschleunigen (3.0+)</string>
@@ -210,7 +202,7 @@
     <string name="prefs_enable_fab">Aktionsknopf anzeigen</string>
     <string name="prefs_enable_fab_long">Schwebenden Aktionsknopf beim Lesen anzeigen</string>
     <string name="prefs_open_fresh_on_startup">Neue Artikel beim Start anzeigen</string>
-    <string name="prefs_headline_display_mode">Anzeigemodus der Überschriften</string>
+    <string name="prefs_headline_display_mode">Anzeigemodus</string>
     <string name="prefs_headline_display_mode_long">Standard, keine Bilder oder Kompaktmodus</string>
     <string name="headline_display_mode_default">Standard</string>
     <string name="headline_display_mode_no_images">Keine Bilder</string>
@@ -225,15 +217,13 @@
     <string name="prefs_widget_show_fresh_summary">Zeigt die Anzahl neuer Artikel anstatt aller ungelesener Artikel</string>
     <string name="prefs_widget">Widget</string>
     <string name="title_activity_video_player">Video Player</string>
-
     <string name="hello_world">Hallo Welt!</string>
     <string name="action_settings">Einstellungen</string>
     <string name="video_player_share">Video teilen</string>
     <string name="video_player_open">Video öffnen</string>
-
     <string name="flavor_image_prompt">(mehr Bilder...)</string>
     <string name="headlines_row_top_changed">Neue Artikel gefunden, aktualisieren um fortzufahren.</string>
-<string name="offline_switch_failed">Offlinemodus vorbereiten ist fehlgeschlagen</string>
+    <string name="offline_switch_failed">Offlinemodus vorbereiten ist fehlgeschlagen</string>
     <string name="offline_media_cache_enabled">Mediencache</string>
     <string name="offline_media_cache_enabled_summary">Medien Dateien auf die SD-Karte herunterladen. Dies erhöht drastisch die Zeit, die es dauert, bis man Offline gehen kann</string>
     <string name="notify_downloading_media">Lade Mediendateien herunter…</string>
@@ -251,12 +241,11 @@
     <string name="pref_headlines_swipe_to_dismiss">Swipen zum verwerfen</string>
     <string name="pref_headlines_swipe_to_dismiss_long">Deaktiviere das Kontextmenü für Überschriften</string>
     <string name="pref_widget_update_interval">Aktualisierungsintervall (in Minuten)</string>
-
     <string name="widget_background_light">Hell</string>
     <string name="widget_background_dark">Dunkel</string>
     <string name="widget_background_transparent">Transparent</string>
     <string name="pref_widget_background">Widget Theme</string>
-    <string name="pref_widget_update_interval_summary">Der Intervall ist nicht präzise, dank Limitierungen von Android.</string>
+    <string name="pref_widget_update_interval_summary">Dieses Intervall ist aufgrund der Einschränkungen von Android ungenau</string>
     <string name="prefs_offline_sort_by_feed">Gruppiere Überschriften nach Feeds</string>
     <string name="reload">Aktualisieren</string>
     <string name="offline_sync_try_again">Nochmal versuchen</string>
@@ -266,11 +255,34 @@
     <string name="logcat_refresh">Aktualisieren</string>
     <string name="logcat_copy">In die Zwischenablage kopieren</string>
     <string name="logcat_title">Log Ansicht</string>
-<string name="cat_special">Sonderfeeds</string>
+    <string name="cat_special">Sonderfeeds</string>
     <string name="feed_starred_articles">Markierte Artikel</string>
     <string name="feed_published_articles">Veröffentlichte Artikel</string>
     <string name="feed_archived_articles">Archivierte Artikel</string>
     <string name="feed_recently_read">Kürzlich gelesen</string>
     <string name="cat_labels">Etiketten</string>
-    <string name="cat_uncategorized">Nicht kategorisiert</string>
+    <string name="cat_uncategorized">Ohne Kategorie</string>
+    <string name="prefs_enable_image_downsampling_long">Fordert das Backend auf, Bilder zu verkleinern, wenn keine WLAN -Verbindung besteht. Benötigt ein Plugin (ttrss-api-resize)</string>
+    <string name="prefs_enable_image_downsampling">Bilder automatisch verkleinern</string>
+    <string name="prefs_inline_video_player">Experimentell. Lange Antippen zum Öffnen eines separaten Players</string>
+    <string name="prefs_headline_images_wifi_only_long">Überschreibt die vorherige Einstellung</string>
+    <string name="prefs_headline_images_wifi_only">Bilder nur über WLAN anzeigen</string>
+    <string name="headlines">Überschriften</string>
+    <string name="prefs_headline_request_size_long">Verwenden Sie bei langsamen Verbindungen niedrigere Werte</string>
+    <string name="prefs_headline_request_size">Anzahl der anzufordernden Artikel</string>
+    <string name="prefs_always_open_uri_summary">Öffnen Sie Artikel direkt in Ihrem Webbrowser, anstatt zur Detailansicht zu gehen</string>
+    <string name="prefs_always_open_uri">Immer im Browser öffnen</string>
+    <string name="catchup_dialog_2week">Älter als zwei Wochen</string>
+    <string name="catchup_dialog_1week">Älter als eine Woche</string>
+    <string name="catchup_dialog_1day">Älter als ein Tag</string>
+    <string name="catchup_dialog_all_articles">Alle Artikel</string>
+    <string name="catchup_dialog_title">%1$s als gelesen markieren\?</string>
+    <string name="force_phone_layout">Telefon-Layout erzwingen</string>
+    <string name="force_phone_layout_summary">Auf Tablet-Geräten</string>
+    <string name="prefs_inline_video_player_title">Eingebetteter Video-Player</string>
+    <string name="prefs_always_downsample_images_long">Auch bei WLAN-Verbindung</string>
+    <string name="prefs_always_downsample_images">Bildgrößen immer anpassen</string>
+    <string name="img_share_url">URL teilen</string>
+    <string name="img_share_image">Bild teilen</string>
+    <string name="img_share_failed_to_load">Zu teilendes Bild konnte nicht geladen werden</string>
 </resources>

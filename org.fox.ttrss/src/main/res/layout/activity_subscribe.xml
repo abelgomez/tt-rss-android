@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Update categories" />
+            android:text="@string/update_categories" />
 
         <Button
             style="?android:attr/buttonBarButtonStyle"

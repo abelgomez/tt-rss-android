@@ -12,14 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.viewpagerindicator.UnderlinePageIndicator;
-
-import org.fox.ttrss.R;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import org.fox.ttrss.R;
 
 public class OfflineArticlePager extends Fragment {
 	private final String TAG = this.getClass().getSimpleName();
@@ -184,13 +182,8 @@ public class OfflineArticlePager extends Fragment {
 		
 		pager.setAdapter(m_adapter);
 
-        UnderlinePageIndicator indicator = view.findViewById(R.id.article_pager_indicator);
-        indicator.setViewPager(pager);
-
         pager.setCurrentItem(position);
-
-		indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
+		pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 			}

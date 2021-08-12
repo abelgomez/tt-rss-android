@@ -26,28 +26,21 @@ import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.shamanland.fab.ShowHideOnScroll;
-
-import org.fox.ttrss.CommonActivity;
 import org.fox.ttrss.R;
 import org.fox.ttrss.util.ImageCacheService;
-import org.fox.ttrss.util.NotifyingScrollView;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
 public class OfflineArticleFragment extends Fragment {
@@ -64,7 +57,7 @@ public class OfflineArticleFragment extends Fragment {
 	protected FrameLayout m_customViewContainer;
 	protected View m_contentView;
 	protected FSVideoChromeClient m_chromeClient;
-	protected View m_fab;
+	//protected View m_fab;
 	
 	public void initialize(int articleId) {
 		m_articleId = articleId;
@@ -95,7 +88,7 @@ public class OfflineArticleFragment extends Fragment {
 			m_customViewContainer.setVisibility(View.VISIBLE);
 			m_customViewContainer.addView(view);
 
-			if (m_fab != null) m_fab.setVisibility(View.GONE);
+			//if (m_fab != null) m_fab.setVisibility(View.GONE);
 
 			m_activity.showSidebar(false);
 
@@ -121,8 +114,8 @@ public class OfflineArticleFragment extends Fragment {
 			m_customViewContainer.removeView(m_customView);
 			m_callback.onCustomViewHidden();
 
-			if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
-				m_fab.setVisibility(View.VISIBLE);
+			/*if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
+				m_fab.setVisibility(View.VISIBLE);*/
 
 			m_customView = null;
 
@@ -210,51 +203,6 @@ public class OfflineArticleFragment extends Fragment {
 
             final String link = m_cursor.getString(m_cursor.getColumnIndex("link"));
 
-            NotifyingScrollView scrollView = view.findViewById(R.id.article_scrollview);
-            m_fab = view.findViewById(R.id.article_fab);
-
-            if (scrollView != null && m_activity.isSmallScreen()) {
-                view.findViewById(R.id.article_heading_spacer).setVisibility(View.VISIBLE);
-
-                scrollView.setOnScrollChangedListener(new NotifyingScrollView.OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
-                        ActionBar ab = m_activity.getSupportActionBar();
-
-                        if (t >= oldt && t >= ab.getHeight()) {
-                            ab.hide();
-                        } else if (t <= ab.getHeight() || oldt - t >= 10) {
-                            ab.show();
-                        }
-
-                    }
-                });
-            }
-
-            if (scrollView != null && m_fab != null) {
-                if (m_prefs.getBoolean("enable_article_fab", true)) {
-                    scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
-
-                    m_fab.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            try {
-                                URL url = new URL(link.trim());
-                                String uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(),
-                                        url.getPort(), url.getPath(), url.getQuery(), url.getRef()).toString();
-
-								m_activity.openUri(Uri.parse(uri));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                m_activity.toast(R.string.error_other_error);
-                            }
-                        }
-                    });
-                } else {
-                    m_fab.setVisibility(View.GONE);
-                }
-            }
-
 			int articleFontSize = Integer.parseInt(m_prefs.getString("article_font_size_sp", "16"));
 			int articleSmallFontSize = Math.max(10, Math.min(18, articleFontSize - 2));
 			
@@ -287,6 +235,11 @@ public class OfflineArticleFragment extends Fragment {
 
 			}
 
+			ImageView score = view.findViewById(R.id.score);
+
+			if (score != null) {
+				score.setVisibility(View.GONE);
+			}
 
 			ImageView attachments = view.findViewById(R.id.attachments);
 
@@ -322,8 +275,7 @@ public class OfflineArticleFragment extends Fragment {
 			
 			if (m_web != null) {
 
-				String theme = m_prefs.getString("theme", CommonActivity.THEME_DEFAULT);
-				if (CommonActivity.THEME_DARK.equals(theme) || CommonActivity.THEME_AMBER.equals(theme)) {
+				if (m_activity.isUiNightMode()) {
 					m_web.setBackgroundColor(Color.BLACK);
 				}
 
@@ -358,13 +310,6 @@ public class OfflineArticleFragment extends Fragment {
                     }
                 });
 
-                // prevent flicker in ics
-                if (!m_prefs.getBoolean("webview_hardware_accel", true)) {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-						m_web.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                    }
-                }
-
                 String content;
                 String cssOverride = "";
 
@@ -377,7 +322,7 @@ public class OfflineArticleFragment extends Fragment {
 					m_chromeClient = new FSVideoChromeClient(getView());
 					m_web.setWebChromeClient(m_chromeClient);
 
-					ws.setMediaPlaybackRequiresUserGesture(false);
+					ws.setMediaPlaybackRequiresUserGesture(true);
 				}
 
 				// we need to show "insecure" file:// urls

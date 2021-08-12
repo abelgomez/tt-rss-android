@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.ArticleList;
 import org.fox.ttrss.types.Feed;
@@ -38,7 +40,11 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
 
         super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_detail);
+		if (m_prefs.getBoolean("force_phone_layout", false)) {
+			setContentView(R.layout.activity_detail_phone);
+		} else {
+			setContentView(R.layout.activity_detail);
+		}
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -52,9 +58,27 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
 		
 		Application.getInstance().load(savedInstanceState);
 
-        if (isPortrait() && !isSmallScreen()) {
-            findViewById(R.id.headlines_fragment).setVisibility(View.GONE);
+        if (isPortrait()) {
+            View headlines = findViewById(R.id.headlines_fragment);
+
+            if (headlines != null)
+        		headlines.setVisibility(View.GONE);
         }
+
+		FloatingActionButton fab = findViewById(R.id.detail_fab);
+
+		if (fab != null && m_prefs.getBoolean("enable_article_fab", true)) {
+			fab.show();
+
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (m_activeArticle != null) {
+						openUri(Uri.parse(m_activeArticle.link));
+					}
+				}
+			});
+		}
 
         if (savedInstanceState == null) {
 			Intent i = getIntent();

@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.fox.ttrss.Application;
 import org.fox.ttrss.R;
@@ -28,7 +31,8 @@ public class OfflineDetailActivity extends OfflineActivity implements OfflineHea
 
     private ActionBarDrawerToggle m_drawerToggle;
     private DrawerLayout m_drawerLayout;
-	
+	private int m_activeArticleId;
+
 	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,11 @@ public class OfflineDetailActivity extends OfflineActivity implements OfflineHea
 		
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_detail);
+		if (m_prefs.getBoolean("force_phone_layout", false)) {
+			setContentView(R.layout.activity_detail_phone);
+		} else {
+			setContentView(R.layout.activity_detail);
+		}
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -76,8 +84,11 @@ public class OfflineDetailActivity extends OfflineActivity implements OfflineHea
 
 		setSmallScreen(findViewById(R.id.sw600dp_anchor) == null);
 
-		if (isPortrait() && !isSmallScreen()) {
-			findViewById(R.id.headlines_fragment).setVisibility(View.GONE);
+		if (isPortrait()) {
+			View headlines = findViewById(R.id.headlines_fragment);
+
+			if (headlines != null)
+				headlines.setVisibility(View.GONE);
 		}
 
 		if (savedInstanceState == null) {
@@ -121,7 +132,29 @@ public class OfflineDetailActivity extends OfflineActivity implements OfflineHea
 				}
 
 			}
-		} 
+		}
+
+		FloatingActionButton fab = findViewById(R.id.detail_fab);
+
+		if (fab != null && m_prefs.getBoolean("enable_article_fab", true)) {
+			fab.show();
+
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (m_activeArticleId != 0) {
+						Cursor article = getArticleById(m_activeArticleId);
+
+						if (article != null) {
+							openUri(Uri.parse(article.getString(article.getColumnIndex("link"))));
+
+							article.close();
+						}
+					}
+				}
+			});
+		}
+
 	}
 
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -148,6 +181,8 @@ public class OfflineDetailActivity extends OfflineActivity implements OfflineHea
 	
 	@Override
 	public void onArticleSelected(int articleId, boolean open) {
+		
+		m_activeArticleId = articleId;
 		
 		if (!open) {
 			SQLiteStatement stmt = getDatabase().compileStatement(

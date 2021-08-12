@@ -282,4 +282,19 @@
     <string name="prefs_always_downsample_images">Always resize images</string>
     <string name="prefs_always_downsample_images_long">Even on Wi-Fi</string>
     <string name="prefs_inline_video_player_title">Inline video player</string>
+    <string name="force_phone_layout_summary">On tablet devices</string>
+    <string name="force_phone_layout">Force phone layout</string>
+
+    <string name="catchup_dialog_title">Mark %1$s as read?</string>
+    <string name="catchup_dialog_all_articles">All articles</string>
+    <string name="catchup_dialog_1day">Older than one day</string>
+    <string name="catchup_dialog_1week">Older than one week</string>
+    <string name="catchup_dialog_2week">Older than two weeks</string>
+    <string name="img_share_url">Share URL</string>
+    <string name="img_share_image">Share image</string>
+    <string name="img_share_failed_to_load">Failed to load image for sharing</string>
+    <string name="update_categories">Update categories</string>
+    <string name="score_for_this_article">Score for this article</string>
+    <string name="set_score">Set score</string>
+    <string name="score_invalid">Invalid score</string>
 </resources>

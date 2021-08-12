@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/feeds_row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -33,7 +34,7 @@
         android:ellipsize="end"
         android:paddingLeft="35dp"
         android:singleLine="true"
-        android:text="Feed"
+        tools:text="Feed"
         android:paddingBottom="2dp"
         android:textColor="?feedlistSelectedTextColor"
         android:textSize="14sp" />
@@ -45,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:singleLine="true"
-        android:text="3200"
+        tools:text="3200"
         android:layout_marginLeft="16dp"
         android:textColor="?unreadCounterColor"
         android:textSize="14sp" />

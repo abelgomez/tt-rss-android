@@ -12,6 +12,14 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.ToxicBakery.viewpager.transforms.DepthPageTransformer;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -26,12 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import icepick.State;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -45,7 +47,7 @@ public class GalleryActivity extends CommonActivity {
     private ViewPager m_pager;
     private ProgressBar m_checkProgress;
 
-    private class ArticleImagesPagerAdapter extends FragmentStatePagerAdapter {
+    private static class ArticleImagesPagerAdapter extends FragmentStatePagerAdapter {
         private List<GalleryEntry> m_items;
 
         public ArticleImagesPagerAdapter(FragmentManager fm, List<GalleryEntry> items) {
@@ -88,7 +90,7 @@ public class GalleryActivity extends CommonActivity {
         }
     }
 
-    private class MediaProgressResult {
+    private static class MediaProgressResult {
         GalleryEntry item;
         int position;
         int count;
@@ -225,7 +227,9 @@ public class GalleryActivity extends CommonActivity {
         m_prefs = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
 
-        setTheme(R.style.DarkTheme);
+
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
 
@@ -263,12 +267,15 @@ public class GalleryActivity extends CommonActivity {
                 MenuInflater inflater = popup.getMenuInflater();
                 inflater.inflate(R.menu.content_gallery_entry, popup.getMenu());
 
+                final GalleryEntry entry = m_items.get(m_pager.getCurrentItem());
+
+                popup.getMenu().findItem(R.id.article_img_share)
+                        .setVisible(entry.type == GalleryEntry.GalleryEntryType.TYPE_IMAGE);
+
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        String url = m_items.get(m_pager.getCurrentItem()).url;
-
-                        return onImageMenuItemSelected(item, url);
+                        return onImageMenuItemSelected(item, entry);
                     }
                 });
 
@@ -296,7 +303,7 @@ public class GalleryActivity extends CommonActivity {
         MediaCheckTask mct = new MediaCheckTask() {
             @Override
             protected void onProgressUpdate(MediaProgressResult... result) {
-                m_items.add(result[0].item);
+                //m_items.add(result[0].item);
                 m_adapter.notifyDataSetChanged();
 
                 if (result[0].position < result[0].count) {
@@ -311,8 +318,8 @@ public class GalleryActivity extends CommonActivity {
 
             @Override
             protected void onPostExecute(List<GalleryEntry> result) {
-                //m_items.addAll(result);
-                //m_adapter.notifyDataSetChanged();
+                m_items.addAll(result);
+                m_adapter.notifyDataSetChanged();
             }
         };
 
@@ -323,15 +330,22 @@ public class GalleryActivity extends CommonActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         int position = m_pager.getCurrentItem();
-        String url = m_items.get(position).url;
 
-        if (onImageMenuItemSelected(item, url))
+        GalleryEntry entry = m_items.get(position);
+
+        //String url = m_items.get(position).url;
+
+
+
+        if (onImageMenuItemSelected(item, entry))
             return true;
 
         return super.onContextItemSelected(item);
     }
 
-    public boolean onImageMenuItemSelected(MenuItem item, String url) {
+    public boolean onImageMenuItemSelected(MenuItem item, GalleryEntry entry) {
+        String url = entry.url;
+
         switch (item.getItemId()) {
             case R.id.article_img_open:
                 if (url != null) {
@@ -350,6 +364,15 @@ public class GalleryActivity extends CommonActivity {
                 return true;
             case R.id.article_img_share:
                 if (url != null) {
+                    if (entry.type == GalleryEntry.GalleryEntryType.TYPE_IMAGE) {
+                        Log.d(TAG, "image sharing image from URL=" + url);
+
+                        shareImageFromUri(url);
+                    }
+                }
+                return true;
+            case R.id.article_img_share_url:
+                if (url != null) {
                     shareText(url);
                 }
                 return true;
@@ -363,5 +386,4 @@ public class GalleryActivity extends CommonActivity {
                 return false;
         }
     }
-
 }

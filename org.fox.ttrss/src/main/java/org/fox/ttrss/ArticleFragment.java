@@ -2,7 +2,11 @@ package org.fox.ttrss;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -23,16 +27,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.shamanland.fab.ShowHideOnScroll;
 
 import org.fox.ttrss.types.Article;
 import org.fox.ttrss.types.Attachment;
-import org.fox.ttrss.util.NotifyingScrollView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,7 +41,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.appcompat.app.ActionBar;
 import icepick.State;
 
 public class ArticleFragment extends StateSavedFragment  {
@@ -54,10 +54,9 @@ public class ArticleFragment extends StateSavedFragment  {
     protected FrameLayout m_customViewContainer;
     protected View m_contentView;
     protected FSVideoChromeClient m_chromeClient;
-    protected View m_fab;
+    //protected View m_fab;
     protected int m_articleFontSize;
     protected int m_articleSmallFontSize;
-    protected boolean m_acceleratedWebview = true;
 
     public void initialize(Article article) {
 		m_article = article;
@@ -88,7 +87,7 @@ public class ArticleFragment extends StateSavedFragment  {
             m_customViewContainer.setVisibility(View.VISIBLE);
             m_customViewContainer.addView(view);
 
-            if (m_fab != null) m_fab.setVisibility(View.GONE);
+            //if (m_fab != null) m_fab.setVisibility(View.GONE);
 
             m_activity.showSidebar(false);
 
@@ -114,8 +113,8 @@ public class ArticleFragment extends StateSavedFragment  {
             m_customViewContainer.removeView(m_customView);
             m_callback.onCustomViewHidden();
 
-            if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
-                m_fab.setVisibility(View.VISIBLE);
+            /*if (m_fab != null && m_prefs.getBoolean("enable_article_fab", true))
+                m_fab.setVisibility(View.VISIBLE);*/
 
             m_customView = null;
 
@@ -136,7 +135,7 @@ public class ArticleFragment extends StateSavedFragment  {
 
 				menu.setHeaderTitle(result.getExtra());
 				getActivity().getMenuInflater().inflate(R.menu.content_gallery_entry, menu);
-				
+
 				/* FIXME I have no idea how to do this correctly ;( */
 				
 				m_activity.setLastContentImageHitTestUrl(result.getExtra());
@@ -184,47 +183,6 @@ public class ArticleFragment extends StateSavedFragment  {
             return view;
         } */
 
-        NotifyingScrollView scrollView = view.findViewById(R.id.article_scrollview);
-        m_fab = view.findViewById(R.id.article_fab);
-
-        if (scrollView != null && m_activity.isSmallScreen()) {
-            view.findViewById(R.id.article_heading_spacer).setVisibility(View.VISIBLE);
-
-            scrollView.setOnScrollChangedListener(new NotifyingScrollView.OnScrollChangedListener() {
-                @Override
-                public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
-                    ActionBar ab = m_activity.getSupportActionBar();
-
-                    if (t >= oldt && t >= ab.getHeight()) {
-                        ab.hide();
-                    } else if (t <= ab.getHeight() || oldt - t >= 10) {
-                        ab.show();
-                    }
-
-                }
-            });
-        }
-
-        if (scrollView != null && m_fab != null) {
-            if (m_prefs.getBoolean("enable_article_fab", true)) {
-                scrollView.setOnTouchListener(new ShowHideOnScroll(m_fab));
-
-                m_fab.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            m_activity.openUri(Uri.parse(m_article.link));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            m_activity.toast(R.string.error_other_error);
-                        }
-                    }
-                });
-            } else {
-                m_fab.setVisibility(View.GONE);
-            }
-        }
-
         m_articleFontSize = Integer.parseInt(m_prefs.getString("article_font_size_sp", "16"));
         m_articleSmallFontSize = Math.max(10, Math.min(18, m_articleFontSize - 2));
 
@@ -255,6 +213,70 @@ public class ArticleFragment extends StateSavedFragment  {
                 }
             });
 
+        }
+
+        final ImageView scoreView = view.findViewById(R.id.score);
+
+        if (scoreView != null) {
+            setScoreImage(scoreView, m_article.score);
+
+            Resources.Theme theme = m_activity.getTheme();
+            TypedValue tv = new TypedValue();
+            theme.resolveAttribute(R.attr.headlineTitleHighScoreUnreadTextColor, tv, true);
+            int titleHighScoreUnreadColor = tv.data;
+
+            if (m_article.score > Article.SCORE_HIGH)
+                scoreView.setColorFilter(titleHighScoreUnreadColor);
+            else
+                scoreView.setColorFilter(null);
+
+            if (m_activity.getApiLevel() >= 16) {
+                scoreView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final EditText edit = new EditText(getActivity());
+                        edit.setText(String.valueOf(m_article.score));
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.score_for_this_article)
+                                .setPositiveButton(R.string.set_score,
+                                        new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+
+                                                try {
+                                                    int newScore = Integer.parseInt(edit.getText().toString());
+
+                                                    m_article.score = newScore;
+
+                                                    m_activity.saveArticleScore(m_article);
+
+                                                    setScoreImage(scoreView, newScore);
+                                                } catch (NumberFormatException e) {
+                                                    m_activity.toast(R.string.score_invalid);
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        })
+                                .setNegativeButton(getString(R.string.cancel),
+                                        new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog,
+                                                                int which) {
+
+                                                //
+
+                                            }
+                                        }).setView(edit);
+
+                        Dialog dialog = builder.create();
+                        dialog.show();
+                    }
+                });
+            }
         }
 
         ImageView attachments = view.findViewById(R.id.attachments);
@@ -400,29 +422,26 @@ public class ArticleFragment extends StateSavedFragment  {
             }
         });
 
-        // prevent flicker in ics
-        if (!m_prefs.getBoolean("webview_hardware_accel", true)) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-                m_web.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                m_acceleratedWebview = false;
-            }
-        }
-
         m_web.setVisibility(View.VISIBLE);
-
-        // we no longer use async rendering because chrome 66 webview breaks on it sometimes
-
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                renderContent(savedInstanceState);
-            }
-        }, 250);*/
 
         renderContent(savedInstanceState);
 
         return view;
 	}
+
+    private void setScoreImage(ImageView scoreView, int score) {
+        TypedValue tv = new TypedValue();
+        int scoreAttr = R.attr.ic_action_trending_flat;
+
+        if (m_article.score > 0)
+            scoreAttr = R.attr.ic_action_trending_up;
+        else if (m_article.score < 0)
+            scoreAttr = R.attr.ic_action_trending_down;
+
+        m_activity.getTheme().resolveAttribute(scoreAttr, tv, true);
+
+        scoreView.setImageResource(tv.resourceId);
+    }
 
     protected void renderContent(Bundle savedInstanceState) {
         if (!isAdded() || m_web == null) return;
@@ -466,11 +485,10 @@ public class ArticleFragment extends StateSavedFragment  {
                 ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
             }
 
-            ws.setMediaPlaybackRequiresUserGesture(false);
+            ws.setMediaPlaybackRequiresUserGesture(true);
         }
 
-        String theme = m_prefs.getString("theme", CommonActivity.THEME_DEFAULT);
-        if (CommonActivity.THEME_DARK.equals(theme) || CommonActivity.THEME_AMBER.equals(theme)) {
+        if (m_activity.isUiNightMode()) {
             m_web.setBackgroundColor(Color.BLACK);
         }
 
@@ -532,7 +550,7 @@ public class ArticleFragment extends StateSavedFragment  {
                 //
             }
 
-            if (savedInstanceState == null || !m_acceleratedWebview) {
+            if (savedInstanceState == null) {
                 m_web.loadDataWithBaseURL(baseUrl, content.toString(), "text/html", "utf-8", null);
             } else {
                 WebBackForwardList rc = m_web.restoreState(savedInstanceState);
